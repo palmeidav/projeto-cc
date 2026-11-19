@@ -43,8 +43,13 @@ resource "terraform_data" "image" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<-EOT
       set -euo pipefail
-      aws ecr get-login-password --region ${data.aws_region.current.region} \
-        | docker login --username AWS --password-stdin ${local.registry} >/dev/null
+      # os 3 builds rodam em paralelo; o keychain do macOS falha se 2 logins gravam ao mesmo tempo -> tenta de novo
+      for i in 1 2 3 4 5; do
+        aws ecr get-login-password --region ${data.aws_region.current.region} \
+          | docker login --username AWS --password-stdin ${local.registry} >/dev/null && break
+        [ "$i" = 5 ] && exit 1
+        sleep $((RANDOM % 5 + 2))
+      done
       docker build --platform ${var.platform} -t ${aws_ecr_repository.this[each.key].repository_url}:${local.src_hash[each.key]} "${each.value}"
       docker push ${aws_ecr_repository.this[each.key].repository_url}:${local.src_hash[each.key]}
     EOT

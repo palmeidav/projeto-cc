@@ -25,7 +25,7 @@ resource "aws_vpc_security_group_ingress_rule" "alb_http" {
 
 resource "aws_vpc_security_group_ingress_rule" "ilb_from_app" {
   security_group_id            = aws_security_group.this["ilb"].id
-  description                  = "chat -> ALB interno"
+  description                  = "chat para o ALB interno"
   ip_protocol                  = "tcp"
   from_port                    = 80
   to_port                      = 80

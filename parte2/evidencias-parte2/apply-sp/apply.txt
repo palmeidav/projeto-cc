@@ -1,0 +1,559 @@
+### inicio 2026-11-19 17:26:29 UTC
+Acquiring state lock. This may take a few moments...
+module.messaging.aws_sqs_queue.dlq: Creating...
+module.iam.aws_iam_role.instance: Creating...
+module.messaging.aws_sns_topic.alarms: Creating...
+module.registry.aws_ecr_repository.this["catalog-orders-service"]: Creating...
+module.network.aws_vpc.this: Creating...
+module.messaging.aws_sns_topic.order_events: Creating...
+module.registry.aws_ecr_repository.this["chat-service"]: Creating...
+module.network.aws_eip.nat[0]: Creating...
+module.compute.aws_ecs_cluster.this: Creating...
+module.registry.aws_ecr_repository.this["order-worker"]: Creating...
+module.iam.aws_iam_role.instance: Creation complete after 2s [id=cc-sp-ecs-instance-role]
+module.iam.aws_iam_instance_profile.instance: Creating...
+module.registry.aws_ecr_repository.this["order-worker"]: Creation complete after 3s [id=cc-sp/order-worker]
+module.network.aws_eip.nat[0]: Creation complete after 3s [id=eipalloc-0c16c4b8a21fe6223]
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]: Creating...
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]: Creating...
+module.registry.aws_ecr_repository.this["catalog-orders-service"]: Creation complete after 3s [id=cc-sp/catalog-orders-service]
+module.registry.aws_ecr_repository.this["chat-service"]: Creation complete after 3s [id=cc-sp/chat-service]
+module.iam.aws_iam_role.catalog: Creating...
+module.iam.aws_iam_role.task_exec: Creating...
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]: Creation complete after 1s [id=cc-sp-ecs-instance-role/arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore]
+module.iam.aws_iam_role.worker: Creating...
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]: Creation complete after 1s [id=cc-sp-ecs-instance-role/arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role]
+module.iam.aws_iam_role.chat: Creating...
+module.messaging.aws_sns_topic.alarms: Creation complete after 5s [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms]
+module.registry.terraform_data.image["order-worker"]: Creating...
+module.registry.terraform_data.image["order-worker"]: Provisioning with 'local-exec'...
+module.registry.terraform_data.image["order-worker"] (local-exec): Executing: ["/bin/bash" "-c" "set -euo pipefail\naws ecr get-login-password --region sa-east-1 \\\n  | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null\ndocker build --platform linux/amd64 -t 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5 \"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/order-worker\"\ndocker push 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5\n"]
+module.messaging.aws_sns_topic.order_events: Creation complete after 5s [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-order-events]
+module.registry.terraform_data.image["chat-service"]: Creating...
+module.registry.terraform_data.image["chat-service"]: Provisioning with 'local-exec'...
+module.registry.terraform_data.image["chat-service"] (local-exec): Executing: ["/bin/bash" "-c" "set -euo pipefail\naws ecr get-login-password --region sa-east-1 \\\n  | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null\ndocker build --platform linux/amd64 -t 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241 \"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/chat-service\"\ndocker push 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241\n"]
+module.iam.aws_iam_role.catalog: Creation complete after 2s [id=cc-sp-catalog-task-role]
+module.registry.aws_ecr_lifecycle_policy.this["order-worker"]: Creating...
+module.iam.aws_iam_role.task_exec: Creation complete after 2s [id=cc-sp-task-exec-role]
+module.registry.terraform_data.image["catalog-orders-service"]: Creating...
+module.registry.terraform_data.image["catalog-orders-service"]: Provisioning with 'local-exec'...
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): Executing: ["/bin/bash" "-c" "set -euo pipefail\naws ecr get-login-password --region sa-east-1 \\\n  | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null\ndocker build --platform linux/amd64 -t 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6 \"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/catalog-orders-service\"\ndocker push 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6\n"]
+module.iam.aws_iam_role.worker: Creation complete after 2s [id=cc-sp-worker-task-role]
+module.registry.aws_ecr_lifecycle_policy.this["catalog-orders-service"]: Creating...
+module.iam.aws_iam_role.chat: Creation complete after 2s [id=cc-sp-chat-task-role]
+module.registry.aws_ecr_lifecycle_policy.this["chat-service"]: Creating...
+module.registry.aws_ecr_lifecycle_policy.this["order-worker"]: Creation complete after 1s [id=cc-sp/order-worker]
+module.messaging.aws_sns_topic_subscription.alarm_email[0]: Creating...
+module.network.aws_vpc.this: Creation complete after 6s [id=vpc-0e939e3d096b27d98]
+module.iam.aws_iam_role_policy_attachment.task_exec: Creating...
+module.registry.aws_ecr_lifecycle_policy.this["catalog-orders-service"]: Creation complete after 1s [id=cc-sp/catalog-orders-service]
+module.iam.aws_iam_role_policy.chat: Creating...
+module.registry.aws_ecr_lifecycle_policy.this["chat-service"]: Creation complete after 1s [id=cc-sp/chat-service]
+module.network.aws_subnet.data[0]: Creating...
+module.messaging.aws_sns_topic_subscription.alarm_email[0]: Creation complete after 1s [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms:3cddf7f2-6272-44ae-a9ce-764ae890ff52]
+module.network.aws_route_table.data: Creating...
+module.iam.aws_iam_role_policy_attachment.task_exec: Creation complete after 1s [id=cc-sp-task-exec-role/arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy]
+module.network.aws_subnet.data[1]: Creating...
+module.iam.aws_iam_role_policy.chat: Creation complete after 0s [id=cc-sp-chat-task-role:bedrock-model]
+module.network.aws_route_table.public: Creating...
+module.network.aws_subnet.data[0]: Creation complete after 2s [id=subnet-04c98ac5d65886172]
+module.network.aws_subnet.app[0]: Creating...
+module.network.aws_subnet.data[1]: Creation complete after 2s [id=subnet-09ff5cd4357464080]
+module.network.aws_subnet.app[1]: Creating...
+module.network.aws_route_table.data: Creation complete after 2s [id=rtb-0a4f1a5ab53e96a64]
+module.network.aws_internet_gateway.this: Creating...
+module.network.aws_route_table.public: Creation complete after 3s [id=rtb-06b48f00897e494e1]
+module.network.aws_route_table.app[0]: Creating...
+module.messaging.aws_sqs_queue.dlq: Still creating... [00m10s elapsed]
+module.compute.aws_ecs_cluster.this: Still creating... [00m10s elapsed]
+module.registry.terraform_data.image["chat-service"] (local-exec): error saving credentials: error storing credentials - err: exit status 1, out: `The specified item already exists in the keychain. (-25299)`
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): error saving credentials: error storing credentials - err: exit status 1, out: `The specified item already exists in the keychain. (-25299)`
+module.network.aws_subnet.public[1]: Creating...
+module.network.aws_subnet.public[0]: Creating...
+module.iam.aws_iam_instance_profile.instance: Creation complete after 8s [id=cc-sp-ecs-instance-profile]
+module.network.aws_route_table_association.data[0]: Creating...
+module.network.aws_subnet.app[0]: Creation complete after 1s [id=subnet-001b27d3ddd79fb71]
+module.network.aws_route_table_association.data[1]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): #0 building with "desktop-linux" instance using docker driver
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #1 [internal] load build definition from Dockerfile
+module.registry.terraform_data.image["order-worker"] (local-exec): #1 transferring dockerfile: 263B done
+module.registry.terraform_data.image["order-worker"] (local-exec): #1 DONE 0.0s
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #2 [internal] load metadata for docker.io/library/python:3.12-slim
+module.network.aws_subnet.app[1]: Creation complete after 2s [id=subnet-09cd89cd658076fbc]
+module.security.aws_security_group.this["db"]: Creating...
+module.network.aws_internet_gateway.this: Creation complete after 2s [id=igw-0dc24663511c742d8]
+module.security.aws_security_group.this["alb"]: Creating...
+module.network.aws_route_table_association.data[0]: Creation complete after 2s [id=rtbassoc-083d1bcc2c8cec5ad]
+module.security.aws_security_group.this["app"]: Creating...
+module.network.aws_subnet.public[1]: Creation complete after 2s [id=subnet-07aa5deb653367622]
+module.security.aws_security_group.this["ilb"]: Creating...
+module.network.aws_subnet.public[0]: Creation complete after 2s [id=subnet-037574623ba0c6beb]
+module.network.aws_route.public_default: Creating...
+module.network.aws_route_table.app[0]: Creation complete after 2s [id=rtb-0d7c1969c726f4487]
+module.network.aws_nat_gateway.this[0]: Creating...
+module.network.aws_route_table_association.data[1]: Creation complete after 2s [id=rtbassoc-07579010d282ba212]
+module.network.aws_route_table_association.public[0]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): #2 DONE 2.6s
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #3 [internal] load .dockerignore
+module.registry.terraform_data.image["order-worker"] (local-exec): #3 transferring context: 64B done
+module.registry.terraform_data.image["order-worker"] (local-exec): #3 DONE 0.0s
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #4 [internal] load build context
+module.registry.terraform_data.image["order-worker"] (local-exec): #4 transferring context: 4.38kB done
+module.registry.terraform_data.image["order-worker"] (local-exec): #4 DONE 0.0s
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+module.registry.terraform_data.image["order-worker"] (local-exec): #5 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+module.registry.terraform_data.image["order-worker"] (local-exec): #5 DONE 0.0s
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #6 [2/6] RUN useradd -m app
+module.registry.terraform_data.image["order-worker"] (local-exec): #6 CACHED
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #7 [3/6] WORKDIR /app
+module.registry.terraform_data.image["order-worker"] (local-exec): #7 CACHED
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #8 [4/6] COPY requirements.txt .
+module.registry.terraform_data.image["order-worker"] (local-exec): #8 CACHED
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #9 [5/6] RUN pip install --no-cache-dir -r requirements.txt
+module.registry.terraform_data.image["order-worker"] (local-exec): #9 CACHED
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #10 [6/6] COPY . .
+module.registry.terraform_data.image["order-worker"] (local-exec): #10 DONE 0.0s
+
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting to image
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting layers 0.0s done
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting manifest sha256:72d55cd33e4048fb51a9a32f32d1725a36bd587620723aad008e0b1c89502e2b done
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting config sha256:650cdd966745fda5bd1f2bd15aec402d166713ad14ad5ee08eb1ea1ae7e6cf33 done
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting attestation manifest sha256:3a2988280e873689ad99ca9711126a84ee456805df6aa8c528de393a778068b1 done
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting manifest list sha256:57a110fba26beffe7dc073ae356c9405884b30406fba235d6478447fcb8de908
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 exporting manifest list sha256:57a110fba26beffe7dc073ae356c9405884b30406fba235d6478447fcb8de908 done
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 naming to 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5 done
+module.registry.terraform_data.image["order-worker"] (local-exec): #11 DONE 0.1s
+module.registry.terraform_data.image["order-worker"] (local-exec): The push refers to repository [244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker]
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.network.aws_route_table_association.public[0]: Creation complete after 1s [id=rtbassoc-09bb4205fb9a8ec5e]
+module.network.aws_route_table_association.public[1]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.network.aws_route.public_default: Creation complete after 2s [id=r-rtb-06b48f00897e494e11080289494]
+module.database.aws_db_subnet_group.this: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.compute.aws_ecs_cluster.this: Creation complete after 14s [id=arn:aws:ecs:sa-east-1:244736565328:cluster/cc-sp-cluster]
+module.network.aws_vpc_endpoint.s3: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.network.aws_route_table_association.public[1]: Creation complete after 2s [id=rtbassoc-00edc3816c0251fcf]
+module.network.aws_route_table_association.app[0]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"]: Still creating... [00m10s elapsed]
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.security.aws_security_group.this["db"]: Creation complete after 4s [id=sg-069349d0877655cd9]
+module.network.aws_route_table_association.app[1]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.security.aws_security_group.this["alb"]: Creation complete after 4s [id=sg-02450507e34493046]
+module.security.aws_vpc_security_group_ingress_rule.alb_http: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.security.aws_vpc_security_group_ingress_rule.alb_http: Creation complete after 1s [id=sgr-0af39d84efbdd350e]
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.security.aws_security_group.this["ilb"]: Creation complete after 4s [id=sg-0ea6adf9d0f3206c7]
+module.loadbalancer.aws_lb_target_group.this["ilb"]: Creating...
+module.loadbalancer.aws_lb.this["alb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): a1d123452b27: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): 44136fa355b3: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.security.aws_security_group.this["app"]: Creation complete after 4s [id=sg-0019f5446450a18c3]
+module.loadbalancer.aws_lb.this["ilb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.network.aws_route_table_association.app[0]: Creation complete after 1s [id=rtbassoc-0a7a1ef5da0346eec]
+module.loadbalancer.aws_lb_target_group.this["alb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.network.aws_route_table_association.app[1]: Creation complete after 2s [id=rtbassoc-05d728ea2ffcdec46]
+module.security.aws_vpc_security_group_ingress_rule.db_from_app: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Waiting
+module.database.aws_db_subnet_group.this: Creation complete after 3s [id=cc-sp-db-subnets]
+module.security.aws_vpc_security_group_ingress_rule.ilb_from_app: Creating...
+module.security.aws_vpc_security_group_ingress_rule.db_from_app: Creation complete after 0s [id=sgr-07a4012ac7b33bbf6]
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["ilb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 05e0eee5572e: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): df765286ee2d: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["alb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["ilb"]: Creation complete after 1s [id=sgr-06a6eb25d107be442]
+module.security.aws_vpc_security_group_egress_rule.all["db"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["alb"]: Creation complete after 0s [id=sgr-007451cce3156bfec]
+module.security.aws_vpc_security_group_egress_rule.all["app"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 68bced9e0afa: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.security.aws_vpc_security_group_egress_rule.all["db"]: Creation complete after 1s [id=sgr-04d16d5a4a8fdfc90]
+module.security.aws_vpc_security_group_egress_rule.all["alb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.security.aws_vpc_security_group_egress_rule.all["app"]: Creation complete after 1s [id=sgr-099e617fe90aa1bff]
+module.security.aws_vpc_security_group_egress_rule.all["ilb"]: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.security.aws_vpc_security_group_egress_rule.all["alb"]: Creation complete after 0s [id=sgr-0e5ea04880d4ccc3e]
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Waiting
+module.database.aws_db_instance.this: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 431e2c09c2b1: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): b20a930b8da0: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.security.aws_vpc_security_group_egress_rule.all["ilb"]: Creation complete after 1s [id=sgr-05629cf14820d0929]
+module.compute.aws_launch_template.this: Creating...
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.messaging.aws_sqs_queue.dlq: Still creating... [00m20s elapsed]
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Waiting
+module.registry.terraform_data.image["order-worker"] (local-exec): 2dc99d2d0a39: Pushed
+module.registry.terraform_data.image["order-worker"] (local-exec): 502306c91e0b: Pushed
+module.network.aws_nat_gateway.this[0]: Still creating... [00m10s elapsed]
+module.loadbalancer.aws_lb_target_group.this["alb"]: Creation complete after 6s [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-chat/2a7b58e9a4a89199]
+module.loadbalancer.aws_lb_target_group.this["ilb"]: Creation complete after 6s [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-catalog/d18662ee203b8b11]
+module.network.aws_vpc_endpoint.s3: Creation complete after 9s [id=vpce-0781e6c368f806fe9]
+module.registry.terraform_data.image["order-worker"]: Still creating... [00m20s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [00m10s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [00m10s elapsed]
+module.compute.aws_launch_template.this: Creation complete after 7s [id=lt-0561aaf27fc92ce3b]
+module.compute.aws_autoscaling_group.this: Creating...
+module.database.aws_db_instance.this: Still creating... [00m10s elapsed]
+module.messaging.aws_sqs_queue.dlq: Creation complete after 30s [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq]
+module.messaging.aws_sqs_queue.orders: Creating...
+module.network.aws_nat_gateway.this[0]: Still creating... [00m20s elapsed]
+module.registry.terraform_data.image["order-worker"] (local-exec): 932bc679d93d: Pushed
+module.registry.terraform_data.image["order-worker"]: Still creating... [00m30s elapsed]
+module.registry.terraform_data.image["order-worker"] (local-exec): 37fb86c2a767: Pushed
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [00m20s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [00m20s elapsed]
+module.registry.terraform_data.image["order-worker"] (local-exec): c609ce7f55a5: digest: sha256:57a110fba26beffe7dc073ae356c9405884b30406fba235d6478447fcb8de908 size: 856
+module.registry.terraform_data.image["order-worker"]: Creation complete after 32s [id=f7fd06c5-56c5-e194-ea35-8d715e1243f1]
+module.compute.aws_autoscaling_group.this: Still creating... [00m10s elapsed]
+module.compute.aws_autoscaling_group.this: Creation complete after 11s [id=cc-sp-asg]
+module.compute.aws_ecs_capacity_provider.this: Creating...
+module.database.aws_db_instance.this: Still creating... [00m20s elapsed]
+module.messaging.aws_sqs_queue.orders: Still creating... [00m10s elapsed]
+module.compute.aws_ecs_capacity_provider.this: Creation complete after 3s [id=arn:aws:ecs:sa-east-1:244736565328:capacity-provider/cc-sp-cp]
+module.compute.aws_ecs_cluster_capacity_providers.this: Creating...
+module.network.aws_nat_gateway.this[0]: Still creating... [00m30s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [00m30s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [00m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [00m30s elapsed]
+module.messaging.aws_sqs_queue.orders: Still creating... [00m20s elapsed]
+module.compute.aws_ecs_cluster_capacity_providers.this: Still creating... [00m10s elapsed]
+module.network.aws_nat_gateway.this[0]: Still creating... [00m40s elapsed]
+module.compute.aws_ecs_cluster_capacity_providers.this: Creation complete after 12s [id=cc-sp-cluster]
+module.worker.aws_cloudwatch_log_group.this: Creating...
+module.catalog.aws_cloudwatch_log_group.this: Creating...
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [00m40s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [00m40s elapsed]
+module.messaging.aws_sqs_queue.orders: Creation complete after 28s [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders]
+module.messaging.aws_sqs_queue_redrive_allow_policy.dlq: Creating...
+module.iam.data.aws_iam_policy_document.worker: Reading...
+module.iam.data.aws_iam_policy_document.catalog: Reading...
+module.iam.data.aws_iam_policy_document.catalog: Read complete after 0s [id=2433058262]
+module.iam.data.aws_iam_policy_document.worker: Read complete after 0s [id=2190762200]
+module.iam.aws_iam_role_policy.catalog: Creating...
+module.iam.aws_iam_role_policy.worker: Creating...
+module.database.aws_db_instance.this: Still creating... [00m40s elapsed]
+module.iam.aws_iam_role_policy.worker: Creation complete after 1s [id=cc-sp-worker-task-role:sqs-consume-sns-publish]
+module.iam.aws_iam_role_policy.catalog: Creation complete after 1s [id=cc-sp-catalog-task-role:sqs-send]
+module.worker.aws_cloudwatch_log_group.this: Creation complete after 4s [id=/cc/sp/order-worker]
+module.catalog.aws_cloudwatch_log_group.this: Creation complete after 4s [id=/cc/sp/catalog-orders-service]
+module.network.aws_nat_gateway.this[0]: Still creating... [00m50s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [00m50s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [00m50s elapsed]
+module.messaging.aws_sqs_queue_redrive_allow_policy.dlq: Still creating... [00m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [00m50s elapsed]
+module.network.aws_nat_gateway.this[0]: Still creating... [01m00s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [01m00s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [01m00s elapsed]
+module.messaging.aws_sqs_queue_redrive_allow_policy.dlq: Still creating... [00m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [01m00s elapsed]
+module.network.aws_nat_gateway.this[0]: Still creating... [01m10s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [01m10s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [01m10s elapsed]
+module.messaging.aws_sqs_queue_redrive_allow_policy.dlq: Creation complete after 28s [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq]
+module.database.aws_db_instance.this: Still creating... [01m10s elapsed]
+module.network.aws_nat_gateway.this[0]: Still creating... [01m20s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [01m20s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [01m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [01m20s elapsed]
+module.network.aws_nat_gateway.this[0]: Creation complete after 1m29s [id=nat-0ab74cd9687c6f592]
+module.network.aws_route.app_default[0]: Creating...
+module.network.aws_route.app_default[0]: Creation complete after 3s [id=r-rtb-0d7c1969c726f44871080289494]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [01m30s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [01m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [01m30s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [01m40s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [01m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [01m40s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [01m50s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [01m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [01m50s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [02m00s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [02m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [02m00s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Still creating... [02m10s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [02m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [02m10s elapsed]
+module.loadbalancer.aws_lb.this["alb"]: Creation complete after 2m20s [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:loadbalancer/app/cc-sp-alb/752bd478d79e8843]
+module.loadbalancer.aws_lb.this["ilb"]: Still creating... [02m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [02m20s elapsed]
+module.loadbalancer.aws_lb.this["ilb"]: Creation complete after 2m30s [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:loadbalancer/app/cc-sp-ilb/471680d3ff317724]
+module.loadbalancer.aws_lb_listener.this["alb"]: Creating...
+module.loadbalancer.aws_lb_listener.this["ilb"]: Creating...
+module.loadbalancer.aws_lb_listener.this["ilb"]: Creation complete after 2s [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:listener/app/cc-sp-ilb/471680d3ff317724/77da77b8b1ccc539]
+module.loadbalancer.aws_lb_listener.this["alb"]: Creation complete after 2s [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:listener/app/cc-sp-alb/752bd478d79e8843/b102768070bc724f]
+module.database.aws_db_instance.this: Still creating... [02m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [02m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [02m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [03m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [03m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [03m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [03m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [03m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [03m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [04m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [04m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [04m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [04m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [04m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [04m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [05m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [05m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [05m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [05m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [05m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [05m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [06m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [06m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [06m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [06m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [06m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [06m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [07m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [07m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [07m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [07m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [07m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [07m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [08m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [08m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [08m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [08m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [08m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [08m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [09m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [09m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [09m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [09m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [09m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [09m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [10m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [10m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [10m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [10m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [10m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [10m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [11m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [11m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [11m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [11m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [11m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [11m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [12m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [12m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [12m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [12m30s elapsed]
+module.database.aws_db_instance.this: Still creating... [12m40s elapsed]
+module.database.aws_db_instance.this: Still creating... [12m50s elapsed]
+module.database.aws_db_instance.this: Still creating... [13m00s elapsed]
+module.database.aws_db_instance.this: Still creating... [13m10s elapsed]
+module.database.aws_db_instance.this: Still creating... [13m20s elapsed]
+module.database.aws_db_instance.this: Still creating... [13m30s elapsed]
+module.database.aws_db_instance.this: Creation complete after 13m36s [id=db-7WDZCUWLO2ALQOYCUZTBPL2DSM]
+module.iam.data.aws_iam_policy_document.task_exec: Reading...
+module.iam.data.aws_iam_policy_document.task_exec: Read complete after 0s [id=1847853064]
+module.iam.aws_iam_role_policy.task_exec: Creating...
+module.iam.aws_iam_role_policy.task_exec: Creation complete after 2s [id=cc-sp-task-exec-role:db-secret]
+
+Error: local-exec provisioner error
+
+  with module.registry.terraform_data.image["chat-service"],
+  on ../../modules/registry/main.tf line 42, in resource "terraform_data" "image":
+  42:   provisioner "local-exec" {
+
+Error running command 'set -euo pipefail
+aws ecr get-login-password --region sa-east-1 \
+  | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null
+docker build --platform linux/amd64 -t
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241
+"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/chat-service"
+docker push
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241
+': exit status 1. Output: error saving credentials: error storing credentials
+- err: exit status 1, out: `The specified item already exists in the
+keychain. (-25299)`
+
+
+Error: local-exec provisioner error
+
+  with module.registry.terraform_data.image["catalog-orders-service"],
+  on ../../modules/registry/main.tf line 42, in resource "terraform_data" "image":
+  42:   provisioner "local-exec" {
+
+Error running command 'set -euo pipefail
+aws ecr get-login-password --region sa-east-1 \
+  | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null
+docker build --platform linux/amd64 -t
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6
+"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/catalog-orders-service"
+docker push
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6
+': exit status 1. Output: error saving credentials: error storing credentials
+- err: exit status 1, out: `The specified item already exists in the
+keychain. (-25299)`
+
+
+Error: creating VPC Security Group Rule
+
+  with module.security.aws_vpc_security_group_ingress_rule.ilb_from_app,
+  on ../../modules/security/main.tf line 26, in resource "aws_vpc_security_group_ingress_rule" "ilb_from_app":
+  26: resource "aws_vpc_security_group_ingress_rule" "ilb_from_app" {
+
+operation error EC2: AuthorizeSecurityGroupIngress, https response error
+StatusCode: 400, RequestID: fdfa124f-ca68-4c34-ab8e-1d8a505d207a, api error
+InvalidParameterValue: Invalid rule description. Valid descriptions are
+strings less than 256 characters from the following set:  a-zA-Z0-9.
+_-:/()#,@[]+=&;{}!$*
+Releasing state lock. This may take a few moments...
+### rc=1 fim 2026-11-19 17:40:39 UTC

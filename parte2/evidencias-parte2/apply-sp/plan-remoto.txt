@@ -1,0 +1,2976 @@
+Acquiring state lock. This may take a few moments...
+module.observability.data.aws_region.current: Reading...
+module.network.data.aws_region.current: Reading...
+module.iam.data.aws_partition.p: Reading...
+module.catalog.data.aws_region.current: Reading...
+module.iam.data.aws_region.current: Reading...
+module.network.data.aws_availability_zones.available: Reading...
+module.worker.data.aws_region.current: Reading...
+module.registry.data.aws_region.current: Reading...
+module.network.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.observability.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_partition.p: Read complete after 0s [id=aws]
+module.worker.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.registry.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.catalog.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.compute.data.aws_ssm_parameter.ecs_ami: Reading...
+module.iam.data.aws_iam_policy_document.trust_ec2: Reading...
+module.iam.data.aws_caller_identity.me: Reading...
+module.registry.data.aws_caller_identity.me: Reading...
+module.iam.data.aws_iam_policy_document.trust_ec2: Read complete after 0s [id=2851119427]
+module.iam.data.aws_caller_identity.me: Read complete after 1s [id=244736565328]
+module.iam.data.aws_iam_policy_document.chat: Reading...
+module.iam.data.aws_iam_policy_document.trust_ecs_tasks: Reading...
+module.iam.data.aws_iam_policy_document.chat: Read complete after 0s [id=4036281470]
+module.iam.data.aws_iam_policy_document.trust_ecs_tasks: Read complete after 0s [id=1435592119]
+module.registry.data.aws_caller_identity.me: Read complete after 1s [id=244736565328]
+module.compute.data.aws_ssm_parameter.ecs_ami: Read complete after 2s [id=/aws/service/ecs/optimized-ami/amazon-linux-2023/recommended/image_id]
+module.network.data.aws_availability_zones.available: Read complete after 2s [id=sa-east-1]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # module.catalog.aws_appautoscaling_policy.this[0] will be created
+  + resource "aws_appautoscaling_policy" "this" {
+      + alarm_arns         = (known after apply)
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + name               = "catalog-cpu"
+      + policy_type        = "TargetTrackingScaling"
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/catalog-orders-service"
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+
+      + target_tracking_scaling_policy_configuration {
+          + disable_scale_in   = false
+          + scale_in_cooldown  = 120
+          + scale_out_cooldown = 60
+          + target_value       = 60
+
+          + predefined_metric_specification {
+              + predefined_metric_type = "ECSServiceAverageCPUUtilization"
+            }
+        }
+    }
+
+  # module.catalog.aws_appautoscaling_target.this[0] will be created
+  + resource "aws_appautoscaling_target" "this" {
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + max_capacity       = 6
+      + min_capacity       = 2
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/catalog-orders-service"
+      + role_arn           = (known after apply)
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+      + tags_all           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + suspended_state (known after apply)
+    }
+
+  # module.catalog.aws_cloudwatch_log_group.this will be created
+  + resource "aws_cloudwatch_log_group" "this" {
+      + arn                         = (known after apply)
+      + deletion_protection_enabled = (known after apply)
+      + id                          = (known after apply)
+      + log_group_class             = (known after apply)
+      + name                        = "/cc/sp/catalog-orders-service"
+      + name_prefix                 = (known after apply)
+      + region                      = "sa-east-1"
+      + retention_in_days           = 7
+      + skip_destroy                = false
+      + tags_all                    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.catalog.aws_ecs_service.this will be created
+  + resource "aws_ecs_service" "this" {
+      + arn                                = (known after apply)
+      + availability_zone_rebalancing      = "ENABLED"
+      + cluster                            = "cc-sp-cluster"
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 2
+      + enable_ecs_managed_tags            = true
+      + enable_execute_command             = false
+      + health_check_grace_period_seconds  = (known after apply)
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = (known after apply)
+      + name                               = "catalog-orders-service"
+      + platform_version                   = (known after apply)
+      + propagate_tags                     = "SERVICE"
+      + region                             = "sa-east-1"
+      + scheduling_strategy                = "REPLICA"
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + capacity_provider_strategy {
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+
+      + deployment_circuit_breaker {
+          + enable   = true
+          + rollback = true
+        }
+
+      + deployment_configuration (known after apply)
+
+      + load_balancer (known after apply)
+
+      + ordered_placement_strategy {
+          + field = "attribute:ecs.availability-zone"
+          + type  = "spread"
+        }
+      + ordered_placement_strategy {
+          + field = "instanceId"
+          + type  = "spread"
+        }
+    }
+
+  # module.catalog.aws_ecs_task_definition.this will be created
+  + resource "aws_ecs_task_definition" "this" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = (known after apply)
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "cc-sp-catalog"
+      + id                       = (known after apply)
+      + network_mode             = "bridge"
+      + region                   = "sa-east-1"
+      + requires_compatibilities = [
+          + "EC2",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags_all                 = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.chat.data.aws_region.current will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_region" "current" {
+      + description = (known after apply)
+      + endpoint    = (known after apply)
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + region      = (known after apply)
+    }
+
+  # module.chat.aws_appautoscaling_policy.this[0] will be created
+  + resource "aws_appautoscaling_policy" "this" {
+      + alarm_arns         = (known after apply)
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + name               = "chat-req"
+      + policy_type        = "TargetTrackingScaling"
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/chat-service"
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+
+      + target_tracking_scaling_policy_configuration {
+          + disable_scale_in   = false
+          + scale_in_cooldown  = 120
+          + scale_out_cooldown = 60
+          + target_value       = 600
+
+          + predefined_metric_specification {
+              + predefined_metric_type = "ALBRequestCountPerTarget"
+              + resource_label         = (known after apply)
+            }
+        }
+    }
+
+  # module.chat.aws_appautoscaling_target.this[0] will be created
+  + resource "aws_appautoscaling_target" "this" {
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + max_capacity       = 6
+      + min_capacity       = 2
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/chat-service"
+      + role_arn           = (known after apply)
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+      + tags_all           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + suspended_state (known after apply)
+    }
+
+  # module.chat.aws_cloudwatch_log_group.this will be created
+  + resource "aws_cloudwatch_log_group" "this" {
+      + arn                         = (known after apply)
+      + deletion_protection_enabled = (known after apply)
+      + id                          = (known after apply)
+      + log_group_class             = (known after apply)
+      + name                        = "/cc/sp/chat-service"
+      + name_prefix                 = (known after apply)
+      + region                      = "sa-east-1"
+      + retention_in_days           = 7
+      + skip_destroy                = false
+      + tags_all                    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.chat.aws_ecs_service.this will be created
+  + resource "aws_ecs_service" "this" {
+      + arn                                = (known after apply)
+      + availability_zone_rebalancing      = "ENABLED"
+      + cluster                            = "cc-sp-cluster"
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 2
+      + enable_ecs_managed_tags            = true
+      + enable_execute_command             = false
+      + health_check_grace_period_seconds  = (known after apply)
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = (known after apply)
+      + name                               = "chat-service"
+      + platform_version                   = (known after apply)
+      + propagate_tags                     = "SERVICE"
+      + region                             = "sa-east-1"
+      + scheduling_strategy                = "REPLICA"
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + capacity_provider_strategy {
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+
+      + deployment_circuit_breaker {
+          + enable   = true
+          + rollback = true
+        }
+
+      + deployment_configuration (known after apply)
+
+      + load_balancer (known after apply)
+
+      + ordered_placement_strategy {
+          + field = "attribute:ecs.availability-zone"
+          + type  = "spread"
+        }
+      + ordered_placement_strategy {
+          + field = "instanceId"
+          + type  = "spread"
+        }
+    }
+
+  # module.chat.aws_ecs_task_definition.this will be created
+  + resource "aws_ecs_task_definition" "this" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = (known after apply)
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "cc-sp-chat"
+      + id                       = (known after apply)
+      + network_mode             = "bridge"
+      + region                   = "sa-east-1"
+      + requires_compatibilities = [
+          + "EC2",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags_all                 = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.compute.aws_autoscaling_group.this will be created
+  + resource "aws_autoscaling_group" "this" {
+      + arn                              = (known after apply)
+      + availability_zones               = (known after apply)
+      + default_cooldown                 = (known after apply)
+      + desired_capacity                 = 2
+      + enabled_metrics                  = [
+          + "GroupDesiredCapacity",
+          + "GroupInServiceInstances",
+          + "GroupMaxSize",
+          + "GroupMinSize",
+          + "GroupPendingInstances",
+          + "GroupTerminatingInstances",
+          + "GroupTotalInstances",
+        ]
+      + force_delete                     = true
+      + force_delete_warm_pool           = false
+      + health_check_grace_period        = 120
+      + health_check_type                = "EC2"
+      + id                               = (known after apply)
+      + ignore_failed_scaling_activities = false
+      + load_balancers                   = (known after apply)
+      + max_size                         = 4
+      + metrics_granularity              = "1Minute"
+      + min_size                         = 2
+      + name                             = "cc-sp-asg"
+      + name_prefix                      = (known after apply)
+      + predicted_capacity               = (known after apply)
+      + protect_from_scale_in            = true
+      + region                           = "sa-east-1"
+      + service_linked_role_arn          = (known after apply)
+      + target_group_arns                = (known after apply)
+      + vpc_zone_identifier              = (known after apply)
+      + wait_for_capacity_timeout        = "10m"
+      + warm_pool_size                   = (known after apply)
+
+      + availability_zone_distribution (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + instance_lifecycle_policy (known after apply)
+
+      + instance_refresh {
+          + strategy = "Rolling"
+
+          + preferences {
+              + max_healthy_percentage       = 100
+              + min_healthy_percentage       = 50
+              + scale_in_protected_instances = "Refresh"
+              + skip_matching                = false
+              + standby_instances            = "Ignore"
+            }
+        }
+
+      + launch_template {
+          + id      = (known after apply)
+          + name    = (known after apply)
+          + version = (known after apply)
+        }
+
+      + mixed_instances_policy (known after apply)
+
+      + tag {
+          + key                 = "AmazonECSManaged"
+          + propagate_at_launch = true
+          + value               = "true"
+        }
+      + tag {
+          + key                 = "Name"
+          + propagate_at_launch = true
+          + value               = "cc-sp-ecs"
+        }
+      + tag {
+          + key                 = "env"
+          + propagate_at_launch = true
+          + value               = "sp"
+        }
+      + tag {
+          + key                 = "managed-by"
+          + propagate_at_launch = true
+          + value               = "terraform"
+        }
+      + tag {
+          + key                 = "project"
+          + propagate_at_launch = true
+          + value               = "cc"
+        }
+
+      + traffic_source (known after apply)
+    }
+
+  # module.compute.aws_ecs_capacity_provider.this will be created
+  + resource "aws_ecs_capacity_provider" "this" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + name     = "cc-sp-cp"
+      + region   = "sa-east-1"
+      + tags_all = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + auto_scaling_group_provider {
+          + auto_scaling_group_arn         = (known after apply)
+          + managed_draining               = "ENABLED"
+          + managed_termination_protection = "ENABLED"
+
+          + managed_scaling {
+              + instance_warmup_period    = (known after apply)
+              + maximum_scaling_step_size = 2
+              + minimum_scaling_step_size = 1
+              + status                    = "ENABLED"
+              + target_capacity           = 80
+            }
+        }
+    }
+
+  # module.compute.aws_ecs_cluster.this will be created
+  + resource "aws_ecs_cluster" "this" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + name     = "cc-sp-cluster"
+      + region   = "sa-east-1"
+      + tags_all = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + setting {
+          + name  = "containerInsights"
+          + value = "enabled"
+        }
+    }
+
+  # module.compute.aws_ecs_cluster_capacity_providers.this will be created
+  + resource "aws_ecs_cluster_capacity_providers" "this" {
+      + capacity_providers = [
+          + "cc-sp-cp",
+        ]
+      + cluster_name       = "cc-sp-cluster"
+      + id                 = (known after apply)
+      + region             = "sa-east-1"
+
+      + default_capacity_provider_strategy {
+          + base              = 0
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+    }
+
+  # module.compute.aws_launch_template.this will be created
+  + resource "aws_launch_template" "this" {
+      + arn                    = (known after apply)
+      + default_version        = (known after apply)
+      + id                     = (known after apply)
+      + image_id               = "ami-0f457e8ca4ca02c88"
+      + instance_type          = "t3.medium"
+      + latest_version         = (known after apply)
+      + name                   = (known after apply)
+      + name_prefix            = "cc-sp-lt-"
+      + region                 = "sa-east-1"
+      + tags_all               = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + update_default_version = true
+      + user_data              = "IyEvYmluL2Jhc2gKY2F0ID4+IC9ldGMvZWNzL2Vjcy5jb25maWcgPDxDRkcKRUNTX0NMVVNURVI9Y2Mtc3AtY2x1c3RlcgpFQ1NfRU5BQkxFX0NPTlRBSU5FUl9NRVRBREFUQT10cnVlCkNGRwo="
+      + vpc_security_group_ids = (known after apply)
+
+      + iam_instance_profile {
+          + name = "cc-sp-ecs-instance-profile"
+        }
+
+      + metadata_options {
+          + http_endpoint               = "enabled"
+          + http_protocol_ipv6          = (known after apply)
+          + http_put_response_hop_limit = 1
+          + http_tokens                 = "required"
+          + instance_metadata_tags      = (known after apply)
+        }
+
+      + monitoring {
+          + enabled = true
+        }
+
+      + tag_specifications {
+          + resource_type = "instance"
+          + tags          = {
+              + "Name"       = "cc-sp-ecs"
+              + "env"        = "sp"
+              + "managed-by" = "terraform"
+              + "project"    = "cc"
+            }
+        }
+      + tag_specifications {
+          + resource_type = "volume"
+          + tags          = {
+              + "Name"       = "cc-sp-ecs"
+              + "env"        = "sp"
+              + "managed-by" = "terraform"
+              + "project"    = "cc"
+            }
+        }
+      + tag_specifications {
+          + resource_type = "network-interface"
+          + tags          = {
+              + "Name"       = "cc-sp-ecs"
+              + "env"        = "sp"
+              + "managed-by" = "terraform"
+              + "project"    = "cc"
+            }
+        }
+    }
+
+  # module.database.aws_db_instance.this will be created
+  + resource "aws_db_instance" "this" {
+      + address                               = (known after apply)
+      + allocated_storage                     = 20
+      + apply_immediately                     = true
+      + arn                                   = (known after apply)
+      + auto_minor_version_upgrade            = true
+      + availability_zone                     = (known after apply)
+      + backup_retention_period               = 1
+      + backup_target                         = (known after apply)
+      + backup_window                         = (known after apply)
+      + ca_cert_identifier                    = (known after apply)
+      + character_set_name                    = (known after apply)
+      + copy_tags_to_snapshot                 = true
+      + database_insights_mode                = (known after apply)
+      + db_name                               = "shop"
+      + db_subnet_group_name                  = "cc-sp-db-subnets"
+      + dedicated_log_volume                  = false
+      + delete_automated_backups              = true
+      + deletion_protection                   = false
+      + domain_fqdn                           = (known after apply)
+      + endpoint                              = (known after apply)
+      + engine                                = "postgres"
+      + engine_lifecycle_support              = (known after apply)
+      + engine_version                        = (known after apply)
+      + engine_version_actual                 = (known after apply)
+      + hosted_zone_id                        = (known after apply)
+      + id                                    = (known after apply)
+      + identifier                            = "cc-sp-db"
+      + identifier_prefix                     = (known after apply)
+      + instance_class                        = "db.t4g.micro"
+      + iops                                  = (known after apply)
+      + kms_key_id                            = (known after apply)
+      + latest_restorable_time                = (known after apply)
+      + license_model                         = (known after apply)
+      + listener_endpoint                     = (known after apply)
+      + maintenance_window                    = (known after apply)
+      + manage_master_user_password           = true
+      + master_user_secret                    = (known after apply)
+      + master_user_secret_kms_key_id         = (known after apply)
+      + monitoring_interval                   = 0
+      + monitoring_role_arn                   = (known after apply)
+      + multi_az                              = true
+      + multi_tenant                          = (known after apply)
+      + nchar_character_set_name              = (known after apply)
+      + network_type                          = (known after apply)
+      + option_group_name                     = (known after apply)
+      + parameter_group_name                  = (known after apply)
+      + password_wo                           = (write-only attribute)
+      + performance_insights_enabled          = false
+      + performance_insights_kms_key_id       = (known after apply)
+      + performance_insights_retention_period = (known after apply)
+      + port                                  = (known after apply)
+      + publicly_accessible                   = false
+      + region                                = "sa-east-1"
+      + replica_mode                          = (known after apply)
+      + replicas                              = (known after apply)
+      + resource_id                           = (known after apply)
+      + skip_final_snapshot                   = true
+      + snapshot_identifier                   = (known after apply)
+      + status                                = (known after apply)
+      + storage_encrypted                     = true
+      + storage_throughput                    = (known after apply)
+      + storage_type                          = "gp3"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + timezone                              = (known after apply)
+      + upgrade_rollout_order                 = (known after apply)
+      + username                              = "cc_admin"
+      + vpc_security_group_ids                = (known after apply)
+    }
+
+  # module.database.aws_db_subnet_group.this will be created
+  + resource "aws_db_subnet_group" "this" {
+      + arn                     = (known after apply)
+      + description             = "cc-sp data subnets"
+      + id                      = (known after apply)
+      + name                    = "cc-sp-db-subnets"
+      + name_prefix             = (known after apply)
+      + region                  = "sa-east-1"
+      + subnet_ids              = (known after apply)
+      + supported_network_types = (known after apply)
+      + tags_all                = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                  = (known after apply)
+    }
+
+  # module.iam.data.aws_iam_policy_document.catalog will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "catalog" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "sqs:SendMessage",
+            ]
+          + resources = [
+              + (known after apply),
+            ]
+        }
+    }
+
+  # module.iam.data.aws_iam_policy_document.task_exec will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "task_exec" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "secretsmanager:GetSecretValue",
+            ]
+          + resources = [
+              + (known after apply),
+            ]
+        }
+    }
+
+  # module.iam.data.aws_iam_policy_document.worker will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "worker" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "sqs:ChangeMessageVisibility",
+              + "sqs:DeleteMessage",
+              + "sqs:GetQueueAttributes",
+              + "sqs:ReceiveMessage",
+            ]
+          + resources = [
+              + (known after apply),
+            ]
+        }
+      + statement {
+          + actions   = [
+              + "sns:Publish",
+            ]
+          + resources = [
+              + (known after apply),
+            ]
+        }
+    }
+
+  # module.iam.aws_iam_instance_profile.instance will be created
+  + resource "aws_iam_instance_profile" "instance" {
+      + arn         = (known after apply)
+      + create_date = (known after apply)
+      + id          = (known after apply)
+      + name        = "cc-sp-ecs-instance-profile"
+      + name_prefix = (known after apply)
+      + path        = "/"
+      + role        = "cc-sp-ecs-instance-role"
+      + tags_all    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + unique_id   = (known after apply)
+    }
+
+  # module.iam.aws_iam_role.catalog will be created
+  + resource "aws_iam_role" "catalog" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:SourceAccount" = "244736565328"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "cc-sp-catalog-task-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.iam.aws_iam_role.chat will be created
+  + resource "aws_iam_role" "chat" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:SourceAccount" = "244736565328"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "cc-sp-chat-task-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.iam.aws_iam_role.instance will be created
+  + resource "aws_iam_role" "instance" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ec2.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "cc-sp-ecs-instance-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.iam.aws_iam_role.task_exec will be created
+  + resource "aws_iam_role" "task_exec" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:SourceAccount" = "244736565328"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "cc-sp-task-exec-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.iam.aws_iam_role.worker will be created
+  + resource "aws_iam_role" "worker" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Condition = {
+                          + StringEquals = {
+                              + "aws:SourceAccount" = "244736565328"
+                            }
+                        }
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "cc-sp-worker-task-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags_all              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + unique_id             = (known after apply)
+
+      + inline_policy (known after apply)
+    }
+
+  # module.iam.aws_iam_role_policy.catalog will be created
+  + resource "aws_iam_role_policy" "catalog" {
+      + id          = (known after apply)
+      + name        = "sqs-send"
+      + name_prefix = (known after apply)
+      + policy      = (known after apply)
+      + role        = (known after apply)
+    }
+
+  # module.iam.aws_iam_role_policy.chat will be created
+  + resource "aws_iam_role_policy" "chat" {
+      + id          = (known after apply)
+      + name        = "bedrock-model"
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "bedrock:InvokeModelWithResponseStream",
+                          + "bedrock:InvokeModel",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:bedrock:sa-east-1:244736565328:inference-profile/global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                          + "arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0",
+                        ]
+                      + Sid      = "InvokeConfiguredModel"
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = (known after apply)
+    }
+
+  # module.iam.aws_iam_role_policy.task_exec will be created
+  + resource "aws_iam_role_policy" "task_exec" {
+      + id          = (known after apply)
+      + name        = "db-secret"
+      + name_prefix = (known after apply)
+      + policy      = (known after apply)
+      + role        = (known after apply)
+    }
+
+  # module.iam.aws_iam_role_policy.worker will be created
+  + resource "aws_iam_role_policy" "worker" {
+      + id          = (known after apply)
+      + name        = "sqs-consume-sns-publish"
+      + name_prefix = (known after apply)
+      + policy      = (known after apply)
+      + role        = (known after apply)
+    }
+
+  # module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"] will be created
+  + resource "aws_iam_role_policy_attachment" "instance" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+      + role       = "cc-sp-ecs-instance-role"
+    }
+
+  # module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"] will be created
+  + resource "aws_iam_role_policy_attachment" "instance" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+      + role       = "cc-sp-ecs-instance-role"
+    }
+
+  # module.iam.aws_iam_role_policy_attachment.task_exec will be created
+  + resource "aws_iam_role_policy_attachment" "task_exec" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+      + role       = "cc-sp-task-exec-role"
+    }
+
+  # module.loadbalancer.aws_lb.this["alb"] will be created
+  + resource "aws_lb" "this" {
+      + arn                                                          = (known after apply)
+      + arn_suffix                                                   = (known after apply)
+      + client_keep_alive                                            = 3600
+      + desync_mitigation_mode                                       = "defensive"
+      + dns_name                                                     = (known after apply)
+      + drop_invalid_header_fields                                   = true
+      + enable_deletion_protection                                   = false
+      + enable_http2                                                 = true
+      + enable_prefix_for_ipv6_source_nat                            = (known after apply)
+      + enable_tls_version_and_cipher_suite_headers                  = false
+      + enable_waf_fail_open                                         = false
+      + enable_xff_client_port                                       = false
+      + enable_zonal_shift                                           = false
+      + enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      + id                                                           = (known after apply)
+      + idle_timeout                                                 = 60
+      + internal                                                     = false
+      + ip_address_type                                              = (known after apply)
+      + load_balancer_type                                           = "application"
+      + name                                                         = "cc-sp-alb"
+      + name_prefix                                                  = (known after apply)
+      + preserve_host_header                                         = false
+      + region                                                       = "sa-east-1"
+      + secondary_ips_auto_assigned_per_subnet                       = (known after apply)
+      + security_groups                                              = (known after apply)
+      + subnets                                                      = (known after apply)
+      + tags_all                                                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                                                       = (known after apply)
+      + xff_header_processing_mode                                   = "append"
+      + zone_id                                                      = (known after apply)
+
+      + subnet_mapping (known after apply)
+    }
+
+  # module.loadbalancer.aws_lb.this["ilb"] will be created
+  + resource "aws_lb" "this" {
+      + arn                                                          = (known after apply)
+      + arn_suffix                                                   = (known after apply)
+      + client_keep_alive                                            = 3600
+      + desync_mitigation_mode                                       = "defensive"
+      + dns_name                                                     = (known after apply)
+      + drop_invalid_header_fields                                   = true
+      + enable_deletion_protection                                   = false
+      + enable_http2                                                 = true
+      + enable_prefix_for_ipv6_source_nat                            = (known after apply)
+      + enable_tls_version_and_cipher_suite_headers                  = false
+      + enable_waf_fail_open                                         = false
+      + enable_xff_client_port                                       = false
+      + enable_zonal_shift                                           = false
+      + enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      + id                                                           = (known after apply)
+      + idle_timeout                                                 = 60
+      + internal                                                     = true
+      + ip_address_type                                              = (known after apply)
+      + load_balancer_type                                           = "application"
+      + name                                                         = "cc-sp-ilb"
+      + name_prefix                                                  = (known after apply)
+      + preserve_host_header                                         = false
+      + region                                                       = "sa-east-1"
+      + secondary_ips_auto_assigned_per_subnet                       = (known after apply)
+      + security_groups                                              = (known after apply)
+      + subnets                                                      = (known after apply)
+      + tags_all                                                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                                                       = (known after apply)
+      + xff_header_processing_mode                                   = "append"
+      + zone_id                                                      = (known after apply)
+
+      + subnet_mapping (known after apply)
+    }
+
+  # module.loadbalancer.aws_lb_listener.this["alb"] will be created
+  + resource "aws_lb_listener" "this" {
+      + arn                                                                   = (known after apply)
+      + id                                                                    = (known after apply)
+      + load_balancer_arn                                                     = (known after apply)
+      + port                                                                  = 80
+      + protocol                                                              = "HTTP"
+      + region                                                                = "sa-east-1"
+      + routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      + routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      + routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      + routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      + routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      + routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      + routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      + routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      + routing_http_response_access_control_max_age_header_value             = (known after apply)
+      + routing_http_response_content_security_policy_header_value            = (known after apply)
+      + routing_http_response_server_enabled                                  = (known after apply)
+      + routing_http_response_strict_transport_security_header_value          = (known after apply)
+      + routing_http_response_x_content_type_options_header_value             = (known after apply)
+      + routing_http_response_x_frame_options_header_value                    = (known after apply)
+      + ssl_policy                                                            = (known after apply)
+      + tags_all                                                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + tcp_idle_timeout_seconds                                              = (known after apply)
+
+      + default_action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + mutual_authentication (known after apply)
+    }
+
+  # module.loadbalancer.aws_lb_listener.this["ilb"] will be created
+  + resource "aws_lb_listener" "this" {
+      + arn                                                                   = (known after apply)
+      + id                                                                    = (known after apply)
+      + load_balancer_arn                                                     = (known after apply)
+      + port                                                                  = 80
+      + protocol                                                              = "HTTP"
+      + region                                                                = "sa-east-1"
+      + routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      + routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      + routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      + routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      + routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      + routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      + routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      + routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      + routing_http_response_access_control_max_age_header_value             = (known after apply)
+      + routing_http_response_content_security_policy_header_value            = (known after apply)
+      + routing_http_response_server_enabled                                  = (known after apply)
+      + routing_http_response_strict_transport_security_header_value          = (known after apply)
+      + routing_http_response_x_content_type_options_header_value             = (known after apply)
+      + routing_http_response_x_frame_options_header_value                    = (known after apply)
+      + ssl_policy                                                            = (known after apply)
+      + tags_all                                                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + tcp_idle_timeout_seconds                                              = (known after apply)
+
+      + default_action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + mutual_authentication (known after apply)
+    }
+
+  # module.loadbalancer.aws_lb_target_group.this["alb"] will be created
+  + resource "aws_lb_target_group" "this" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "30"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "cc-sp-tg-chat"
+      + name_prefix                        = (known after apply)
+      + port                               = 8000
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + region                             = "sa-east-1"
+      + slow_start                         = 0
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + target_type                        = "instance"
+      + vpc_id                             = (known after apply)
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 15
+          + matcher             = "200"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = (known after apply)
+          + unhealthy_threshold = 3
+        }
+
+      + stickiness (known after apply)
+
+      + target_failover (known after apply)
+
+      + target_group_health (known after apply)
+
+      + target_health_state (known after apply)
+    }
+
+  # module.loadbalancer.aws_lb_target_group.this["ilb"] will be created
+  + resource "aws_lb_target_group" "this" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "30"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "cc-sp-tg-catalog"
+      + name_prefix                        = (known after apply)
+      + port                               = 8001
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + region                             = "sa-east-1"
+      + slow_start                         = 0
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + target_type                        = "instance"
+      + vpc_id                             = (known after apply)
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 15
+          + matcher             = "200"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = (known after apply)
+          + unhealthy_threshold = 3
+        }
+
+      + stickiness (known after apply)
+
+      + target_failover (known after apply)
+
+      + target_group_health (known after apply)
+
+      + target_health_state (known after apply)
+    }
+
+  # module.messaging.aws_sns_topic.alarms will be created
+  + resource "aws_sns_topic" "alarms" {
+      + arn                         = (known after apply)
+      + beginning_archive_time      = (known after apply)
+      + content_based_deduplication = false
+      + fifo_throughput_scope       = (known after apply)
+      + fifo_topic                  = false
+      + id                          = (known after apply)
+      + maximum_message_size        = (known after apply)
+      + name                        = "cc-sp-alarms"
+      + name_prefix                 = (known after apply)
+      + owner                       = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = "sa-east-1"
+      + signature_version           = (known after apply)
+      + tags_all                    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + tracing_config              = (known after apply)
+    }
+
+  # module.messaging.aws_sns_topic.order_events will be created
+  + resource "aws_sns_topic" "order_events" {
+      + arn                         = (known after apply)
+      + beginning_archive_time      = (known after apply)
+      + content_based_deduplication = false
+      + fifo_throughput_scope       = (known after apply)
+      + fifo_topic                  = false
+      + id                          = (known after apply)
+      + maximum_message_size        = (known after apply)
+      + name                        = "cc-sp-order-events"
+      + name_prefix                 = (known after apply)
+      + owner                       = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = "sa-east-1"
+      + signature_version           = (known after apply)
+      + tags_all                    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + tracing_config              = (known after apply)
+    }
+
+  # module.messaging.aws_sns_topic_subscription.alarm_email[0] will be created
+  + resource "aws_sns_topic_subscription" "alarm_email" {
+      + arn                             = (known after apply)
+      + confirmation_timeout_in_minutes = 1
+      + confirmation_was_authenticated  = (known after apply)
+      + endpoint                        = "pedrohav@al.insper.edu.br"
+      + endpoint_auto_confirms          = false
+      + filter_policy_scope             = (known after apply)
+      + id                              = (known after apply)
+      + owner_id                        = (known after apply)
+      + pending_confirmation            = (known after apply)
+      + protocol                        = "email"
+      + raw_message_delivery            = false
+      + region                          = "sa-east-1"
+      + topic_arn                       = (known after apply)
+    }
+
+  # module.messaging.aws_sqs_queue.dlq will be created
+  + resource "aws_sqs_queue" "dlq" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 1209600
+      + name                              = "cc-sp-orders-dlq"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "sa-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags_all                          = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 30
+    }
+
+  # module.messaging.aws_sqs_queue.orders will be created
+  + resource "aws_sqs_queue" "orders" {
+      + arn                               = (known after apply)
+      + content_based_deduplication       = false
+      + deduplication_scope               = (known after apply)
+      + delay_seconds                     = 0
+      + fifo_queue                        = false
+      + fifo_throughput_limit             = (known after apply)
+      + id                                = (known after apply)
+      + kms_data_key_reuse_period_seconds = 0
+      + max_message_size                  = 262144
+      + message_retention_seconds         = 345600
+      + name                              = "cc-sp-orders"
+      + name_prefix                       = (known after apply)
+      + policy                            = (known after apply)
+      + receive_wait_time_seconds         = 0
+      + redrive_allow_policy              = (known after apply)
+      + redrive_policy                    = (known after apply)
+      + region                            = "sa-east-1"
+      + sqs_managed_sse_enabled           = true
+      + tags_all                          = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + url                               = (known after apply)
+      + visibility_timeout_seconds        = 60
+    }
+
+  # module.messaging.aws_sqs_queue_redrive_allow_policy.dlq will be created
+  + resource "aws_sqs_queue_redrive_allow_policy" "dlq" {
+      + id                   = (known after apply)
+      + queue_url            = (known after apply)
+      + redrive_allow_policy = (known after apply)
+      + region               = "sa-east-1"
+    }
+
+  # module.network.aws_eip.nat[0] will be created
+  + resource "aws_eip" "nat" {
+      + allocation_id        = (known after apply)
+      + arn                  = (known after apply)
+      + association_id       = (known after apply)
+      + carrier_ip           = (known after apply)
+      + customer_owned_ip    = (known after apply)
+      + domain               = "vpc"
+      + id                   = (known after apply)
+      + instance             = (known after apply)
+      + ipam_pool_id         = (known after apply)
+      + network_border_group = (known after apply)
+      + network_interface    = (known after apply)
+      + private_dns          = (known after apply)
+      + private_ip           = (known after apply)
+      + ptr_record           = (known after apply)
+      + public_dns           = (known after apply)
+      + public_ip            = (known after apply)
+      + public_ipv4_pool     = (known after apply)
+      + region               = "sa-east-1"
+      + tags                 = {
+          + "Name" = "cc-sp-nat-eip-0"
+        }
+      + tags_all             = {
+          + "Name"       = "cc-sp-nat-eip-0"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.network.aws_internet_gateway.this will be created
+  + resource "aws_internet_gateway" "this" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + owner_id = (known after apply)
+      + region   = "sa-east-1"
+      + tags     = {
+          + "Name" = "cc-sp-igw"
+        }
+      + tags_all = {
+          + "Name"       = "cc-sp-igw"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id   = (known after apply)
+    }
+
+  # module.network.aws_nat_gateway.this[0] will be created
+  + resource "aws_nat_gateway" "this" {
+      + allocation_id                      = (known after apply)
+      + association_id                     = (known after apply)
+      + auto_provision_zones               = (known after apply)
+      + auto_scaling_ips                   = (known after apply)
+      + availability_mode                  = (known after apply)
+      + connectivity_type                  = "public"
+      + id                                 = (known after apply)
+      + network_interface_id               = (known after apply)
+      + private_ip                         = (known after apply)
+      + public_ip                          = (known after apply)
+      + region                             = "sa-east-1"
+      + regional_nat_gateway_address       = (known after apply)
+      + regional_nat_gateway_auto_mode     = (known after apply)
+      + route_table_id                     = (known after apply)
+      + secondary_allocation_ids           = (known after apply)
+      + secondary_private_ip_address_count = (known after apply)
+      + secondary_private_ip_addresses     = (known after apply)
+      + subnet_id                          = (known after apply)
+      + tags                               = {
+          + "Name" = "cc-sp-nat-0"
+        }
+      + tags_all                           = {
+          + "Name"       = "cc-sp-nat-0"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                             = (known after apply)
+    }
+
+  # module.network.aws_route.app_default[0] will be created
+  + resource "aws_route" "app_default" {
+      + destination_cidr_block = "0.0.0.0/0"
+      + id                     = (known after apply)
+      + instance_id            = (known after apply)
+      + instance_owner_id      = (known after apply)
+      + nat_gateway_id         = (known after apply)
+      + network_interface_id   = (known after apply)
+      + origin                 = (known after apply)
+      + region                 = "sa-east-1"
+      + route_table_id         = (known after apply)
+      + state                  = (known after apply)
+    }
+
+  # module.network.aws_route.public_default will be created
+  + resource "aws_route" "public_default" {
+      + destination_cidr_block = "0.0.0.0/0"
+      + gateway_id             = (known after apply)
+      + id                     = (known after apply)
+      + instance_id            = (known after apply)
+      + instance_owner_id      = (known after apply)
+      + network_interface_id   = (known after apply)
+      + origin                 = (known after apply)
+      + region                 = "sa-east-1"
+      + route_table_id         = (known after apply)
+      + state                  = (known after apply)
+    }
+
+  # module.network.aws_route_table.app[0] will be created
+  + resource "aws_route_table" "app" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "sa-east-1"
+      + route            = (known after apply)
+      + tags             = {
+          + "Name" = "cc-sp-rt-app-0"
+        }
+      + tags_all         = {
+          + "Name"       = "cc-sp-rt-app-0"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.network.aws_route_table.data will be created
+  + resource "aws_route_table" "data" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "sa-east-1"
+      + route            = (known after apply)
+      + tags             = {
+          + "Name" = "cc-sp-rt-data"
+        }
+      + tags_all         = {
+          + "Name"       = "cc-sp-rt-data"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.network.aws_route_table.public will be created
+  + resource "aws_route_table" "public" {
+      + arn              = (known after apply)
+      + id               = (known after apply)
+      + owner_id         = (known after apply)
+      + propagating_vgws = (known after apply)
+      + region           = "sa-east-1"
+      + route            = (known after apply)
+      + tags             = {
+          + "Name" = "cc-sp-rt-pub"
+        }
+      + tags_all         = {
+          + "Name"       = "cc-sp-rt-pub"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id           = (known after apply)
+    }
+
+  # module.network.aws_route_table_association.app[0] will be created
+  + resource "aws_route_table_association" "app" {
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.network.aws_route_table_association.app[1] will be created
+  + resource "aws_route_table_association" "app" {
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.network.aws_route_table_association.data[0] will be created
+  + resource "aws_route_table_association" "data" {
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.network.aws_route_table_association.data[1] will be created
+  + resource "aws_route_table_association" "data" {
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.network.aws_route_table_association.public[0] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.network.aws_route_table_association.public[1] will be created
+  + resource "aws_route_table_association" "public" {
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+      + route_table_id = (known after apply)
+      + subnet_id      = (known after apply)
+    }
+
+  # module.network.aws_subnet.app[0] will be created
+  + resource "aws_subnet" "app" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "sa-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.20.11.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "sa-east-1"
+      + tags                                           = {
+          + "Name" = "cc-sp-app-a"
+          + "tier" = "app"
+        }
+      + tags_all                                       = {
+          + "Name"       = "cc-sp-app-a"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+          + "tier"       = "app"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.network.aws_subnet.app[1] will be created
+  + resource "aws_subnet" "app" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "sa-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.20.12.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "sa-east-1"
+      + tags                                           = {
+          + "Name" = "cc-sp-app-b"
+          + "tier" = "app"
+        }
+      + tags_all                                       = {
+          + "Name"       = "cc-sp-app-b"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+          + "tier"       = "app"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.network.aws_subnet.data[0] will be created
+  + resource "aws_subnet" "data" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "sa-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.20.21.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "sa-east-1"
+      + tags                                           = {
+          + "Name" = "cc-sp-data-a"
+          + "tier" = "data"
+        }
+      + tags_all                                       = {
+          + "Name"       = "cc-sp-data-a"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+          + "tier"       = "data"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.network.aws_subnet.data[1] will be created
+  + resource "aws_subnet" "data" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "sa-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.20.22.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "sa-east-1"
+      + tags                                           = {
+          + "Name" = "cc-sp-data-b"
+          + "tier" = "data"
+        }
+      + tags_all                                       = {
+          + "Name"       = "cc-sp-data-b"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+          + "tier"       = "data"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.network.aws_subnet.public[0] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "sa-east-1a"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.20.1.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "sa-east-1"
+      + tags                                           = {
+          + "Name" = "cc-sp-pub-a"
+          + "tier" = "public"
+        }
+      + tags_all                                       = {
+          + "Name"       = "cc-sp-pub-a"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+          + "tier"       = "public"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.network.aws_subnet.public[1] will be created
+  + resource "aws_subnet" "public" {
+      + arn                                            = (known after apply)
+      + assign_ipv6_address_on_creation                = false
+      + availability_zone                              = "sa-east-1b"
+      + availability_zone_id                           = (known after apply)
+      + cidr_block                                     = "10.20.2.0/24"
+      + enable_dns64                                   = false
+      + enable_resource_name_dns_a_record_on_launch    = false
+      + enable_resource_name_dns_aaaa_record_on_launch = false
+      + id                                             = (known after apply)
+      + ipv6_cidr_block                                = (known after apply)
+      + ipv6_cidr_block_association_id                 = (known after apply)
+      + ipv6_native                                    = false
+      + map_public_ip_on_launch                        = false
+      + owner_id                                       = (known after apply)
+      + private_dns_hostname_type_on_launch            = (known after apply)
+      + region                                         = "sa-east-1"
+      + tags                                           = {
+          + "Name" = "cc-sp-pub-b"
+          + "tier" = "public"
+        }
+      + tags_all                                       = {
+          + "Name"       = "cc-sp-pub-b"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+          + "tier"       = "public"
+        }
+      + vpc_id                                         = (known after apply)
+    }
+
+  # module.network.aws_vpc.this will be created
+  + resource "aws_vpc" "this" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = "10.20.0.0/16"
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + id                                   = (known after apply)
+      + instance_tenancy                     = "default"
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "sa-east-1"
+      + tags                                 = {
+          + "Name" = "cc-sp-vpc"
+        }
+      + tags_all                             = {
+          + "Name"       = "cc-sp-vpc"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.network.aws_vpc_endpoint.s3 will be created
+  + resource "aws_vpc_endpoint" "s3" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = (known after apply)
+      + region                = "sa-east-1"
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.sa-east-1.s3"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = (known after apply)
+      + tags                  = {
+          + "Name" = "cc-sp-vpce-s3"
+        }
+      + tags_all              = {
+          + "Name"       = "cc-sp-vpce-s3"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_endpoint_type     = "Gateway"
+      + vpc_id                = (known after apply)
+
+      + dns_options (known after apply)
+
+      + subnet_configuration (known after apply)
+    }
+
+  # module.observability.aws_cloudwatch_dashboard.diag will be created
+  + resource "aws_cloudwatch_dashboard" "diag" {
+      + dashboard_arn  = (known after apply)
+      + dashboard_body = (known after apply)
+      + dashboard_name = "cc-sp-diagnostico"
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+    }
+
+  # module.observability.aws_cloudwatch_dashboard.main will be created
+  + resource "aws_cloudwatch_dashboard" "main" {
+      + dashboard_arn  = (known after apply)
+      + dashboard_body = (known after apply)
+      + dashboard_name = "cc-sp"
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+    }
+
+  # module.observability.aws_cloudwatch_log_metric_filter.errors["catalog"] will be created
+  + resource "aws_cloudwatch_log_metric_filter" "errors" {
+      + apply_on_transformed_logs = (known after apply)
+      + id                        = (known after apply)
+      + log_group_name            = "/cc/sp/catalog-orders-service"
+      + name                      = "errors"
+      + pattern                   = "{ $.level = \"ERROR\" }"
+      + region                    = "sa-east-1"
+
+      + metric_transformation {
+          + name      = "AppErrors"
+          + namespace = "CC"
+          + unit      = "None"
+          + value     = "1"
+        }
+    }
+
+  # module.observability.aws_cloudwatch_log_metric_filter.errors["chat"] will be created
+  + resource "aws_cloudwatch_log_metric_filter" "errors" {
+      + apply_on_transformed_logs = (known after apply)
+      + id                        = (known after apply)
+      + log_group_name            = "/cc/sp/chat-service"
+      + name                      = "errors"
+      + pattern                   = "{ $.level = \"ERROR\" }"
+      + region                    = "sa-east-1"
+
+      + metric_transformation {
+          + name      = "AppErrors"
+          + namespace = "CC"
+          + unit      = "None"
+          + value     = "1"
+        }
+    }
+
+  # module.observability.aws_cloudwatch_log_metric_filter.errors["worker"] will be created
+  + resource "aws_cloudwatch_log_metric_filter" "errors" {
+      + apply_on_transformed_logs = (known after apply)
+      + id                        = (known after apply)
+      + log_group_name            = "/cc/sp/order-worker"
+      + name                      = "errors"
+      + pattern                   = "{ $.level = \"ERROR\" }"
+      + region                    = "sa-east-1"
+
+      + metric_transformation {
+          + name      = "AppErrors"
+          + namespace = "CC"
+          + unit      = "None"
+          + value     = "1"
+        }
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["5xx"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-5xx"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = (known after apply)
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "HTTPCode_Target_5XX_Count"
+      + namespace                             = "AWS/ApplicationELB"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Sum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 5
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["app-errors"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-app-errors"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 1
+      + id                                    = (known after apply)
+      + metric_name                           = "AppErrors"
+      + namespace                             = "CC"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Sum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 3
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["asg-capacity"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-asg-capacity"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "AutoScalingGroupName" = "cc-sp-asg"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "GroupInServiceInstances"
+      + namespace                             = "AWS/AutoScaling"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 2
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["cluster-cpu"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-cluster-cpu"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "CPUReservation"
+      + namespace                             = "AWS/ECS"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Average"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 85
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["cluster-mem"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-cluster-mem"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "MemoryReservation"
+      + namespace                             = "AWS/ECS"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Average"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 85
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["dlq-not-empty"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-dlq-not-empty"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "QueueName" = "cc-sp-orders-dlq"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "ApproximateNumberOfMessagesVisible"
+      + namespace                             = "AWS/SQS"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 0
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["latency-p95"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-latency-p95"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = (known after apply)
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + extended_statistic                    = "p95"
+      + id                                    = (known after apply)
+      + metric_name                           = "TargetResponseTime"
+      + namespace                             = "AWS/ApplicationELB"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 5
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["queue-age"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-queue-age"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "QueueName" = "cc-sp-orders"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "ApproximateAgeOfOldestMessage"
+      + namespace                             = "AWS/SQS"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 120
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["rds-connections"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-rds-connections"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "DBInstanceIdentifier" = "cc-sp-db"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "DatabaseConnections"
+      + namespace                             = "AWS/RDS"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 60
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["rds-cpu"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-rds-cpu"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "DBInstanceIdentifier" = "cc-sp-db"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "CPUUtilization"
+      + namespace                             = "AWS/RDS"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Average"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 80
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["tasks-catalog-orders-service"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-tasks-catalog-orders-service"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+          + "ServiceName" = "catalog-orders-service"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "RunningTaskCount"
+      + namespace                             = "ECS/ContainerInsights"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["tasks-chat-service"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-tasks-chat-service"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+          + "ServiceName" = "chat-service"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "RunningTaskCount"
+      + namespace                             = "ECS/ContainerInsights"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["tasks-order-worker"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-tasks-order-worker"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+          + "ServiceName" = "order-worker"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "RunningTaskCount"
+      + namespace                             = "ECS/ContainerInsights"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["unhealthy"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = (known after apply)
+      + alarm_name                            = "cc-sp-unhealthy"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = (known after apply)
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "UnHealthyHostCount"
+      + namespace                             = "AWS/ApplicationELB"
+      + ok_actions                            = (known after apply)
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 0
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.registry.aws_ecr_lifecycle_policy.this["catalog-orders-service"] will be created
+  + resource "aws_ecr_lifecycle_policy" "this" {
+      + id          = (known after apply)
+      + policy      = jsonencode(
+            {
+              + rules = [
+                  + {
+                      + action       = {
+                          + type = "expire"
+                        }
+                      + description  = "mantem as 10 imagens mais recentes"
+                      + rulePriority = 1
+                      + selection    = {
+                          + countNumber = 10
+                          + countType   = "imageCountMoreThan"
+                          + tagStatus   = "any"
+                        }
+                    },
+                ]
+            }
+        )
+      + region      = "sa-east-1"
+      + registry_id = (known after apply)
+      + repository  = "cc-sp/catalog-orders-service"
+    }
+
+  # module.registry.aws_ecr_lifecycle_policy.this["chat-service"] will be created
+  + resource "aws_ecr_lifecycle_policy" "this" {
+      + id          = (known after apply)
+      + policy      = jsonencode(
+            {
+              + rules = [
+                  + {
+                      + action       = {
+                          + type = "expire"
+                        }
+                      + description  = "mantem as 10 imagens mais recentes"
+                      + rulePriority = 1
+                      + selection    = {
+                          + countNumber = 10
+                          + countType   = "imageCountMoreThan"
+                          + tagStatus   = "any"
+                        }
+                    },
+                ]
+            }
+        )
+      + region      = "sa-east-1"
+      + registry_id = (known after apply)
+      + repository  = "cc-sp/chat-service"
+    }
+
+  # module.registry.aws_ecr_lifecycle_policy.this["order-worker"] will be created
+  + resource "aws_ecr_lifecycle_policy" "this" {
+      + id          = (known after apply)
+      + policy      = jsonencode(
+            {
+              + rules = [
+                  + {
+                      + action       = {
+                          + type = "expire"
+                        }
+                      + description  = "mantem as 10 imagens mais recentes"
+                      + rulePriority = 1
+                      + selection    = {
+                          + countNumber = 10
+                          + countType   = "imageCountMoreThan"
+                          + tagStatus   = "any"
+                        }
+                    },
+                ]
+            }
+        )
+      + region      = "sa-east-1"
+      + registry_id = (known after apply)
+      + repository  = "cc-sp/order-worker"
+    }
+
+  # module.registry.aws_ecr_repository.this["catalog-orders-service"] will be created
+  + resource "aws_ecr_repository" "this" {
+      + arn                  = (known after apply)
+      + force_delete         = true
+      + id                   = (known after apply)
+      + image_tag_mutability = "IMMUTABLE"
+      + name                 = "cc-sp/catalog-orders-service"
+      + region               = "sa-east-1"
+      + registry_id          = (known after apply)
+      + repository_url       = (known after apply)
+      + tags_all             = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + image_scanning_configuration {
+          + scan_on_push = true
+        }
+    }
+
+  # module.registry.aws_ecr_repository.this["chat-service"] will be created
+  + resource "aws_ecr_repository" "this" {
+      + arn                  = (known after apply)
+      + force_delete         = true
+      + id                   = (known after apply)
+      + image_tag_mutability = "IMMUTABLE"
+      + name                 = "cc-sp/chat-service"
+      + region               = "sa-east-1"
+      + registry_id          = (known after apply)
+      + repository_url       = (known after apply)
+      + tags_all             = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + image_scanning_configuration {
+          + scan_on_push = true
+        }
+    }
+
+  # module.registry.aws_ecr_repository.this["order-worker"] will be created
+  + resource "aws_ecr_repository" "this" {
+      + arn                  = (known after apply)
+      + force_delete         = true
+      + id                   = (known after apply)
+      + image_tag_mutability = "IMMUTABLE"
+      + name                 = "cc-sp/order-worker"
+      + region               = "sa-east-1"
+      + registry_id          = (known after apply)
+      + repository_url       = (known after apply)
+      + tags_all             = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + image_scanning_configuration {
+          + scan_on_push = true
+        }
+    }
+
+  # module.registry.terraform_data.image["catalog-orders-service"] will be created
+  + resource "terraform_data" "image" {
+      + id               = (known after apply)
+      + input            = (known after apply)
+      + output           = (known after apply)
+      + triggers_replace = [
+          + (known after apply),
+          + "44ebafde54e6",
+        ]
+    }
+
+  # module.registry.terraform_data.image["chat-service"] will be created
+  + resource "terraform_data" "image" {
+      + id               = (known after apply)
+      + input            = (known after apply)
+      + output           = (known after apply)
+      + triggers_replace = [
+          + (known after apply),
+          + "21924a155241",
+        ]
+    }
+
+  # module.registry.terraform_data.image["order-worker"] will be created
+  + resource "terraform_data" "image" {
+      + id               = (known after apply)
+      + input            = (known after apply)
+      + output           = (known after apply)
+      + triggers_replace = [
+          + (known after apply),
+          + "c609ce7f55a5",
+        ]
+    }
+
+  # module.security.aws_security_group.this["alb"] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "cc-sp-alb"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "cc-sp-alb"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "sa-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "cc-sp-alb"
+        }
+      + tags_all               = {
+          + "Name"       = "cc-sp-alb"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.security.aws_security_group.this["app"] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "cc-sp-app"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "cc-sp-app"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "sa-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "cc-sp-app"
+        }
+      + tags_all               = {
+          + "Name"       = "cc-sp-app"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.security.aws_security_group.this["db"] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "cc-sp-db"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "cc-sp-db"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "sa-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "cc-sp-db"
+        }
+      + tags_all               = {
+          + "Name"       = "cc-sp-db"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.security.aws_security_group.this["ilb"] will be created
+  + resource "aws_security_group" "this" {
+      + arn                    = (known after apply)
+      + description            = "cc-sp-ilb"
+      + egress                 = (known after apply)
+      + id                     = (known after apply)
+      + ingress                = (known after apply)
+      + name                   = "cc-sp-ilb"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "sa-east-1"
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Name" = "cc-sp-ilb"
+        }
+      + tags_all               = {
+          + "Name"       = "cc-sp-ilb"
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + vpc_id                 = (known after apply)
+    }
+
+  # module.security.aws_vpc_security_group_egress_rule.all["alb"] will be created
+  + resource "aws_vpc_security_group_egress_rule" "all" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + id                     = (known after apply)
+      + ip_protocol            = "-1"
+      + region                 = "sa-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.security.aws_vpc_security_group_egress_rule.all["app"] will be created
+  + resource "aws_vpc_security_group_egress_rule" "all" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + id                     = (known after apply)
+      + ip_protocol            = "-1"
+      + region                 = "sa-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.security.aws_vpc_security_group_egress_rule.all["db"] will be created
+  + resource "aws_vpc_security_group_egress_rule" "all" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + id                     = (known after apply)
+      + ip_protocol            = "-1"
+      + region                 = "sa-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.security.aws_vpc_security_group_egress_rule.all["ilb"] will be created
+  + resource "aws_vpc_security_group_egress_rule" "all" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + id                     = (known after apply)
+      + ip_protocol            = "-1"
+      + region                 = "sa-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.security.aws_vpc_security_group_ingress_rule.alb_http will be created
+  + resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+      + arn                    = (known after apply)
+      + cidr_ipv4              = "0.0.0.0/0"
+      + description            = "HTTP publico"
+      + from_port              = 80
+      + id                     = (known after apply)
+      + ip_protocol            = "tcp"
+      + region                 = "sa-east-1"
+      + security_group_id      = (known after apply)
+      + security_group_rule_id = (known after apply)
+      + tags_all               = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + to_port                = 80
+    }
+
+  # module.security.aws_vpc_security_group_ingress_rule.app_from_lb["alb"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "app_from_lb" {
+      + arn                          = (known after apply)
+      + description                  = "portas dinamicas a partir do alb"
+      + from_port                    = 32768
+      + id                           = (known after apply)
+      + ip_protocol                  = "tcp"
+      + referenced_security_group_id = (known after apply)
+      + region                       = "sa-east-1"
+      + security_group_id            = (known after apply)
+      + security_group_rule_id       = (known after apply)
+      + tags_all                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + to_port                      = 65535
+    }
+
+  # module.security.aws_vpc_security_group_ingress_rule.app_from_lb["ilb"] will be created
+  + resource "aws_vpc_security_group_ingress_rule" "app_from_lb" {
+      + arn                          = (known after apply)
+      + description                  = "portas dinamicas a partir do ilb"
+      + from_port                    = 32768
+      + id                           = (known after apply)
+      + ip_protocol                  = "tcp"
+      + referenced_security_group_id = (known after apply)
+      + region                       = "sa-east-1"
+      + security_group_id            = (known after apply)
+      + security_group_rule_id       = (known after apply)
+      + tags_all                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + to_port                      = 65535
+    }
+
+  # module.security.aws_vpc_security_group_ingress_rule.db_from_app will be created
+  + resource "aws_vpc_security_group_ingress_rule" "db_from_app" {
+      + arn                          = (known after apply)
+      + description                  = "Postgres a partir das tasks"
+      + from_port                    = 5432
+      + id                           = (known after apply)
+      + ip_protocol                  = "tcp"
+      + referenced_security_group_id = (known after apply)
+      + region                       = "sa-east-1"
+      + security_group_id            = (known after apply)
+      + security_group_rule_id       = (known after apply)
+      + tags_all                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + to_port                      = 5432
+    }
+
+  # module.security.aws_vpc_security_group_ingress_rule.ilb_from_app will be created
+  + resource "aws_vpc_security_group_ingress_rule" "ilb_from_app" {
+      + arn                          = (known after apply)
+      + description                  = "chat -> ALB interno"
+      + from_port                    = 80
+      + id                           = (known after apply)
+      + ip_protocol                  = "tcp"
+      + referenced_security_group_id = (known after apply)
+      + region                       = "sa-east-1"
+      + security_group_id            = (known after apply)
+      + security_group_rule_id       = (known after apply)
+      + tags_all                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + to_port                      = 80
+    }
+
+  # module.worker.aws_appautoscaling_policy.this[0] will be created
+  + resource "aws_appautoscaling_policy" "this" {
+      + alarm_arns         = (known after apply)
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + name               = "worker-backlog"
+      + policy_type        = "TargetTrackingScaling"
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/order-worker"
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+
+      + target_tracking_scaling_policy_configuration {
+          + disable_scale_in   = false
+          + scale_in_cooldown  = 180
+          + scale_out_cooldown = 60
+          + target_value       = 5
+
+          + customized_metric_specification {
+              + metrics {
+                  + id          = "m1"
+                  + return_data = false
+                    # (2 unchanged attributes hidden)
+
+                  + metric_stat {
+                      + stat = "Average"
+                        # (1 unchanged attribute hidden)
+
+                      + metric {
+                          + metric_name = "ApproximateNumberOfMessagesVisible"
+                          + namespace   = "AWS/SQS"
+
+                          + dimensions {
+                              + name  = "QueueName"
+                              + value = "cc-sp-orders"
+                            }
+                        }
+                    }
+                }
+              + metrics {
+                  + id          = "m2"
+                  + return_data = false
+                    # (2 unchanged attributes hidden)
+
+                  + metric_stat {
+                      + stat = "Average"
+                        # (1 unchanged attribute hidden)
+
+                      + metric {
+                          + metric_name = "RunningTaskCount"
+                          + namespace   = "ECS/ContainerInsights"
+
+                          + dimensions {
+                              + name  = "ClusterName"
+                              + value = "cc-sp-cluster"
+                            }
+                          + dimensions {
+                              + name  = "ServiceName"
+                              + value = "order-worker"
+                            }
+                        }
+                    }
+                }
+              + metrics {
+                  + expression  = "m1/m2"
+                  + id          = "e1"
+                  + label       = "backlog por task"
+                  + return_data = true
+                }
+            }
+        }
+    }
+
+  # module.worker.aws_appautoscaling_target.this[0] will be created
+  + resource "aws_appautoscaling_target" "this" {
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + max_capacity       = 5
+      + min_capacity       = 1
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/order-worker"
+      + role_arn           = (known after apply)
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+      + tags_all           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + suspended_state (known after apply)
+    }
+
+  # module.worker.aws_cloudwatch_log_group.this will be created
+  + resource "aws_cloudwatch_log_group" "this" {
+      + arn                         = (known after apply)
+      + deletion_protection_enabled = (known after apply)
+      + id                          = (known after apply)
+      + log_group_class             = (known after apply)
+      + name                        = "/cc/sp/order-worker"
+      + name_prefix                 = (known after apply)
+      + region                      = "sa-east-1"
+      + retention_in_days           = 7
+      + skip_destroy                = false
+      + tags_all                    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.worker.aws_ecs_service.this will be created
+  + resource "aws_ecs_service" "this" {
+      + arn                                = (known after apply)
+      + availability_zone_rebalancing      = "ENABLED"
+      + cluster                            = "cc-sp-cluster"
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 1
+      + enable_ecs_managed_tags            = true
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = (known after apply)
+      + name                               = "order-worker"
+      + platform_version                   = (known after apply)
+      + propagate_tags                     = "SERVICE"
+      + region                             = "sa-east-1"
+      + scheduling_strategy                = "REPLICA"
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + capacity_provider_strategy {
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+
+      + deployment_circuit_breaker {
+          + enable   = true
+          + rollback = true
+        }
+
+      + deployment_configuration (known after apply)
+
+      + ordered_placement_strategy {
+          + field = "attribute:ecs.availability-zone"
+          + type  = "spread"
+        }
+      + ordered_placement_strategy {
+          + field = "memory"
+          + type  = "binpack"
+        }
+    }
+
+  # module.worker.aws_ecs_task_definition.this will be created
+  + resource "aws_ecs_task_definition" "this" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = (known after apply)
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "cc-sp-worker"
+      + id                       = (known after apply)
+      + network_mode             = "bridge"
+      + region                   = "sa-east-1"
+      + requires_compatibilities = [
+          + "EC2",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags_all                 = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+Plan: 110 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + alarms       = [
+      + "cc-sp-5xx",
+      + "cc-sp-app-errors",
+      + "cc-sp-asg-capacity",
+      + "cc-sp-cluster-cpu",
+      + "cc-sp-cluster-mem",
+      + "cc-sp-dlq-not-empty",
+      + "cc-sp-latency-p95",
+      + "cc-sp-queue-age",
+      + "cc-sp-rds-connections",
+      + "cc-sp-rds-cpu",
+      + "cc-sp-tasks-catalog-orders-service",
+      + "cc-sp-tasks-chat-service",
+      + "cc-sp-tasks-order-worker",
+      + "cc-sp-unhealthy",
+    ]
+  + alb_url      = (known after apply)
+  + asg_name     = "cc-sp-asg"
+  + azs          = [
+      + "sa-east-1a",
+      + "sa-east-1b",
+    ]
+  + cluster_name = "cc-sp-cluster"
+  + dashboards   = [
+      + "cc-sp",
+      + "cc-sp-diagnostico",
+    ]
+  + db_address   = (known after apply)
+  + dlq_url      = (known after apply)
+  + ilb_dns      = (known after apply)
+  + images       = {
+      + catalog-orders-service = (known after apply)
+      + chat-service           = (known after apply)
+      + order-worker           = (known after apply)
+    }
+  + queue_url    = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"
+Releasing state lock. This may take a few moments...

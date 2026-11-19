@@ -1,0 +1,1525 @@
+Acquiring state lock. This may take a few moments...
+module.registry.data.aws_region.current: Reading...
+module.network.data.aws_availability_zones.available: Reading...
+module.iam.data.aws_region.current: Reading...
+module.worker.data.aws_region.current: Reading...
+module.messaging.aws_sns_topic.alarms: Refreshing state... [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms]
+module.messaging.aws_sqs_queue.dlq: Refreshing state... [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq]
+module.registry.aws_ecr_repository.this["chat-service"]: Refreshing state... [id=cc-sp/chat-service]
+module.registry.aws_ecr_repository.this["order-worker"]: Refreshing state... [id=cc-sp/order-worker]
+module.registry.aws_ecr_repository.this["catalog-orders-service"]: Refreshing state... [id=cc-sp/catalog-orders-service]
+module.network.aws_vpc.this: Refreshing state... [id=vpc-0e939e3d096b27d98]
+module.registry.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.worker.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_partition.p: Reading...
+module.registry.data.aws_caller_identity.me: Reading...
+module.compute.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:cluster/cc-sp-cluster]
+module.iam.data.aws_partition.p: Read complete after 0s [id=aws]
+module.network.aws_eip.nat[0]: Refreshing state... [id=eipalloc-0c16c4b8a21fe6223]
+module.registry.data.aws_caller_identity.me: Read complete after 0s [id=244736565328]
+module.messaging.aws_sns_topic.order_events: Refreshing state... [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-order-events]
+module.observability.data.aws_region.current: Reading...
+module.observability.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.compute.data.aws_ssm_parameter.ecs_ami: Reading...
+module.network.data.aws_availability_zones.available: Read complete after 2s [id=sa-east-1]
+module.network.data.aws_region.current: Reading...
+module.network.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_caller_identity.me: Reading...
+module.iam.data.aws_iam_policy_document.trust_ec2: Reading...
+module.iam.data.aws_iam_policy_document.trust_ec2: Read complete after 0s [id=2851119427]
+module.catalog.data.aws_region.current: Reading...
+module.catalog.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.messaging.aws_sqs_queue.orders: Refreshing state... [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders]
+module.iam.data.aws_caller_identity.me: Read complete after 0s [id=244736565328]
+module.iam.aws_iam_role.instance: Refreshing state... [id=cc-sp-ecs-instance-role]
+module.messaging.aws_sns_topic_subscription.alarm_email[0]: Refreshing state... [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms:3cddf7f2-6272-44ae-a9ce-764ae890ff52]
+module.iam.data.aws_iam_policy_document.trust_ecs_tasks: Reading...
+module.iam.data.aws_iam_policy_document.trust_ecs_tasks: Read complete after 0s [id=1435592119]
+module.iam.data.aws_iam_policy_document.chat: Reading...
+module.iam.data.aws_iam_policy_document.chat: Read complete after 0s [id=4036281470]
+module.iam.aws_iam_role.worker: Refreshing state... [id=cc-sp-worker-task-role]
+module.iam.aws_iam_role.task_exec: Refreshing state... [id=cc-sp-task-exec-role]
+module.iam.aws_iam_role.catalog: Refreshing state... [id=cc-sp-catalog-task-role]
+module.iam.aws_iam_role.chat: Refreshing state... [id=cc-sp-chat-task-role]
+module.registry.terraform_data.image["chat-service"]: Refreshing state... [id=593fe978-b1b9-0b55-4d07-1479c500916e]
+module.registry.terraform_data.image["order-worker"]: Refreshing state... [id=f7fd06c5-56c5-e194-ea35-8d715e1243f1]
+module.registry.terraform_data.image["catalog-orders-service"]: Refreshing state... [id=ca5e7be7-3815-2d03-3bdc-02f2ff881e93]
+module.registry.aws_ecr_lifecycle_policy.this["order-worker"]: Refreshing state... [id=cc-sp/order-worker]
+module.registry.aws_ecr_lifecycle_policy.this["catalog-orders-service"]: Refreshing state... [id=cc-sp/catalog-orders-service]
+module.registry.aws_ecr_lifecycle_policy.this["chat-service"]: Refreshing state... [id=cc-sp/chat-service]
+module.messaging.aws_sqs_queue_redrive_allow_policy.dlq: Refreshing state... [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq]
+module.iam.data.aws_iam_policy_document.worker: Reading...
+module.iam.data.aws_iam_policy_document.worker: Read complete after 0s [id=2190762200]
+module.iam.data.aws_iam_policy_document.catalog: Reading...
+module.iam.data.aws_iam_policy_document.catalog: Read complete after 0s [id=2433058262]
+module.compute.data.aws_ssm_parameter.ecs_ami: Read complete after 2s [id=/aws/service/ecs/optimized-ami/amazon-linux-2023/recommended/image_id]
+module.iam.aws_iam_instance_profile.instance: Refreshing state... [id=cc-sp-ecs-instance-profile]
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]: Refreshing state... [id=cc-sp-ecs-instance-role/arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role]
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]: Refreshing state... [id=cc-sp-ecs-instance-role/arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore]
+module.iam.aws_iam_role_policy_attachment.task_exec: Refreshing state... [id=cc-sp-task-exec-role/arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy]
+module.iam.aws_iam_role_policy.worker: Refreshing state... [id=cc-sp-worker-task-role:sqs-consume-sns-publish]
+module.iam.aws_iam_role_policy.chat: Refreshing state... [id=cc-sp-chat-task-role:bedrock-model]
+module.network.aws_route_table.data: Refreshing state... [id=rtb-0a4f1a5ab53e96a64]
+module.network.aws_internet_gateway.this: Refreshing state... [id=igw-0dc24663511c742d8]
+module.network.aws_subnet.app[0]: Refreshing state... [id=subnet-001b27d3ddd79fb71]
+module.network.aws_subnet.app[1]: Refreshing state... [id=subnet-09cd89cd658076fbc]
+module.network.aws_route_table.public: Refreshing state... [id=rtb-06b48f00897e494e1]
+module.network.aws_route_table.app[0]: Refreshing state... [id=rtb-0d7c1969c726f4487]
+module.network.aws_subnet.data[1]: Refreshing state... [id=subnet-09ff5cd4357464080]
+module.network.aws_subnet.data[0]: Refreshing state... [id=subnet-04c98ac5d65886172]
+module.network.aws_subnet.public[1]: Refreshing state... [id=subnet-07aa5deb653367622]
+module.network.aws_subnet.public[0]: Refreshing state... [id=subnet-037574623ba0c6beb]
+module.iam.aws_iam_role_policy.catalog: Refreshing state... [id=cc-sp-catalog-task-role:sqs-send]
+module.security.aws_security_group.this["app"]: Refreshing state... [id=sg-0019f5446450a18c3]
+module.security.aws_security_group.this["db"]: Refreshing state... [id=sg-069349d0877655cd9]
+module.security.aws_security_group.this["ilb"]: Refreshing state... [id=sg-0ea6adf9d0f3206c7]
+module.security.aws_security_group.this["alb"]: Refreshing state... [id=sg-02450507e34493046]
+module.network.aws_route.public_default: Refreshing state... [id=r-rtb-06b48f00897e494e11080289494]
+module.network.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-0781e6c368f806fe9]
+module.network.aws_route_table_association.app[1]: Refreshing state... [id=rtbassoc-05d728ea2ffcdec46]
+module.network.aws_route_table_association.app[0]: Refreshing state... [id=rtbassoc-0a7a1ef5da0346eec]
+module.network.aws_route_table_association.data[1]: Refreshing state... [id=rtbassoc-07579010d282ba212]
+module.network.aws_route_table_association.data[0]: Refreshing state... [id=rtbassoc-083d1bcc2c8cec5ad]
+module.database.aws_db_subnet_group.this: Refreshing state... [id=cc-sp-db-subnets]
+module.network.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-00edc3816c0251fcf]
+module.network.aws_nat_gateway.this[0]: Refreshing state... [id=nat-0ab74cd9687c6f592]
+module.network.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-09bb4205fb9a8ec5e]
+module.security.aws_vpc_security_group_ingress_rule.alb_http: Refreshing state... [id=sgr-0af39d84efbdd350e]
+module.security.aws_vpc_security_group_ingress_rule.db_from_app: Refreshing state... [id=sgr-07a4012ac7b33bbf6]
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["ilb"]: Refreshing state... [id=sgr-06a6eb25d107be442]
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["alb"]: Refreshing state... [id=sgr-007451cce3156bfec]
+module.security.aws_vpc_security_group_egress_rule.all["alb"]: Refreshing state... [id=sgr-0e5ea04880d4ccc3e]
+module.security.aws_vpc_security_group_egress_rule.all["app"]: Refreshing state... [id=sgr-099e617fe90aa1bff]
+module.security.aws_vpc_security_group_egress_rule.all["db"]: Refreshing state... [id=sgr-04d16d5a4a8fdfc90]
+module.security.aws_vpc_security_group_egress_rule.all["ilb"]: Refreshing state... [id=sgr-05629cf14820d0929]
+module.network.aws_route.app_default[0]: Refreshing state... [id=r-rtb-0d7c1969c726f44871080289494]
+module.compute.aws_launch_template.this: Refreshing state... [id=lt-0561aaf27fc92ce3b]
+module.loadbalancer.aws_lb.this["ilb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:loadbalancer/app/cc-sp-ilb/471680d3ff317724]
+module.loadbalancer.aws_lb_target_group.this["ilb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-catalog/d18662ee203b8b11]
+module.loadbalancer.aws_lb_target_group.this["alb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-chat/2a7b58e9a4a89199]
+module.loadbalancer.aws_lb.this["alb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:loadbalancer/app/cc-sp-alb/752bd478d79e8843]
+module.compute.aws_autoscaling_group.this: Refreshing state... [id=cc-sp-asg]
+module.database.aws_db_instance.this: Refreshing state... [id=db-7WDZCUWLO2ALQOYCUZTBPL2DSM]
+module.iam.data.aws_iam_policy_document.task_exec: Reading...
+module.iam.data.aws_iam_policy_document.task_exec: Read complete after 0s [id=1847853064]
+module.iam.aws_iam_role_policy.task_exec: Refreshing state... [id=cc-sp-task-exec-role:db-secret]
+module.compute.aws_ecs_capacity_provider.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:capacity-provider/cc-sp-cp]
+module.loadbalancer.aws_lb_listener.this["ilb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:listener/app/cc-sp-ilb/471680d3ff317724/77da77b8b1ccc539]
+module.loadbalancer.aws_lb_listener.this["alb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:listener/app/cc-sp-alb/752bd478d79e8843/b102768070bc724f]
+module.compute.aws_ecs_cluster_capacity_providers.this: Refreshing state... [id=cc-sp-cluster]
+module.worker.aws_cloudwatch_log_group.this: Refreshing state... [id=/cc/sp/order-worker]
+module.catalog.aws_cloudwatch_log_group.this: Refreshing state... [id=/cc/sp/catalog-orders-service]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+-/+ destroy and then create replacement
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # module.catalog.aws_appautoscaling_policy.this[0] will be created
+  + resource "aws_appautoscaling_policy" "this" {
+      + alarm_arns         = (known after apply)
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + name               = "catalog-cpu"
+      + policy_type        = "TargetTrackingScaling"
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/catalog-orders-service"
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+
+      + target_tracking_scaling_policy_configuration {
+          + disable_scale_in   = false
+          + scale_in_cooldown  = 120
+          + scale_out_cooldown = 60
+          + target_value       = 60
+
+          + predefined_metric_specification {
+              + predefined_metric_type = "ECSServiceAverageCPUUtilization"
+            }
+        }
+    }
+
+  # module.catalog.aws_appautoscaling_target.this[0] will be created
+  + resource "aws_appautoscaling_target" "this" {
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + max_capacity       = 6
+      + min_capacity       = 2
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/catalog-orders-service"
+      + role_arn           = (known after apply)
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+      + tags_all           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + suspended_state (known after apply)
+    }
+
+  # module.catalog.aws_ecs_service.this will be created
+  + resource "aws_ecs_service" "this" {
+      + arn                                = (known after apply)
+      + availability_zone_rebalancing      = "ENABLED"
+      + cluster                            = "cc-sp-cluster"
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 2
+      + enable_ecs_managed_tags            = true
+      + enable_execute_command             = false
+      + health_check_grace_period_seconds  = 60
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = (known after apply)
+      + name                               = "catalog-orders-service"
+      + platform_version                   = (known after apply)
+      + propagate_tags                     = "SERVICE"
+      + region                             = "sa-east-1"
+      + scheduling_strategy                = "REPLICA"
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + capacity_provider_strategy {
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+
+      + deployment_circuit_breaker {
+          + enable   = true
+          + rollback = true
+        }
+
+      + deployment_configuration (known after apply)
+
+      + load_balancer {
+          + container_name   = "catalog-orders-service"
+          + container_port   = 8001
+          + target_group_arn = "arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-catalog/d18662ee203b8b11"
+            # (1 unchanged attribute hidden)
+        }
+
+      + ordered_placement_strategy {
+          + field = "attribute:ecs.availability-zone"
+          + type  = "spread"
+        }
+      + ordered_placement_strategy {
+          + field = "instanceId"
+          + type  = "spread"
+        }
+    }
+
+  # module.catalog.aws_ecs_task_definition.this will be created
+  + resource "aws_ecs_task_definition" "this" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = (known after apply)
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = "arn:aws:iam::244736565328:role/cc-sp-task-exec-role"
+      + family                   = "cc-sp-catalog"
+      + id                       = (known after apply)
+      + network_mode             = "bridge"
+      + region                   = "sa-east-1"
+      + requires_compatibilities = [
+          + "EC2",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags_all                 = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_role_arn            = "arn:aws:iam::244736565328:role/cc-sp-catalog-task-role"
+      + track_latest             = false
+    }
+
+  # module.chat.data.aws_region.current will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_region" "current" {
+      + description = (known after apply)
+      + endpoint    = (known after apply)
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + region      = (known after apply)
+    }
+
+  # module.chat.aws_appautoscaling_policy.this[0] will be created
+  + resource "aws_appautoscaling_policy" "this" {
+      + alarm_arns         = (known after apply)
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + name               = "chat-req"
+      + policy_type        = "TargetTrackingScaling"
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/chat-service"
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+
+      + target_tracking_scaling_policy_configuration {
+          + disable_scale_in   = false
+          + scale_in_cooldown  = 120
+          + scale_out_cooldown = 60
+          + target_value       = 600
+
+          + predefined_metric_specification {
+              + predefined_metric_type = "ALBRequestCountPerTarget"
+              + resource_label         = "app/cc-sp-alb/752bd478d79e8843/targetgroup/cc-sp-tg-chat/2a7b58e9a4a89199"
+            }
+        }
+    }
+
+  # module.chat.aws_appautoscaling_target.this[0] will be created
+  + resource "aws_appautoscaling_target" "this" {
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + max_capacity       = 6
+      + min_capacity       = 2
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/chat-service"
+      + role_arn           = (known after apply)
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+      + tags_all           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + suspended_state (known after apply)
+    }
+
+  # module.chat.aws_cloudwatch_log_group.this will be created
+  + resource "aws_cloudwatch_log_group" "this" {
+      + arn                         = (known after apply)
+      + deletion_protection_enabled = (known after apply)
+      + id                          = (known after apply)
+      + log_group_class             = (known after apply)
+      + name                        = "/cc/sp/chat-service"
+      + name_prefix                 = (known after apply)
+      + region                      = "sa-east-1"
+      + retention_in_days           = 7
+      + skip_destroy                = false
+      + tags_all                    = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+    }
+
+  # module.chat.aws_ecs_service.this will be created
+  + resource "aws_ecs_service" "this" {
+      + arn                                = (known after apply)
+      + availability_zone_rebalancing      = "ENABLED"
+      + cluster                            = "cc-sp-cluster"
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 2
+      + enable_ecs_managed_tags            = true
+      + enable_execute_command             = false
+      + health_check_grace_period_seconds  = 60
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = (known after apply)
+      + name                               = "chat-service"
+      + platform_version                   = (known after apply)
+      + propagate_tags                     = "SERVICE"
+      + region                             = "sa-east-1"
+      + scheduling_strategy                = "REPLICA"
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + capacity_provider_strategy {
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+
+      + deployment_circuit_breaker {
+          + enable   = true
+          + rollback = true
+        }
+
+      + deployment_configuration (known after apply)
+
+      + load_balancer {
+          + container_name   = "chat-service"
+          + container_port   = 8000
+          + target_group_arn = "arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-chat/2a7b58e9a4a89199"
+            # (1 unchanged attribute hidden)
+        }
+
+      + ordered_placement_strategy {
+          + field = "attribute:ecs.availability-zone"
+          + type  = "spread"
+        }
+      + ordered_placement_strategy {
+          + field = "instanceId"
+          + type  = "spread"
+        }
+    }
+
+  # module.chat.aws_ecs_task_definition.this will be created
+  + resource "aws_ecs_task_definition" "this" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = (known after apply)
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = "arn:aws:iam::244736565328:role/cc-sp-task-exec-role"
+      + family                   = "cc-sp-chat"
+      + id                       = (known after apply)
+      + network_mode             = "bridge"
+      + region                   = "sa-east-1"
+      + requires_compatibilities = [
+          + "EC2",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags_all                 = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_role_arn            = "arn:aws:iam::244736565328:role/cc-sp-chat-task-role"
+      + track_latest             = false
+    }
+
+  # module.observability.aws_cloudwatch_dashboard.diag will be created
+  + resource "aws_cloudwatch_dashboard" "diag" {
+      + dashboard_arn  = (known after apply)
+      + dashboard_body = (known after apply)
+      + dashboard_name = "cc-sp-diagnostico"
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+    }
+
+  # module.observability.aws_cloudwatch_dashboard.main will be created
+  + resource "aws_cloudwatch_dashboard" "main" {
+      + dashboard_arn  = (known after apply)
+      + dashboard_body = jsonencode(
+            {
+              + widgets = [
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "AWS/ApplicationELB",
+                                  + "RequestCount",
+                                  + "LoadBalancer",
+                                  + "app/cc-sp-alb/752bd478d79e8843",
+                                ],
+                              + [
+                                  + ".",
+                                  + "HTTPCode_Target_5XX_Count",
+                                  + ".",
+                                  + ".",
+                                ],
+                              + [
+                                  + ".",
+                                  + "HTTPCode_ELB_5XX_Count",
+                                  + ".",
+                                  + ".",
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Sum"
+                          + title   = "ALB: requisicoes e 5xx"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 0
+                      + y          = 0
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "AWS/ApplicationELB",
+                                  + "TargetResponseTime",
+                                  + "LoadBalancer",
+                                  + "app/cc-sp-alb/752bd478d79e8843",
+                                  + {
+                                      + stat = "p95"
+                                    },
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "p95"
+                          + title   = "ALB: latencia p95 (s)"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 8
+                      + y          = 0
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "ECS/ContainerInsights",
+                                  + "RunningTaskCount",
+                                  + "ClusterName",
+                                  + "cc-sp-cluster",
+                                  + "ServiceName",
+                                  + "chat-service",
+                                ],
+                              + [
+                                  + "ECS/ContainerInsights",
+                                  + "RunningTaskCount",
+                                  + "ClusterName",
+                                  + "cc-sp-cluster",
+                                  + "ServiceName",
+                                  + "catalog-orders-service",
+                                ],
+                              + [
+                                  + "ECS/ContainerInsights",
+                                  + "RunningTaskCount",
+                                  + "ClusterName",
+                                  + "cc-sp-cluster",
+                                  + "ServiceName",
+                                  + "order-worker",
+                                ],
+                              + [
+                                  + "ECS/ContainerInsights",
+                                  + "PendingTaskCount",
+                                  + "ClusterName",
+                                  + "cc-sp-cluster",
+                                  + "ServiceName",
+                                  + "chat-service",
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Average"
+                          + title   = "Tasks em execucao por servico"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 16
+                      + y          = 0
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "AWS/ECS",
+                                  + "CPUReservation",
+                                  + "ClusterName",
+                                  + "cc-sp-cluster",
+                                ],
+                              + [
+                                  + ".",
+                                  + "MemoryReservation",
+                                  + ".",
+                                  + ".",
+                                ],
+                              + [
+                                  + "AWS/ECS/ManagedScaling",
+                                  + "CapacityProviderReservation",
+                                  + "ClusterName",
+                                  + "cc-sp-cluster",
+                                  + "CapacityProviderName",
+                                  + "cc-sp-cp",
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Average"
+                          + title   = "Cluster: CPU/memoria reservada (%) e CapacityProviderReservation"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 0
+                      + y          = 6
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "AWS/AutoScaling",
+                                  + "GroupInServiceInstances",
+                                  + "AutoScalingGroupName",
+                                  + "cc-sp-asg",
+                                ],
+                              + [
+                                  + ".",
+                                  + "GroupDesiredCapacity",
+                                  + ".",
+                                  + ".",
+                                ],
+                              + [
+                                  + ".",
+                                  + "GroupPendingInstances",
+                                  + ".",
+                                  + ".",
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Maximum"
+                          + title   = "ASG: instancias"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 8
+                      + y          = 6
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "AWS/SQS",
+                                  + "ApproximateNumberOfMessagesVisible",
+                                  + "QueueName",
+                                  + "cc-sp-orders",
+                                ],
+                              + [
+                                  + "...",
+                                  + "cc-sp-orders-dlq",
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Maximum"
+                          + title   = "Fila e DLQ (mensagens visiveis)"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 16
+                      + y          = 6
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "AWS/RDS",
+                                  + "CPUUtilization",
+                                  + "DBInstanceIdentifier",
+                                  + "cc-sp-db",
+                                ],
+                              + [
+                                  + ".",
+                                  + "DatabaseConnections",
+                                  + ".",
+                                  + ".",
+                                  + {
+                                      + yAxis = "right"
+                                    },
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Average"
+                          + title   = "RDS: CPU (%) e conexoes"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 0
+                      + y          = 12
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "CC",
+                                  + "AppErrors",
+                                ],
+                              + [
+                                  + ".",
+                                  + "ChatDegraded",
+                                ],
+                              + [
+                                  + ".",
+                                  + "OrderProcessingFailures",
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Sum"
+                          + title   = "AppErrors (CC)"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 8
+                      + y          = 12
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "CC",
+                                  + "OrdersCreated",
+                                ],
+                              + [
+                                  + ".",
+                                  + "OrdersConfirmed",
+                                ],
+                              + [
+                                  + ".",
+                                  + "OutboxPending",
+                                  + {
+                                      + stat = "Maximum"
+                                    },
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Sum"
+                          + title   = "Negocio: OrdersCreated / OrdersConfirmed / OutboxPending"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 16
+                      + y          = 12
+                    },
+                  + {
+                      + height     = 6
+                      + properties = {
+                          + metrics = [
+                              + [
+                                  + "CC",
+                                  + "LLMLatencyMs",
+                                  + {
+                                      + stat = "Average"
+                                    },
+                                ],
+                              + [
+                                  + "...",
+                                  + {
+                                      + stat = "p95"
+                                    },
+                                ],
+                            ]
+                          + period  = 60
+                          + region  = "sa-east-1"
+                          + stat    = "Average"
+                          + title   = "LLMLatencyMs (Bedrock)"
+                          + view    = "timeSeries"
+                        }
+                      + type       = "metric"
+                      + width      = 8
+                      + x          = 0
+                      + y          = 18
+                    },
+                ]
+            }
+        )
+      + dashboard_name = "cc-sp"
+      + id             = (known after apply)
+      + region         = "sa-east-1"
+    }
+
+  # module.observability.aws_cloudwatch_log_metric_filter.errors["catalog"] will be created
+  + resource "aws_cloudwatch_log_metric_filter" "errors" {
+      + apply_on_transformed_logs = (known after apply)
+      + id                        = (known after apply)
+      + log_group_name            = "/cc/sp/catalog-orders-service"
+      + name                      = "errors"
+      + pattern                   = "{ $.level = \"ERROR\" }"
+      + region                    = "sa-east-1"
+
+      + metric_transformation {
+          + name      = "AppErrors"
+          + namespace = "CC"
+          + unit      = "None"
+          + value     = "1"
+        }
+    }
+
+  # module.observability.aws_cloudwatch_log_metric_filter.errors["chat"] will be created
+  + resource "aws_cloudwatch_log_metric_filter" "errors" {
+      + apply_on_transformed_logs = (known after apply)
+      + id                        = (known after apply)
+      + log_group_name            = "/cc/sp/chat-service"
+      + name                      = "errors"
+      + pattern                   = "{ $.level = \"ERROR\" }"
+      + region                    = "sa-east-1"
+
+      + metric_transformation {
+          + name      = "AppErrors"
+          + namespace = "CC"
+          + unit      = "None"
+          + value     = "1"
+        }
+    }
+
+  # module.observability.aws_cloudwatch_log_metric_filter.errors["worker"] will be created
+  + resource "aws_cloudwatch_log_metric_filter" "errors" {
+      + apply_on_transformed_logs = (known after apply)
+      + id                        = (known after apply)
+      + log_group_name            = "/cc/sp/order-worker"
+      + name                      = "errors"
+      + pattern                   = "{ $.level = \"ERROR\" }"
+      + region                    = "sa-east-1"
+
+      + metric_transformation {
+          + name      = "AppErrors"
+          + namespace = "CC"
+          + unit      = "None"
+          + value     = "1"
+        }
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["5xx"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-5xx"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "LoadBalancer" = "app/cc-sp-alb/752bd478d79e8843"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "HTTPCode_Target_5XX_Count"
+      + namespace                             = "AWS/ApplicationELB"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Sum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 5
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["app-errors"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-app-errors"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 1
+      + id                                    = (known after apply)
+      + metric_name                           = "AppErrors"
+      + namespace                             = "CC"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Sum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 3
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["asg-capacity"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-asg-capacity"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "AutoScalingGroupName" = "cc-sp-asg"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "GroupInServiceInstances"
+      + namespace                             = "AWS/AutoScaling"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 2
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["cluster-cpu"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-cluster-cpu"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "CPUReservation"
+      + namespace                             = "AWS/ECS"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Average"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 85
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["cluster-mem"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-cluster-mem"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "MemoryReservation"
+      + namespace                             = "AWS/ECS"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Average"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 85
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["dlq-not-empty"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-dlq-not-empty"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "QueueName" = "cc-sp-orders-dlq"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "ApproximateNumberOfMessagesVisible"
+      + namespace                             = "AWS/SQS"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 0
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["latency-p95"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-latency-p95"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "LoadBalancer" = "app/cc-sp-alb/752bd478d79e8843"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + extended_statistic                    = "p95"
+      + id                                    = (known after apply)
+      + metric_name                           = "TargetResponseTime"
+      + namespace                             = "AWS/ApplicationELB"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 5
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["queue-age"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-queue-age"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "QueueName" = "cc-sp-orders"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "ApproximateAgeOfOldestMessage"
+      + namespace                             = "AWS/SQS"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 120
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["rds-connections"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-rds-connections"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "DBInstanceIdentifier" = "cc-sp-db"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "DatabaseConnections"
+      + namespace                             = "AWS/RDS"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 60
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["rds-cpu"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-rds-cpu"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "DBInstanceIdentifier" = "cc-sp-db"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "CPUUtilization"
+      + namespace                             = "AWS/RDS"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Average"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 80
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["tasks-catalog-orders-service"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-tasks-catalog-orders-service"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+          + "ServiceName" = "catalog-orders-service"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "RunningTaskCount"
+      + namespace                             = "ECS/ContainerInsights"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["tasks-chat-service"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-tasks-chat-service"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+          + "ServiceName" = "chat-service"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "RunningTaskCount"
+      + namespace                             = "ECS/ContainerInsights"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["tasks-order-worker"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-tasks-order-worker"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "LessThanThreshold"
+      + dimensions                            = {
+          + "ClusterName" = "cc-sp-cluster"
+          + "ServiceName" = "order-worker"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "RunningTaskCount"
+      + namespace                             = "ECS/ContainerInsights"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Minimum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 1
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.observability.aws_cloudwatch_metric_alarm.this["unhealthy"] will be created
+  + resource "aws_cloudwatch_metric_alarm" "this" {
+      + actions_enabled                       = true
+      + alarm_actions                         = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + alarm_name                            = "cc-sp-unhealthy"
+      + arn                                   = (known after apply)
+      + comparison_operator                   = "GreaterThanThreshold"
+      + dimensions                            = {
+          + "LoadBalancer" = "app/cc-sp-alb/752bd478d79e8843"
+          + "TargetGroup"  = "targetgroup/cc-sp-tg-chat/2a7b58e9a4a89199"
+        }
+      + evaluate_low_sample_count_percentiles = (known after apply)
+      + evaluation_periods                    = 2
+      + id                                    = (known after apply)
+      + metric_name                           = "UnHealthyHostCount"
+      + namespace                             = "AWS/ApplicationELB"
+      + ok_actions                            = [
+          + "arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms",
+        ]
+      + period                                = 60
+      + region                                = "sa-east-1"
+      + statistic                             = "Maximum"
+      + tags_all                              = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + threshold                             = 0
+      + treat_missing_data                    = "notBreaching"
+    }
+
+  # module.registry.terraform_data.image["catalog-orders-service"] is tainted, so must be replaced
+-/+ resource "terraform_data" "image" {
+      ~ id               = "ca5e7be7-3815-2d03-3bdc-02f2ff881e93" -> (known after apply)
+      ~ output           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6" -> (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.registry.terraform_data.image["chat-service"] is tainted, so must be replaced
+-/+ resource "terraform_data" "image" {
+      ~ id               = "593fe978-b1b9-0b55-4d07-1479c500916e" -> (known after apply)
+      ~ output           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241" -> (known after apply)
+        # (2 unchanged attributes hidden)
+    }
+
+  # module.security.aws_vpc_security_group_ingress_rule.ilb_from_app will be created
+  + resource "aws_vpc_security_group_ingress_rule" "ilb_from_app" {
+      + arn                          = (known after apply)
+      + description                  = "chat para o ALB interno"
+      + from_port                    = 80
+      + id                           = (known after apply)
+      + ip_protocol                  = "tcp"
+      + referenced_security_group_id = "sg-0019f5446450a18c3"
+      + region                       = "sa-east-1"
+      + security_group_id            = "sg-0ea6adf9d0f3206c7"
+      + security_group_rule_id       = (known after apply)
+      + tags_all                     = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + to_port                      = 80
+    }
+
+  # module.worker.aws_appautoscaling_policy.this[0] will be created
+  + resource "aws_appautoscaling_policy" "this" {
+      + alarm_arns         = (known after apply)
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + name               = "worker-backlog"
+      + policy_type        = "TargetTrackingScaling"
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/order-worker"
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+
+      + target_tracking_scaling_policy_configuration {
+          + disable_scale_in   = false
+          + scale_in_cooldown  = 180
+          + scale_out_cooldown = 60
+          + target_value       = 5
+
+          + customized_metric_specification {
+              + metrics {
+                  + id          = "m1"
+                  + return_data = false
+                    # (2 unchanged attributes hidden)
+
+                  + metric_stat {
+                      + stat = "Average"
+                        # (1 unchanged attribute hidden)
+
+                      + metric {
+                          + metric_name = "ApproximateNumberOfMessagesVisible"
+                          + namespace   = "AWS/SQS"
+
+                          + dimensions {
+                              + name  = "QueueName"
+                              + value = "cc-sp-orders"
+                            }
+                        }
+                    }
+                }
+              + metrics {
+                  + id          = "m2"
+                  + return_data = false
+                    # (2 unchanged attributes hidden)
+
+                  + metric_stat {
+                      + stat = "Average"
+                        # (1 unchanged attribute hidden)
+
+                      + metric {
+                          + metric_name = "RunningTaskCount"
+                          + namespace   = "ECS/ContainerInsights"
+
+                          + dimensions {
+                              + name  = "ClusterName"
+                              + value = "cc-sp-cluster"
+                            }
+                          + dimensions {
+                              + name  = "ServiceName"
+                              + value = "order-worker"
+                            }
+                        }
+                    }
+                }
+              + metrics {
+                  + expression  = "m1/m2"
+                  + id          = "e1"
+                  + label       = "backlog por task"
+                  + return_data = true
+                }
+            }
+        }
+    }
+
+  # module.worker.aws_appautoscaling_target.this[0] will be created
+  + resource "aws_appautoscaling_target" "this" {
+      + arn                = (known after apply)
+      + id                 = (known after apply)
+      + max_capacity       = 5
+      + min_capacity       = 1
+      + region             = "sa-east-1"
+      + resource_id        = "service/cc-sp-cluster/order-worker"
+      + role_arn           = (known after apply)
+      + scalable_dimension = "ecs:service:DesiredCount"
+      + service_namespace  = "ecs"
+      + tags_all           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+
+      + suspended_state (known after apply)
+    }
+
+  # module.worker.aws_ecs_service.this will be created
+  + resource "aws_ecs_service" "this" {
+      + arn                                = (known after apply)
+      + availability_zone_rebalancing      = "ENABLED"
+      + cluster                            = "cc-sp-cluster"
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 1
+      + enable_ecs_managed_tags            = true
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = (known after apply)
+      + name                               = "order-worker"
+      + platform_version                   = (known after apply)
+      + propagate_tags                     = "SERVICE"
+      + region                             = "sa-east-1"
+      + scheduling_strategy                = "REPLICA"
+      + tags_all                           = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + capacity_provider_strategy {
+          + capacity_provider = "cc-sp-cp"
+          + weight            = 1
+        }
+
+      + deployment_circuit_breaker {
+          + enable   = true
+          + rollback = true
+        }
+
+      + deployment_configuration (known after apply)
+
+      + ordered_placement_strategy {
+          + field = "attribute:ecs.availability-zone"
+          + type  = "spread"
+        }
+      + ordered_placement_strategy {
+          + field = "memory"
+          + type  = "binpack"
+        }
+    }
+
+  # module.worker.aws_ecs_task_definition.this will be created
+  + resource "aws_ecs_task_definition" "this" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + cpu               = 256
+                  + environment       = [
+                      + {
+                          + name  = "AWS_REGION"
+                          + value = "sa-east-1"
+                        },
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "shop"
+                        },
+                      + {
+                          + name  = "DB_USER"
+                          + value = "cc_admin"
+                        },
+                      + {
+                          + name  = "QUEUE_URL"
+                          + value = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders"
+                        },
+                      + {
+                          + name  = "TOPIC_ARN"
+                          + value = "arn:aws:sns:sa-east-1:244736565328:cc-sp-order-events"
+                        },
+                    ]
+                  + essential         = true
+                  + healthCheck       = {
+                      + command     = [
+                          + "CMD-SHELL",
+                          + "test $(( $(date +%s) - $(stat -c %Y /tmp/heartbeat) )) -lt 90",
+                        ]
+                      + interval    = 15
+                      + retries     = 3
+                      + startPeriod = 30
+                      + timeout     = 5
+                    }
+                  + image             = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5"
+                  + logConfiguration  = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/cc/sp/order-worker"
+                          + awslogs-region        = "sa-east-1"
+                          + awslogs-stream-prefix = "worker"
+                        }
+                    }
+                  + memory            = 512
+                  + memoryReservation = 256
+                  + name              = "order-worker"
+                  + portMappings      = []
+                  + secrets           = [
+                      + {
+                          + name      = "DB_PASSWORD"
+                          + valueFrom = "<ARN do segredo omitido>"
+                        },
+                    ]
+                },
+            ]
+        )
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = "arn:aws:iam::244736565328:role/cc-sp-task-exec-role"
+      + family                   = "cc-sp-worker"
+      + id                       = (known after apply)
+      + network_mode             = "bridge"
+      + region                   = "sa-east-1"
+      + requires_compatibilities = [
+          + "EC2",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags_all                 = {
+          + "env"        = "sp"
+          + "managed-by" = "terraform"
+          + "project"    = "cc"
+        }
+      + task_role_arn            = "arn:aws:iam::244736565328:role/cc-sp-worker-task-role"
+      + track_latest             = false
+    }
+
+Plan: 35 to add, 0 to change, 2 to destroy.
+
+Changes to Outputs:
+  + images       = {
+      + catalog-orders-service = (known after apply)
+      + chat-service           = (known after apply)
+      + order-worker           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5"
+    }
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"
+Releasing state lock. This may take a few moments...
