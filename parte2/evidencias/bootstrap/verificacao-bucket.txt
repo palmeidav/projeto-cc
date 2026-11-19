@@ -1,0 +1,7 @@
+### 2026-11-19 17:14:44 UTC
+regiao: sa-east-1
+versionamento: Enabled
+criptografia: AES256
+bloqueio publico: True	True	True	True
+tags: managed-by=terraform project=cc 
+objetos: None
