@@ -1,0 +1,49 @@
+### 20:05:27 UTC > Quais livros de ficção científica vocês têm em estoque?
+conversation_id=8fa19c8b2d0c4096b3059052eb37b12c degraded=false
+Ótimo! Encontrei livros de ficção científica no nosso catálogo. Aqui está o que temos:
+
+📚 **Livros de Ficção Científica:**
+
+1. **1984** - George Orwell
+   - Preço: R$ 45,90
+   - Estoque: ✅ 29 unidades disponíveis
+
+2. **Fahrenheit 451** - Ray Bradbury
+   - Preço: R$ 38,90
+   - Estoque: ❌ Fora de estoque no momento
+
+Você se interessa por algum desses? O "1984" está disponível e é uma obra clássica imperdível! 📖
+
+### 20:05:31 UTC > Quero comprar 1 unidade de 1984. Meu nome é Pedro.
+conversation_id=8fa19c8b2d0c4096b3059052eb37b12c degraded=false
+Perfeito, Pedro! Vou confirmar seu pedido antes de registrar:
+
+**Resumo do Pedido:**
+- Cliente: Pedro
+- Livro: 1984 (George Orwell)
+- Quantidade: 1 unidade
+- Preço: R$ 45,90
+
+Tudo certo? Posso prosseguir com o registro do pedido? ✅
+
+### 20:05:33 UTC > Sim, pode registrar o pedido.
+conversation_id=8fa19c8b2d0c4096b3059052eb37b12c degraded=false
+🎉 **Pedido registrado com sucesso!**
+
+**Código do Pedido:** d482661154b1
+
+**Detalhes:**
+- Cliente: Pedro
+- Livro: 1984 (George Orwell)
+- Quantidade: 1
+- Total: R$ 45,90
+- Status: Pendente
+
+Seu pedido foi confirmado! Você receberá em breve mais informações sobre o envio. Obrigada pela compra na Livraria Nuvem! 📚✨
+
+CID=8fa19c8b2d0c4096b3059052eb37b12c
+### 2026-11-19 20:05:46 UTC (17:05:46 BRT)
+$ CMD=$(aws ssm send-command --instance-ids i-0dff1eeb8a600b7fa --document-name AWS-RunShellScript --parameters 'commands=["curl -s http://internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com/orders/d482661154b1","echo","curl -s http://internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com/orders/3a3193250429"]' --query Command.CommandId --output text); sleep 6; aws ssm get-command-invocation --command-id $CMD --instance-id i-0dff1eeb8a600b7fa --query StandardOutputContent --output text | jq -c '{order_id,status,created_at,confirmed_at}'
+{"order_id":"d482661154b1","status":"CONFIRMED","created_at":"2026-11-19T20:05:35.688490+00:00","confirmed_at":"2026-11-19T20:05:35.911340+00:00"}
+{"order_id":"3a3193250429","status":"CONFIRMED","created_at":"2026-11-19T17:45:40.387799+00:00","confirmed_at":"2026-11-19T17:45:40.588770+00:00"}
+

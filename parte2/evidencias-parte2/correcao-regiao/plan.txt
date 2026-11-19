@@ -1,0 +1,516 @@
+Acquiring state lock. This may take a few moments...
+module.iam.data.aws_iam_policy_document.trust_ec2: Reading...
+module.registry.data.aws_region.current: Reading...
+module.iam.data.aws_region.current: Reading...
+module.compute.data.aws_ssm_parameter.ecs_ami: Reading...
+module.iam.data.aws_caller_identity.me: Reading...
+module.catalog.data.aws_region.current: Reading...
+module.worker.data.aws_region.current: Reading...
+module.network.data.aws_region.current: Reading...
+module.network.aws_eip.nat[0]: Refreshing state... [id=eipalloc-0c16c4b8a21fe6223]
+module.compute.aws_ecs_cluster.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:cluster/cc-sp-cluster]
+module.network.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.registry.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.worker.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.catalog.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.iam.data.aws_iam_policy_document.trust_ec2: Read complete after 0s [id=2851119427]
+module.audit.aws_cloudwatch_log_group.trail: Refreshing state... [id=/cc/sp/cloudtrail]
+module.iam.data.aws_partition.p: Reading...
+module.audit.data.aws_partition.p: Reading...
+module.observability.data.aws_region.current: Reading...
+module.registry.aws_ecr_repository.this["order-worker"]: Refreshing state... [id=cc-sp/order-worker]
+module.iam.data.aws_partition.p: Read complete after 0s [id=aws]
+module.registry.aws_ecr_repository.this["catalog-orders-service"]: Refreshing state... [id=cc-sp/catalog-orders-service]
+module.audit.data.aws_partition.p: Read complete after 0s [id=aws]
+module.observability.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.registry.data.aws_caller_identity.me: Reading...
+module.registry.aws_ecr_repository.this["chat-service"]: Refreshing state... [id=cc-sp/chat-service]
+module.audit.data.aws_caller_identity.me: Reading...
+module.iam.data.aws_caller_identity.me: Read complete after 1s [id=244736565328]
+module.network.data.aws_availability_zones.available: Reading...
+module.registry.data.aws_caller_identity.me: Read complete after 1s [id=244736565328]
+module.messaging.aws_sns_topic.order_events: Refreshing state... [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-order-events]
+module.audit.data.aws_caller_identity.me: Read complete after 2s [id=244736565328]
+module.messaging.aws_sqs_queue.dlq: Refreshing state... [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq]
+module.network.data.aws_availability_zones.available: Read complete after 1s [id=sa-east-1]
+module.messaging.aws_sns_topic.alarms: Refreshing state... [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms]
+module.compute.data.aws_ssm_parameter.ecs_ami: Read complete after 2s [id=/aws/service/ecs/optimized-ami/amazon-linux-2023/recommended/image_id]
+module.audit.data.aws_region.current: Reading...
+module.audit.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.network.aws_vpc.this: Refreshing state... [id=vpc-0e939e3d096b27d98]
+module.iam.aws_iam_role.instance: Refreshing state... [id=cc-sp-ecs-instance-role]
+module.iam.data.aws_iam_policy_document.trust_ecs_tasks: Reading...
+module.iam.data.aws_iam_policy_document.trust_ecs_tasks: Read complete after 0s [id=1435592119]
+module.iam.data.aws_iam_policy_document.chat: Reading...
+module.iam.data.aws_iam_policy_document.chat: Read complete after 0s [id=4036281470]
+module.audit.aws_s3_bucket.trail: Refreshing state... [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.iam.aws_iam_role.worker: Refreshing state... [id=cc-sp-worker-task-role]
+module.iam.aws_iam_role.task_exec: Refreshing state... [id=cc-sp-task-exec-role]
+module.iam.aws_iam_role.chat: Refreshing state... [id=cc-sp-chat-task-role]
+module.iam.aws_iam_role.catalog: Refreshing state... [id=cc-sp-catalog-task-role]
+module.audit.data.aws_iam_policy_document.trust: Reading...
+module.audit.data.aws_iam_policy_document.trust: Read complete after 0s [id=3439583813]
+module.audit.data.aws_iam_policy_document.cwl: Reading...
+module.audit.data.aws_iam_policy_document.cwl: Read complete after 0s [id=734698220]
+module.audit.aws_cloudwatch_log_metric_filter.audit["iam-policy-change"]: Refreshing state... [id=iam-policy-change]
+module.audit.aws_cloudwatch_log_metric_filter.audit["sg-change"]: Refreshing state... [id=sg-change]
+module.audit.aws_cloudwatch_log_metric_filter.audit["access-denied"]: Refreshing state... [id=access-denied]
+module.registry.terraform_data.image["chat-service"]: Refreshing state... [id=f2a22d50-afc4-afe5-2b01-55dfea0a6df9]
+module.registry.terraform_data.image["order-worker"]: Refreshing state... [id=f7fd06c5-56c5-e194-ea35-8d715e1243f1]
+module.registry.terraform_data.image["catalog-orders-service"]: Refreshing state... [id=245b362a-0c40-98cf-b80b-20caf6664fdf]
+module.registry.aws_ecr_lifecycle_policy.this["order-worker"]: Refreshing state... [id=cc-sp/order-worker]
+module.registry.aws_ecr_lifecycle_policy.this["catalog-orders-service"]: Refreshing state... [id=cc-sp/catalog-orders-service]
+module.registry.aws_ecr_lifecycle_policy.this["chat-service"]: Refreshing state... [id=cc-sp/chat-service]
+module.messaging.aws_sqs_queue.orders: Refreshing state... [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders]
+module.audit.aws_iam_role.trail_cwl: Refreshing state... [id=cc-sp-cloudtrail-cwl-role]
+module.messaging.aws_sns_topic_subscription.alarm_email[0]: Refreshing state... [id=arn:aws:sns:sa-east-1:244736565328:cc-sp-alarms:3cddf7f2-6272-44ae-a9ce-764ae890ff52]
+module.iam.aws_iam_instance_profile.instance: Refreshing state... [id=cc-sp-ecs-instance-profile]
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"]: Refreshing state... [id=cc-sp-ecs-instance-role/arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role]
+module.iam.aws_iam_role_policy_attachment.instance["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]: Refreshing state... [id=cc-sp-ecs-instance-role/arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore]
+module.iam.aws_iam_role_policy_attachment.task_exec: Refreshing state... [id=cc-sp-task-exec-role/arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy]
+module.audit.aws_cloudwatch_metric_alarm.audit["sg-change"]: Refreshing state... [id=cc-sp-audit-sg-change]
+module.audit.aws_cloudwatch_metric_alarm.audit["access-denied"]: Refreshing state... [id=cc-sp-audit-access-denied]
+module.audit.aws_cloudwatch_metric_alarm.audit["iam-policy-change"]: Refreshing state... [id=cc-sp-audit-iam-policy-change]
+module.iam.aws_iam_role_policy.chat: Refreshing state... [id=cc-sp-chat-task-role:bedrock-model]
+module.messaging.aws_sqs_queue_redrive_allow_policy.dlq: Refreshing state... [id=https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq]
+module.iam.data.aws_iam_policy_document.worker: Reading...
+module.iam.data.aws_iam_policy_document.worker: Read complete after 0s [id=2190762200]
+module.iam.data.aws_iam_policy_document.catalog: Reading...
+module.iam.data.aws_iam_policy_document.catalog: Read complete after 0s [id=2433058262]
+module.iam.aws_iam_role_policy.worker: Refreshing state... [id=cc-sp-worker-task-role:sqs-consume-sns-publish]
+module.iam.aws_iam_role_policy.catalog: Refreshing state... [id=cc-sp-catalog-task-role:sqs-send]
+module.network.aws_route_table.public: Refreshing state... [id=rtb-06b48f00897e494e1]
+module.network.aws_subnet.app[1]: Refreshing state... [id=subnet-09cd89cd658076fbc]
+module.network.aws_route_table.app[0]: Refreshing state... [id=rtb-0d7c1969c726f4487]
+module.network.aws_subnet.app[0]: Refreshing state... [id=subnet-001b27d3ddd79fb71]
+module.network.aws_subnet.public[1]: Refreshing state... [id=subnet-07aa5deb653367622]
+module.network.aws_subnet.public[0]: Refreshing state... [id=subnet-037574623ba0c6beb]
+module.network.aws_internet_gateway.this: Refreshing state... [id=igw-0dc24663511c742d8]
+module.network.aws_route_table.data: Refreshing state... [id=rtb-0a4f1a5ab53e96a64]
+module.network.aws_subnet.data[1]: Refreshing state... [id=subnet-09ff5cd4357464080]
+module.network.aws_subnet.data[0]: Refreshing state... [id=subnet-04c98ac5d65886172]
+module.audit.aws_iam_role_policy.trail_cwl: Refreshing state... [id=cc-sp-cloudtrail-cwl-role:cwl-write]
+module.network.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-0781e6c368f806fe9]
+module.network.aws_route_table_association.app[0]: Refreshing state... [id=rtbassoc-0a7a1ef5da0346eec]
+module.network.aws_route_table_association.app[1]: Refreshing state... [id=rtbassoc-05d728ea2ffcdec46]
+module.security.aws_security_group.this["ilb"]: Refreshing state... [id=sg-0ea6adf9d0f3206c7]
+module.security.aws_security_group.this["db"]: Refreshing state... [id=sg-069349d0877655cd9]
+module.security.aws_security_group.this["app"]: Refreshing state... [id=sg-0019f5446450a18c3]
+module.security.aws_security_group.this["alb"]: Refreshing state... [id=sg-02450507e34493046]
+module.network.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-00edc3816c0251fcf]
+module.network.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-09bb4205fb9a8ec5e]
+module.network.aws_route.public_default: Refreshing state... [id=r-rtb-06b48f00897e494e11080289494]
+module.network.aws_nat_gateway.this[0]: Refreshing state... [id=nat-0ab74cd9687c6f592]
+module.network.aws_route_table_association.data[1]: Refreshing state... [id=rtbassoc-07579010d282ba212]
+module.network.aws_route_table_association.data[0]: Refreshing state... [id=rtbassoc-083d1bcc2c8cec5ad]
+module.database.aws_db_subnet_group.this: Refreshing state... [id=cc-sp-db-subnets]
+module.security.aws_vpc_security_group_ingress_rule.alb_http: Refreshing state... [id=sgr-0af39d84efbdd350e]
+module.security.aws_vpc_security_group_ingress_rule.db_from_app: Refreshing state... [id=sgr-07a4012ac7b33bbf6]
+module.security.aws_vpc_security_group_egress_rule.all["alb"]: Refreshing state... [id=sgr-0e5ea04880d4ccc3e]
+module.security.aws_vpc_security_group_egress_rule.all["app"]: Refreshing state... [id=sgr-099e617fe90aa1bff]
+module.security.aws_vpc_security_group_egress_rule.all["ilb"]: Refreshing state... [id=sgr-05629cf14820d0929]
+module.security.aws_vpc_security_group_egress_rule.all["db"]: Refreshing state... [id=sgr-04d16d5a4a8fdfc90]
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["alb"]: Refreshing state... [id=sgr-007451cce3156bfec]
+module.security.aws_vpc_security_group_ingress_rule.app_from_lb["ilb"]: Refreshing state... [id=sgr-06a6eb25d107be442]
+module.security.aws_vpc_security_group_ingress_rule.ilb_from_app: Refreshing state... [id=sgr-043aacc99751514d1]
+module.network.aws_route.app_default[0]: Refreshing state... [id=r-rtb-0d7c1969c726f44871080289494]
+module.compute.aws_launch_template.this: Refreshing state... [id=lt-0561aaf27fc92ce3b]
+module.loadbalancer.aws_lb.this["ilb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:loadbalancer/app/cc-sp-ilb/471680d3ff317724]
+module.loadbalancer.aws_lb.this["alb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:loadbalancer/app/cc-sp-alb/752bd478d79e8843]
+module.loadbalancer.aws_lb_target_group.this["ilb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-catalog/d18662ee203b8b11]
+module.loadbalancer.aws_lb_target_group.this["alb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:targetgroup/cc-sp-tg-chat/2a7b58e9a4a89199]
+module.compute.aws_autoscaling_group.this: Refreshing state... [id=cc-sp-asg]
+module.database.aws_db_instance.this: Refreshing state... [id=db-7WDZCUWLO2ALQOYCUZTBPL2DSM]
+module.audit.aws_s3_bucket_public_access_block.trail: Refreshing state... [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.aws_s3_bucket_server_side_encryption_configuration.trail: Refreshing state... [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.data.aws_iam_policy_document.bucket: Reading...
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Refreshing state... [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.data.aws_iam_policy_document.bucket: Read complete after 0s [id=1519458768]
+module.iam.data.aws_iam_policy_document.task_exec: Reading...
+module.iam.data.aws_iam_policy_document.task_exec: Read complete after 0s [id=1847853064]
+module.iam.aws_iam_role_policy.task_exec: Refreshing state... [id=cc-sp-task-exec-role:db-secret]
+module.compute.aws_ecs_capacity_provider.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:capacity-provider/cc-sp-cp]
+module.audit.aws_s3_bucket_policy.trail: Refreshing state... [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.loadbalancer.aws_lb_listener.this["ilb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:listener/app/cc-sp-ilb/471680d3ff317724/77da77b8b1ccc539]
+module.loadbalancer.aws_lb_listener.this["alb"]: Refreshing state... [id=arn:aws:elasticloadbalancing:sa-east-1:244736565328:listener/app/cc-sp-alb/752bd478d79e8843/b102768070bc724f]
+module.audit.aws_cloudtrail.this: Refreshing state... [id=arn:aws:cloudtrail:sa-east-1:244736565328:trail/cc-sp-trail]
+module.compute.aws_ecs_cluster_capacity_providers.this: Refreshing state... [id=cc-sp-cluster]
+module.worker.aws_cloudwatch_log_group.this: Refreshing state... [id=/cc/sp/order-worker]
+module.catalog.aws_cloudwatch_log_group.this: Refreshing state... [id=/cc/sp/catalog-orders-service]
+module.catalog.aws_ecs_task_definition.this: Refreshing state... [id=cc-sp-catalog]
+module.worker.aws_ecs_task_definition.this: Refreshing state... [id=cc-sp-worker]
+module.catalog.aws_ecs_service.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/catalog-orders-service]
+module.worker.aws_ecs_service.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/order-worker]
+module.catalog.aws_appautoscaling_target.this[0]: Refreshing state... [id=service/cc-sp-cluster/catalog-orders-service]
+module.worker.aws_appautoscaling_target.this[0]: Refreshing state... [id=service/cc-sp-cluster/order-worker]
+module.catalog.aws_appautoscaling_policy.this[0]: Refreshing state... [id=catalog-cpu]
+module.worker.aws_appautoscaling_policy.this[0]: Refreshing state... [id=worker-backlog]
+module.chat.aws_cloudwatch_log_group.this: Refreshing state... [id=/cc/sp/chat-service]
+module.observability.aws_cloudwatch_log_metric_filter.errors["chat"]: Refreshing state... [id=errors]
+module.observability.aws_cloudwatch_log_metric_filter.errors["catalog"]: Refreshing state... [id=errors]
+module.observability.aws_cloudwatch_log_metric_filter.errors["worker"]: Refreshing state... [id=errors]
+module.chat.aws_ecs_task_definition.this: Refreshing state... [id=cc-sp-chat]
+module.chat.aws_ecs_service.this: Refreshing state... [id=arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/chat-service]
+module.chat.aws_appautoscaling_target.this[0]: Refreshing state... [id=service/cc-sp-cluster/chat-service]
+module.observability.aws_cloudwatch_metric_alarm.this["rds-connections"]: Refreshing state... [id=cc-sp-rds-connections]
+module.observability.aws_cloudwatch_metric_alarm.this["rds-cpu"]: Refreshing state... [id=cc-sp-rds-cpu]
+module.observability.aws_cloudwatch_metric_alarm.this["queue-age"]: Refreshing state... [id=cc-sp-queue-age]
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-catalog-orders-service"]: Refreshing state... [id=cc-sp-tasks-catalog-orders-service]
+module.observability.aws_cloudwatch_metric_alarm.this["unhealthy"]: Refreshing state... [id=cc-sp-unhealthy]
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-order-worker"]: Refreshing state... [id=cc-sp-tasks-order-worker]
+module.observability.aws_cloudwatch_dashboard.main: Refreshing state... [id=cc-sp]
+module.observability.aws_cloudwatch_metric_alarm.this["cluster-cpu"]: Refreshing state... [id=cc-sp-cluster-cpu]
+module.observability.aws_cloudwatch_metric_alarm.this["latency-p95"]: Refreshing state... [id=cc-sp-latency-p95]
+module.observability.aws_cloudwatch_metric_alarm.this["cluster-mem"]: Refreshing state... [id=cc-sp-cluster-mem]
+module.observability.aws_cloudwatch_metric_alarm.this["dlq-not-empty"]: Refreshing state... [id=cc-sp-dlq-not-empty]
+module.observability.aws_cloudwatch_metric_alarm.this["app-errors"]: Refreshing state... [id=cc-sp-app-errors]
+module.observability.aws_cloudwatch_metric_alarm.this["asg-capacity"]: Refreshing state... [id=cc-sp-asg-capacity]
+module.observability.aws_cloudwatch_metric_alarm.this["5xx"]: Refreshing state... [id=cc-sp-5xx]
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-chat-service"]: Refreshing state... [id=cc-sp-tasks-chat-service]
+module.chat.aws_appautoscaling_policy.this[0]: Refreshing state... [id=chat-req]
+module.observability.aws_cloudwatch_dashboard.diag: Refreshing state... [id=cc-sp-diagnostico]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+-/+ destroy and then create replacement
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # module.catalog.aws_ecs_service.this will be updated in-place
+  ~ resource "aws_ecs_service" "this" {
+        id                                 = "arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/catalog-orders-service"
+        name                               = "catalog-orders-service"
+        tags                               = {}
+      ~ task_definition                    = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-catalog:1" -> (known after apply)
+        # (18 unchanged attributes hidden)
+
+        # (7 unchanged blocks hidden)
+    }
+
+  # module.catalog.aws_ecs_task_definition.this must be replaced
+-/+ resource "aws_ecs_task_definition" "this" {
+      ~ arn                      = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-catalog:1" -> (known after apply)
+      ~ arn_without_revision     = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-catalog" -> (known after apply)
+      ~ container_definitions    = jsonencode(
+            [
+              - {
+                  - cpu               = 256
+                  - environment       = [
+                      - {
+                          - name  = "AWS_REGION"
+                          - value = "sa-east-1"
+                        },
+                      - {
+                          - name  = "DB_HOST"
+                          - value = "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+                        },
+                      - {
+                          - name  = "DB_NAME"
+                          - value = "shop"
+                        },
+                      - {
+                          - name  = "DB_USER"
+                          - value = "cc_admin"
+                        },
+                      - {
+                          - name  = "QUEUE_URL"
+                          - value = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders"
+                        },
+                    ]
+                  - essential         = true
+                  - healthCheck       = {
+                      - command     = [
+                          - "CMD-SHELL",
+                          - "curl -f http://localhost:8001/health || exit 1",
+                        ]
+                      - interval    = 15
+                      - retries     = 3
+                      - startPeriod = 30
+                      - timeout     = 5
+                    }
+                  - image             = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6"
+                  - logConfiguration  = {
+                      - logDriver = "awslogs"
+                      - options   = {
+                          - awslogs-group         = "/cc/sp/catalog-orders-service"
+                          - awslogs-region        = "sa-east-1"
+                          - awslogs-stream-prefix = "catalog"
+                        }
+                    }
+                  - memory            = 512
+                  - memoryReservation = 256
+                  - mountPoints       = []
+                  - name              = "catalog-orders-service"
+                  - portMappings      = [
+                      - {
+                          - containerPort = 8001
+                          - hostPort      = 0
+                          - protocol      = "tcp"
+                        },
+                    ]
+                  - secrets           = [
+                      - {
+                          - name      = "DB_PASSWORD"
+                          - valueFrom = "<ARN do segredo omitido>"
+                        },
+                    ]
+                  - systemControls    = []
+                  - volumesFrom       = []
+                },
+            ]
+        ) -> (known after apply) # forces replacement
+      ~ enable_fault_injection   = false -> (known after apply)
+      ~ id                       = "cc-sp-catalog" -> (known after apply)
+      ~ revision                 = 1 -> (known after apply)
+      - tags                     = {} -> null
+        # (13 unchanged attributes hidden)
+    }
+
+  # module.chat.data.aws_region.current will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "aws_region" "current" {
+      + description = (known after apply)
+      + endpoint    = (known after apply)
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + region      = (known after apply)
+    }
+
+  # module.chat.aws_ecs_service.this will be updated in-place
+  ~ resource "aws_ecs_service" "this" {
+        id                                 = "arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/chat-service"
+        name                               = "chat-service"
+        tags                               = {}
+      ~ task_definition                    = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-chat:1" -> (known after apply)
+        # (18 unchanged attributes hidden)
+
+        # (7 unchanged blocks hidden)
+    }
+
+  # module.chat.aws_ecs_task_definition.this must be replaced
+-/+ resource "aws_ecs_task_definition" "this" {
+      ~ arn                      = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-chat:1" -> (known after apply)
+      ~ arn_without_revision     = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-chat" -> (known after apply)
+      ~ container_definitions    = jsonencode(
+            [
+              - {
+                  - cpu               = 512
+                  - environment       = [
+                      - {
+                          - name  = "AWS_REGION"
+                          - value = "sa-east-1"
+                        },
+                      - {
+                          - name  = "BEDROCK_MODEL_ID"
+                          - value = "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+                        },
+                      - {
+                          - name  = "CATALOG_URL"
+                          - value = "http://internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com"
+                        },
+                      - {
+                          - name  = "DB_HOST"
+                          - value = "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+                        },
+                      - {
+                          - name  = "DB_NAME"
+                          - value = "shop"
+                        },
+                      - {
+                          - name  = "DB_USER"
+                          - value = "cc_admin"
+                        },
+                      - {
+                          - name  = "LLM_MODE"
+                          - value = "bedrock"
+                        },
+                    ]
+                  - essential         = true
+                  - healthCheck       = {
+                      - command     = [
+                          - "CMD-SHELL",
+                          - "curl -f http://localhost:8000/health || exit 1",
+                        ]
+                      - interval    = 15
+                      - retries     = 3
+                      - startPeriod = 30
+                      - timeout     = 5
+                    }
+                  - image             = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241"
+                  - logConfiguration  = {
+                      - logDriver = "awslogs"
+                      - options   = {
+                          - awslogs-group         = "/cc/sp/chat-service"
+                          - awslogs-region        = "sa-east-1"
+                          - awslogs-stream-prefix = "chat"
+                        }
+                    }
+                  - memory            = 1024
+                  - memoryReservation = 512
+                  - mountPoints       = []
+                  - name              = "chat-service"
+                  - portMappings      = [
+                      - {
+                          - containerPort = 8000
+                          - hostPort      = 0
+                          - protocol      = "tcp"
+                        },
+                    ]
+                  - secrets           = [
+                      - {
+                          - name      = "DB_PASSWORD"
+                          - valueFrom = "<ARN do segredo omitido>"
+                        },
+                    ]
+                  - systemControls    = []
+                  - volumesFrom       = []
+                },
+            ]
+        ) -> (known after apply) # forces replacement
+      ~ enable_fault_injection   = false -> (known after apply)
+      ~ id                       = "cc-sp-chat" -> (known after apply)
+      ~ revision                 = 1 -> (known after apply)
+      - tags                     = {} -> null
+        # (13 unchanged attributes hidden)
+    }
+
+  # module.registry.terraform_data.image["catalog-orders-service"] must be replaced
+-/+ resource "terraform_data" "image" {
+      ~ id               = "245b362a-0c40-98cf-b80b-20caf6664fdf" -> (known after apply)
+      ~ input            = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6" -> "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:37be1454eccd"
+      ~ output           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6" -> (known after apply)
+      ~ triggers_replace = [
+            "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service",
+          ~ "44ebafde54e6" -> "37be1454eccd",
+        ]
+    }
+
+  # module.registry.terraform_data.image["chat-service"] must be replaced
+-/+ resource "terraform_data" "image" {
+      ~ id               = "f2a22d50-afc4-afe5-2b01-55dfea0a6df9" -> (known after apply)
+      ~ input            = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241" -> "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:5f39748db8cb"
+      ~ output           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241" -> (known after apply)
+      ~ triggers_replace = [
+            "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service",
+          ~ "21924a155241" -> "5f39748db8cb",
+        ]
+    }
+
+  # module.registry.terraform_data.image["order-worker"] must be replaced
+-/+ resource "terraform_data" "image" {
+      ~ id               = "f7fd06c5-56c5-e194-ea35-8d715e1243f1" -> (known after apply)
+      ~ input            = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5" -> "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:67fa63d5d894"
+      ~ output           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5" -> (known after apply)
+      ~ triggers_replace = [
+            "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker",
+          ~ "c609ce7f55a5" -> "67fa63d5d894",
+        ]
+    }
+
+  # module.worker.aws_ecs_service.this will be updated in-place
+  ~ resource "aws_ecs_service" "this" {
+        id                                 = "arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/order-worker"
+        name                               = "order-worker"
+        tags                               = {}
+      ~ task_definition                    = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-worker:1" -> (known after apply)
+        # (17 unchanged attributes hidden)
+
+        # (6 unchanged blocks hidden)
+    }
+
+  # module.worker.aws_ecs_task_definition.this must be replaced
+-/+ resource "aws_ecs_task_definition" "this" {
+      ~ arn                      = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-worker:1" -> (known after apply)
+      ~ arn_without_revision     = "arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-worker" -> (known after apply)
+      ~ container_definitions    = jsonencode(
+            [
+              - {
+                  - cpu               = 256
+                  - environment       = [
+                      - {
+                          - name  = "AWS_REGION"
+                          - value = "sa-east-1"
+                        },
+                      - {
+                          - name  = "DB_HOST"
+                          - value = "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+                        },
+                      - {
+                          - name  = "DB_NAME"
+                          - value = "shop"
+                        },
+                      - {
+                          - name  = "DB_USER"
+                          - value = "cc_admin"
+                        },
+                      - {
+                          - name  = "QUEUE_URL"
+                          - value = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders"
+                        },
+                      - {
+                          - name  = "TOPIC_ARN"
+                          - value = "arn:aws:sns:sa-east-1:244736565328:cc-sp-order-events"
+                        },
+                    ]
+                  - essential         = true
+                  - healthCheck       = {
+                      - command     = [
+                          - "CMD-SHELL",
+                          - "test $(( $(date +%s) - $(stat -c %Y /tmp/heartbeat) )) -lt 90",
+                        ]
+                      - interval    = 15
+                      - retries     = 3
+                      - startPeriod = 30
+                      - timeout     = 5
+                    }
+                  - image             = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5"
+                  - logConfiguration  = {
+                      - logDriver = "awslogs"
+                      - options   = {
+                          - awslogs-group         = "/cc/sp/order-worker"
+                          - awslogs-region        = "sa-east-1"
+                          - awslogs-stream-prefix = "worker"
+                        }
+                    }
+                  - memory            = 512
+                  - memoryReservation = 256
+                  - mountPoints       = []
+                  - name              = "order-worker"
+                  - portMappings      = []
+                  - secrets           = [
+                      - {
+                          - name      = "DB_PASSWORD"
+                          - valueFrom = "<ARN do segredo omitido>"
+                        },
+                    ]
+                  - systemControls    = []
+                  - volumesFrom       = []
+                },
+            ]
+        ) -> (known after apply) # forces replacement
+      ~ enable_fault_injection   = false -> (known after apply)
+      ~ id                       = "cc-sp-worker" -> (known after apply)
+      ~ revision                 = 1 -> (known after apply)
+      - tags                     = {} -> null
+        # (13 unchanged attributes hidden)
+    }
+
+Plan: 6 to add, 3 to change, 6 to destroy.
+
+Changes to Outputs:
+  ~ images       = {
+      ~ catalog-orders-service = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6" -> (known after apply)
+      ~ chat-service           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241" -> (known after apply)
+      ~ order-worker           = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5" -> (known after apply)
+    }
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: regiao.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "regiao.tfplan"
+Releasing state lock. This may take a few moments...

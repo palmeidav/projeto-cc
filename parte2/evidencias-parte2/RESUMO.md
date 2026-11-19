@@ -70,3 +70,11 @@ O script `scripts/prova-sem-ohio.sh` gerou `portabilidade/prova-sem-ohio.txt`:
 - **3 alarmes de auditoria**, adaptados do CIS: `cc-sp-audit-iam-policy-change`, `cc-sp-audit-sg-change` e `cc-sp-audit-access-denied` (mais de 10 negações em 5 min).
 - **Auditoria retroativa** (`auditoria/verificacao-cloudtrail.txt`): o histórico de eventos mostra as 2 mudanças do teste 13.6 na política do chat em Ohio, às 17:16:36 (Deny) e 17:21:13 (restauração), pelo usuário `pedrohav`, além das políticas criadas pelo Terraform em SP.
 - **Runbook:** `docs/runbook-incidentes.md`. São 6 playbooks (Bedrock, DLQ, fila, alvos/5xx, banco e auditoria), com consultas de Logs Insights, severidades e o registro pós-incidente. Os tempos citados vêm dos testes da Etapa 13.
+
+## Deploy da correção da região (20:01–20:05 UTC)
+- **Apply:** 6 adicionados, 3 alterados e 6 destruídos (`correcao-regiao/apply.txt`). Os 6 destruídos são as 3 revisões antigas das task definitions e os 3 registros de build. Os 3 serviços foram alterados no lugar.
+- **Imagens novas:** `chat-service:5f39748db8cb`, `catalog-orders-service:37be1454eccd` e `order-worker:67fa63d5d894`, nas revisões `cc-sp-*:2`. Todos os serviços estáveis 117 s depois do fim do apply.
+- **Disponibilidade durante o rolling deploy:** **105/105 respostas 200** em `/health` de 20:01:45 a 20:04:54, com uma checagem a cada ~2 s (`correcao-regiao/disponibilidade-health.tsv`).
+- **Depois do deploy:** 4/4 alvos healthy, tasks em sa-east-1a e 1b, `/health` 200 e `/ready` 200 com Bedrock (`correcao-regiao/01-saude-pos-deploy.txt`).
+- **Jornada:** pedido `d482661154b1` criado às 20:05:35.688 e **CONFIRMED às 20:05:35.911 (223 ms)**, com `degraded=false` nos 3 turnos e `conversation_id` correlacionado nos 3 serviços (`correcao-regiao/02-jornada.txt`, `03-logs-correlacionados.txt`).
+- **Persistência:** o pedido anterior `3a3193250429` continua CONFIRMED, e o estoque de "1984" passou de 30 para 29 por causa dele e se manteve depois da troca de todas as tasks.

@@ -1,0 +1,36 @@
+### 2026-11-19 20:05:05 UTC (17:05:05 BRT)
+$ aws ecs describe-services --cluster cc-sp-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount,taskDefinition,deployments[0].rolloutState,length(deployments)]' --output text
+chat-service	2	2	arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-chat:2	COMPLETED	1
+catalog-orders-service	2	2	arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-catalog:2	COMPLETED	1
+order-worker	1	1	arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-worker:2	COMPLETED	1
+
+### 2026-11-19 20:05:07 UTC (17:05:07 BRT)
+$ aws ecs describe-task-definition --task-definition cc-sp-chat --query 'taskDefinition.containerDefinitions[0].image' --output text; aws ecs describe-task-definition --task-definition cc-sp-catalog --query 'taskDefinition.containerDefinitions[0].image' --output text; aws ecs describe-task-definition --task-definition cc-sp-worker --query 'taskDefinition.containerDefinitions[0].image' --output text
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:5f39748db8cb
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:37be1454eccd
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:67fa63d5d894
+
+### 2026-11-19 20:05:11 UTC (17:05:11 BRT)
+$ for n in cc-sp-tg-chat cc-sp-tg-catalog; do echo $n; aws elbv2 describe-target-health --target-group-arn $(aws elbv2 describe-target-groups --names $n --query 'TargetGroups[0].TargetGroupArn' --output text) --query 'TargetHealthDescriptions[].[Target.Id,Target.Port,TargetHealth.State]' --output text; done
+cc-sp-tg-chat
+i-0247767f10070fd40	32769	healthy
+i-0c20d60fc5b006248	32771	healthy
+cc-sp-tg-catalog
+i-0247767f10070fd40	32768	healthy
+i-0c20d60fc5b006248	32770	healthy
+
+### 2026-11-19 20:05:17 UTC (17:05:17 BRT)
+$ aws ecs list-tasks --cluster cc-sp-cluster --query taskArns --output text | xargs aws ecs describe-tasks --cluster cc-sp-cluster --query 'tasks[].[group,availabilityZone,lastStatus,healthStatus,taskDefinitionArn]' --output text --tasks | sed 's#arn:aws:ecs:sa-east-1:[0-9]*:task-definition/##'
+service:catalog-orders-service	sa-east-1b	RUNNING	HEALTHY	cc-sp-catalog:2
+service:order-worker	sa-east-1a	RUNNING	HEALTHY	cc-sp-worker:2
+service:chat-service	sa-east-1b	RUNNING	HEALTHY	cc-sp-chat:2
+service:catalog-orders-service	sa-east-1a	RUNNING	HEALTHY	cc-sp-catalog:2
+service:chat-service	sa-east-1a	RUNNING	HEALTHY	cc-sp-chat:2
+
+### 2026-11-19 20:05:20 UTC (17:05:20 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com/health; curl -s -w ' HTTP %{http_code}
+' http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com/ready
+{"status":"ok"} HTTP 200
+{"status":"ready","llm_mode":"bedrock"} HTTP 200
+
