@@ -1,0 +1,17 @@
+## identidade
+244736565328	arn:aws:sts::244736565328:assumed-role/AWSReservedSSO_AdministratorAccess_867e8b018abb6b83/pedrohav
+## AZs em sa-east-1
+sa-east-1a	sa-east-1b	sa-east-1c
+## t3.medium por AZ
+sa-east-1b	sa-east-1a	sa-east-1c
+## db.t4g.micro postgres (versao padrao)
+18.3
+opcoes Multi-AZ para db.t4g.micro: 100
+opcoes Multi-AZ para db.t4g.micro: 48
+## AMI ECS AL2023
+ami-0f457e8ca4ca02c88
+## Bedrock: perfis de inferencia com Haiku 4.5
+global.anthropic.claude-haiku-4-5-20251001-v1:0	ACTIVE
+## Bedrock: modelo base na regiao
+anthropic.claude-haiku-4-5-20251001-v1:0	INFERENCE_PROFILE
+## o que ja existe com prefixo cc-sp (deve estar vazio)

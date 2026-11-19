@@ -1,0 +1,5 @@
+#!/bin/bash
+cat >> /etc/ecs/ecs.config <<CFG
+ECS_CLUSTER=${cluster_name}
+ECS_ENABLE_CONTAINER_METADATA=true
+CFG

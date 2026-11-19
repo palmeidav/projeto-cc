@@ -1,0 +1,11 @@
+output "alb_url" { value = "http://${module.loadbalancer.alb_dns}" }
+output "ilb_dns" { value = module.loadbalancer.ilb_dns }
+output "cluster_name" { value = module.compute.cluster_name }
+output "asg_name" { value = module.compute.asg_name }
+output "db_address" { value = module.database.address }
+output "queue_url" { value = module.messaging.queue_url }
+output "dlq_url" { value = module.messaging.dlq_url }
+output "images" { value = module.registry.images }
+output "alarms" { value = module.observability.alarm_names }
+output "dashboards" { value = module.observability.dashboards }
+output "azs" { value = module.network.azs }

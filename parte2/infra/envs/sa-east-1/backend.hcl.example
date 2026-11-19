@@ -1,0 +1,6 @@
+# copie para backend.hcl depois do apply do bootstrap (o output backend_hcl ja traz o conteudo)
+bucket       = "cc-tfstate-<ACCOUNT_ID>-sa-east-1"
+key          = "livraria-nuvem/sa-east-1/terraform.tfstate"
+region       = "sa-east-1"
+encrypt      = true
+use_lockfile = true
