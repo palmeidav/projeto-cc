@@ -1,0 +1,25 @@
+### 2026-11-19 19:15:14 UTC
+## 1) busca no codigo (infra, services, scripts) por valores de Ohio
+nenhuma ocorrencia
+   (ignorado: comentario em modules/iam que documenta o formato us./global. dos perfis do Bedrock)
+## 2) IDs de conta/regiao fixos nos modulos (devem vir de data sources)
+infra/bootstrap/main.tf:11:  default = "sa-east-1"
+## 3) regioes de todos os ARNs no estado remoto de envs/sa-east-1
+  36 (global)
+ 191 sa-east-1
+## 4) servicos/endpoints usados pelas tasks (variaveis de ambiente das task definitions)
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241
+244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5
+cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com
+global.anthropic.claude-haiku-4-5-20251001-v1:0
+internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com
+sa-east-1
+sa-east-1:244736565328:cc-sp-order-events
+sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders
+## 5) portabilidade: plan do MESMO codigo em us-east-2 (sem mudar arquivos)
+Plan: 110 to add, 0 to change, 0 to destroy.
+ + azs = [
+ + "us-east-2a",
+ + "us-east-2b",
+ ]

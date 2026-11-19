@@ -1,0 +1,108 @@
+### inicio 2026-11-19 19:17:38 UTC
+Acquiring state lock. This may take a few moments...
+module.audit.aws_cloudwatch_log_group.trail: Creating...
+module.audit.aws_iam_role.trail_cwl: Creating...
+module.audit.aws_s3_bucket.trail: Creating...
+module.audit.aws_iam_role.trail_cwl: Creation complete after 2s [id=cc-sp-cloudtrail-cwl-role]
+module.audit.aws_cloudwatch_log_group.trail: Creation complete after 3s [id=/cc/sp/cloudtrail]
+module.audit.data.aws_iam_policy_document.cwl: Reading...
+module.audit.aws_cloudwatch_log_metric_filter.audit["sg-change"]: Creating...
+module.audit.aws_cloudwatch_log_metric_filter.audit["access-denied"]: Creating...
+module.audit.aws_cloudwatch_log_metric_filter.audit["iam-policy-change"]: Creating...
+module.audit.data.aws_iam_policy_document.cwl: Read complete after 0s [id=734698220]
+module.audit.aws_iam_role_policy.trail_cwl: Creating...
+module.audit.aws_cloudwatch_log_metric_filter.audit["access-denied"]: Creation complete after 1s [id=access-denied]
+module.audit.aws_iam_role_policy.trail_cwl: Creation complete after 1s [id=cc-sp-cloudtrail-cwl-role:cwl-write]
+module.audit.aws_cloudwatch_log_metric_filter.audit["sg-change"]: Creation complete after 1s [id=sg-change]
+module.audit.aws_cloudwatch_log_metric_filter.audit["iam-policy-change"]: Creation complete after 2s [id=iam-policy-change]
+module.audit.aws_cloudwatch_metric_alarm.audit["iam-policy-change"]: Creating...
+module.audit.aws_cloudwatch_metric_alarm.audit["sg-change"]: Creating...
+module.audit.aws_cloudwatch_metric_alarm.audit["access-denied"]: Creating...
+module.audit.aws_cloudwatch_metric_alarm.audit["iam-policy-change"]: Creation complete after 3s [id=cc-sp-audit-iam-policy-change]
+module.audit.aws_cloudwatch_metric_alarm.audit["access-denied"]: Creation complete after 3s [id=cc-sp-audit-access-denied]
+module.audit.aws_cloudwatch_metric_alarm.audit["sg-change"]: Creation complete after 3s [id=cc-sp-audit-sg-change]
+module.audit.aws_s3_bucket.trail: Creation complete after 9s [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.data.aws_iam_policy_document.bucket: Reading...
+module.audit.aws_s3_bucket_public_access_block.trail: Creating...
+module.audit.aws_s3_bucket_server_side_encryption_configuration.trail: Creating...
+module.audit.data.aws_iam_policy_document.bucket: Read complete after 0s [id=1519458768]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Creating...
+module.audit.aws_s3_bucket_public_access_block.trail: Creation complete after 2s [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.aws_s3_bucket_policy.trail: Creating...
+module.audit.aws_s3_bucket_server_side_encryption_configuration.trail: Creation complete after 2s [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.aws_s3_bucket_policy.trail: Creation complete after 1s [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+module.audit.aws_cloudtrail.this: Creating...
+module.audit.aws_cloudtrail.this: Creation complete after 4s [id=arn:aws:cloudtrail:sa-east-1:244736565328:trail/cc-sp-trail]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Still creating... [00m10s elapsed]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Still creating... [00m20s elapsed]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Still creating... [00m30s elapsed]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Still creating... [00m40s elapsed]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Still creating... [00m50s elapsed]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Still creating... [01m00s elapsed]
+module.audit.aws_s3_bucket_lifecycle_configuration.trail: Creation complete after 1m1s [id=cc-sp-cloudtrail-244736565328-sa-east-1]
+
+Warning: Applied changes may be incomplete
+
+The plan was created with the -target option in effect, so some changes
+requested in the configuration may have been ignored and the output values
+may not be fully updated. Run the following command to verify that no other
+changes are pending:
+    terraform plan
+
+Note that the -target option is not suitable for routine use, and is provided
+only for exceptional situations such as recovering from errors or mistakes,
+or when Terraform specifically suggests to use it as part of an error
+message.
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+alarms = tolist([
+  "cc-sp-5xx",
+  "cc-sp-app-errors",
+  "cc-sp-asg-capacity",
+  "cc-sp-cluster-cpu",
+  "cc-sp-cluster-mem",
+  "cc-sp-dlq-not-empty",
+  "cc-sp-latency-p95",
+  "cc-sp-queue-age",
+  "cc-sp-rds-connections",
+  "cc-sp-rds-cpu",
+  "cc-sp-tasks-catalog-orders-service",
+  "cc-sp-tasks-chat-service",
+  "cc-sp-tasks-order-worker",
+  "cc-sp-unhealthy",
+])
+alb_url = "http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com"
+asg_name = "cc-sp-asg"
+audit = {
+  "alarms" = tolist([
+    "cc-sp-audit-access-denied",
+    "cc-sp-audit-iam-policy-change",
+    "cc-sp-audit-sg-change",
+  ])
+  "bucket" = "cc-sp-cloudtrail-244736565328-sa-east-1"
+  "log_group" = "/cc/sp/cloudtrail"
+  "trail" = "cc-sp-trail"
+}
+azs = tolist([
+  "sa-east-1a",
+  "sa-east-1b",
+])
+cluster_name = "cc-sp-cluster"
+dashboards = [
+  "cc-sp",
+  "cc-sp-diagnostico",
+]
+db_address = "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+dlq_url = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq"
+ilb_dns = "internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com"
+images = {
+  "catalog-orders-service" = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6"
+  "chat-service" = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241"
+  "order-worker" = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5"
+}
+queue_url = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders"
+### rc=0 fim 2026-11-19 19:19:04 UTC

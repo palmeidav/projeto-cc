@@ -9,3 +9,11 @@ output "images" { value = module.registry.images }
 output "alarms" { value = module.observability.alarm_names }
 output "dashboards" { value = module.observability.dashboards }
 output "azs" { value = module.network.azs }
+output "audit" {
+  value = {
+    trail     = module.audit.trail_name
+    bucket    = module.audit.trail_bucket
+    log_group = module.audit.trail_log_group
+    alarms    = module.audit.alarm_names
+  }
+}

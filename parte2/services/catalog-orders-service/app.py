@@ -22,7 +22,7 @@ from logsetup import emf, log, setup
 
 setup()
 
-REGION = os.getenv("AWS_REGION", "us-east-2")
+REGION = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION")  # sem padrao fixo: a regiao vem do ambiente (Terraform)
 QUEUE_URL = os.getenv("QUEUE_URL", "")
 
 conninfo = make_conninfo(

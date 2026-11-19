@@ -24,7 +24,7 @@ from logsetup import emf, log, setup
 
 setup()
 
-REGION = os.getenv("AWS_REGION", "us-east-2")
+REGION = os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION")  # sem padrao fixo: a regiao vem do ambiente (Terraform)
 CATALOG_URL = os.environ["CATALOG_URL"].rstrip("/")
 MODEL_ID = os.getenv("BEDROCK_MODEL_ID", "")
 LLM_MODE = os.getenv("LLM_MODE", "bedrock")  # "bedrock" (real) ou "mock" (sem IA: testes de carga/local)

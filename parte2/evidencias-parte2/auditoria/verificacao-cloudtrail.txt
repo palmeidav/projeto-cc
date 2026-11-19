@@ -1,0 +1,20 @@
+### 2026-11-19 19:19:14 UTC
+## trilha
+cc-sp-trail	sa-east-1	True	True	True	cc-sp-cloudtrail-244736565328-sa-east-1	log-group:/cc/sp/cloudtrail:*
+## status
+True	None	None
+## auditoria retroativa (historico de eventos, 90 dias): quem mexeu na politica do chat em Ohio no teste 13.6
+2026-11-18T14:41:53-03:00	PutRolePolicy	pedrohav	cc-task-exec-role
+2026-11-18T14:41:55-03:00	PutRolePolicy	pedrohav	cc-chat-task-role
+2026-11-18T14:41:56-03:00	PutRolePolicy	pedrohav	cc-catalog-task-role
+2026-11-18T14:41:58-03:00	PutRolePolicy	pedrohav	cc-worker-task-role
+2026-11-18T17:16:36-03:00	PutRolePolicy	pedrohav	cc-chat-task-role
+2026-11-18T17:21:13-03:00	PutRolePolicy	pedrohav	cc-chat-task-role
+2026-11-19T14:26:45-03:00	PutRolePolicy	pedrohav	cc-sp-chat-task-role
+2026-11-19T14:27:37-03:00	PutRolePolicy	pedrohav	cc-sp-catalog-task-role
+2026-11-19T14:27:37-03:00	PutRolePolicy	pedrohav	cc-sp-worker-task-role
+2026-11-19T14:40:37-03:00	PutRolePolicy	pedrohav	cc-sp-task-exec-role
+## alarmes de auditoria
+cc-sp-audit-access-denied	INSUFFICIENT_DATA	10.0
+cc-sp-audit-iam-policy-change	OK	0.0
+cc-sp-audit-sg-change	OK	0.0

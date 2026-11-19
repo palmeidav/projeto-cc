@@ -7,9 +7,11 @@ Nada é reaproveitado de Ohio: nenhum ID, ARN, AMI, imagem ou estado.
 services/                  código dos 3 serviços (v2, com conversation_id nos logs)
 infra/bootstrap/           bucket S3 do estado remoto (estado local, roda 1 vez)
 infra/modules/             network, security, database, messaging, iam, registry,
-                           compute, loadbalancer, service (genérico, usado 3x), observability
+                           compute, loadbalancer, service (genérico, usado 3x), observability, audit
 infra/envs/sa-east-1/      composição dos módulos + backend S3 + terraform.tfvars
 scripts/fase0-checagens.sh checagens só de leitura da região alvo
+scripts/prova-sem-ohio.sh  prova de ausência de dependências de Ohio
+docs/runbook-incidentes.md runbook de resposta a incidentes
 ```
 
 ## Ordem de execução

@@ -222,3 +222,10 @@ module "observability" {
   db_identifier             = module.database.identifier
   rds_connections_threshold = var.rds_connections_threshold
 }
+
+module "audit" {
+  source           = "../../modules/audit"
+  name             = local.name
+  alarm_topic_arn  = module.messaging.alarms_topic_arn
+  log_group_prefix = local.log_prefix
+}

@@ -51,3 +51,22 @@ Tudo foi criado pelo Terraform em `infra/`, sem reaproveitar nada de Ohio.
 - `prints/12-console-rds.png`: `cc-sp-db` com Postgres 18.3, Multi-AZ (1a/1b), gp3 e criptografia.
 - `prints/13-console-asg.png`: `cc-sp-asg` com limites 2–4, de volta a 3 instâncias saudáveis e protegidas contra scale-in.
 - `prints/14-console-vpc-mapa.png`: VPC `cc-sp-vpc` (10.20.0.0/16), mapa de recursos com 6 sub-redes, 4 tabelas de rotas, IGW, NAT e endpoint S3.
+
+## Prova de que nada depende de Ohio (2026-11-19 19:15 UTC)
+O script `scripts/prova-sem-ohio.sh` gerou `portabilidade/prova-sem-ohio.txt`:
+1. **Busca no código** (infra, services, scripts) por `us-east-2`, IDs de VPC, SG, AMI e NAT de Ohio, endpoints de Ohio, `us.anthropic` e ECR de Ohio: **nenhuma ocorrência**.
+2. **Conta e região fixas nos módulos:** nenhuma. A única região escrita no código é o valor padrão `sa-east-1` de uma variável do bootstrap.
+3. **ARNs no estado remoto:** **191 em sa-east-1 e 36 globais** (IAM, S3). Nenhum em us-east-2.
+4. **Endpoints que as tasks usam:** ECR, RDS, SQS, SNS e ALB interno, todos em sa-east-1. O Bedrock usa o perfil `global.`.
+5. **O mesmo código em us-east-2** dá 110 recursos a criar, nas AZs us-east-2a/2b, sem mudar nenhum arquivo.
+
+**Dependência escondida encontrada e corrigida:** os 3 serviços tinham `os.getenv("AWS_REGION", "us-east-2")`. Agora a região vem só do ambiente, sem padrão fixo. Hoje isso não tinha efeito, porque o Terraform sempre passa `AWS_REGION`. A correção está no código, mas **ainda não foi publicada**: as tasks em execução usam as imagens anteriores. Publicar exige um `apply` que gera 3 imagens novas e faz um rolling deploy dos 3 serviços (o plan mostra 6 a destruir: são as revisões antigas das task definitions e os registros dos builds). Isso fica para quando houver autorização.
+
+## Auditoria e resposta a incidentes (19:19 UTC)
+- **Módulo `audit`**, aplicado só ele (`-target=module.audit`): **15 recursos criados, 0 alterados, 0 destruídos** (`auditoria/apply-audit.txt`).
+  - Trilha `cc-sp-trail`, multirregião, com eventos globais e validação de integridade dos arquivos.
+  - Bucket S3 com acesso público bloqueado, só TLS e retenção de 90 dias.
+  - Cópia em `/cc/sp/cloudtrail`, com retenção de 30 dias.
+- **3 alarmes de auditoria**, adaptados do CIS: `cc-sp-audit-iam-policy-change`, `cc-sp-audit-sg-change` e `cc-sp-audit-access-denied` (mais de 10 negações em 5 min).
+- **Auditoria retroativa** (`auditoria/verificacao-cloudtrail.txt`): o histórico de eventos mostra as 2 mudanças do teste 13.6 na política do chat em Ohio, às 17:16:36 (Deny) e 17:21:13 (restauração), pelo usuário `pedrohav`, além das políticas criadas pelo Terraform em SP.
+- **Runbook:** `docs/runbook-incidentes.md`. São 6 playbooks (Bedrock, DLQ, fila, alvos/5xx, banco e auditoria), com consultas de Logs Insights, severidades e o registro pós-incidente. Os tempos citados vêm dos testes da Etapa 13.
