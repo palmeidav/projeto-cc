@@ -1,0 +1,44 @@
+### 2026-11-19 17:46:22 UTC (14:46:22 BRT)
+$ aws sqs get-queue-attributes --queue-url https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq --attribute-names ApproximateNumberOfMessages --output text; aws sqs get-queue-attributes --queue-url https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders --attribute-names ApproximateNumberOfMessages --output text
+ATTRIBUTES	0
+ATTRIBUTES	0
+
+### 2026-11-19 17:46:25 UTC (14:46:25 BRT)
+$ aws cloudwatch describe-alarms --alarm-name-prefix cc-sp- --query 'MetricAlarms[].[AlarmName,StateValue]' --output text
+cc-sp-5xx	OK
+cc-sp-app-errors	OK
+cc-sp-asg-capacity	OK
+cc-sp-cluster-cpu	OK
+cc-sp-cluster-mem	OK
+cc-sp-dlq-not-empty	OK
+cc-sp-latency-p95	OK
+cc-sp-queue-age	OK
+cc-sp-rds-connections	OK
+cc-sp-rds-cpu	OK
+cc-sp-tasks-catalog-orders-service	OK
+cc-sp-tasks-chat-service	OK
+cc-sp-tasks-order-worker	OK
+cc-sp-unhealthy	OK
+
+### 2026-11-19 17:46:27 UTC (14:46:27 BRT)
+$ aws ec2 describe-volumes --filters Name=tag:project,Values=cc --query 'Volumes[].[VolumeId,Size,Tags[?Key==`env`]|[0].Value]' --output text
+vol-0335e920093266b4b	30	sp
+vol-0a2e901d1c5402106	30	sp
+vol-0e902d35a230d2c47	30	sp
+vol-0bfe715dfe415642e	30	sp
+
+### 2026-11-19 17:46:29 UTC (14:46:29 BRT)
+$ aws iam get-role-policy --role-name cc-sp-chat-task-role --policy-name bedrock-model --query 'PolicyDocument.Statement[0].Resource' --output text
+arn:aws:bedrock:sa-east-1:244736565328:inference-profile/global.anthropic.claude-haiku-4-5-20251001-v1:0	arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0
+
+### 2026-11-19 17:48:56 UTC (14:48:56 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-sp-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState]' --output text; aws ec2 describe-volumes --filters Name=tag:project,Values=cc --query 'Volumes[].[VolumeId,State,Attachments[0].InstanceId]' --output text
+i-0247767f10070fd40	sa-east-1a	InService
+i-0c20d60fc5b006248	sa-east-1b	InService
+i-0dff1eeb8a600b7fa	sa-east-1a	InService
+i-0eb52415ebf25ba0a	sa-east-1b	InService
+vol-0335e920093266b4b	in-use	i-0247767f10070fd40
+vol-0a2e901d1c5402106	in-use	i-0eb52415ebf25ba0a
+vol-0e902d35a230d2c47	in-use	i-0dff1eeb8a600b7fa
+vol-0bfe715dfe415642e	in-use	i-0c20d60fc5b006248
+

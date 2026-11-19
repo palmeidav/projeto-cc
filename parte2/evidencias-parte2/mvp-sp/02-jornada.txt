@@ -1,0 +1,50 @@
+### 17:45:32 UTC > Quero ver os produtos disponíveis
+conversation_id=ba7cd84e6abb407c882c861080af9cc2 degraded=false
+Ótimo! Aqui estão os livros disponíveis na Livraria Nuvem:
+
+**📖 ROMANCES**
+- **Dom Casmurro** - Machado de Assis | R$ 39,90 | 25 unidades
+- **Memórias Póstumas de Brás Cubas** - Machado de Assis | R$ 34,90 | 18 unidades
+- **Capitães da Areia** - Jorge Amado | R$ 42,90 | 20 unidades
+- **A Hora da Estrela** - Clarice Lispector | R$ 32,90 | 15 unidades
+- **Vidas Secas** - Graciliano Ramos | R$ 31,90 | 22 unidades
+- **Grande Sertão: Veredas** - João Guimarães Rosa | R$ 64,90 | 8 unidades
+- **O Cortiço** - Aluísio Azevedo | R$ 29,90 | 12 unidades
+
+**🚀 FICÇÃO CIENTÍFICA**
+- **1984** - George Orwell | R$ 45,90 | 30 unidades
+- **Fahrenheit 451** - Ray Bradbury | R$ 38,90 | ❌ Fora de estoque
+
+**📚 OUTROS**
+- **O Pequeno Príncipe** - Antoine de Saint-Exupéry (Infantil) | R$ 27,90 | 40 unidades
+- **Sapiens** - Yuval Noah Harari (História) | R$ 69,90 | 10 unidades
+- **Código Limpo** - Robert C. Martin (Tecnologia) | R$ 89,90 | 5 unidades
+
+Algum livro te interessou? 😊
+
+### 17:45:36 UTC > Quero comprar 1 unidade de 1984. Meu nome é Pedro.
+conversation_id=ba7cd84e6abb407c882c861080af9cc2 degraded=false
+Perfeito, Pedro! 🎉
+
+Vou confirmar seu pedido:
+- **1 unidade de "1984"** - George Orwell | R$ 45,90
+
+Está tudo certo? Posso registrar sua compra?
+
+### 17:45:38 UTC > Sim, pode registrar o pedido.
+conversation_id=ba7cd84e6abb407c882c861080af9cc2 degraded=false
+Excelente! Seu pedido foi registrado com sucesso! ✅
+
+**Detalhes do Pedido:**
+- **Código do Pedido:** 3a3193250429
+- **Cliente:** Pedro
+- **Livro:** 1984 (George Orwell) - 1 unidade
+- **Total:** R$ 45,90
+- **Status:** Pendente
+
+Obrigada pela compra! Em breve você receberá mais informações sobre a entrega. 📚
+
+### 2026-11-19 17:45:51 UTC (14:45:51 BRT)
+$ CMD=$(aws ssm send-command --instance-ids i-0dff1eeb8a600b7fa --document-name AWS-RunShellScript --parameters 'commands=["curl -s http://internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com/orders/3a3193250429"]' --query Command.CommandId --output text); sleep 6; aws ssm get-command-invocation --command-id $CMD --instance-id i-0dff1eeb8a600b7fa --query StandardOutputContent --output text | jq -c .
+{"order_id":"3a3193250429","status":"CONFIRMED","customer_name":"Pedro","total_cents":4590,"total_brl":"45.90","created_at":"2026-11-19T17:45:40.387799+00:00","confirmed_at":"2026-11-19T17:45:40.588770+00:00","items":[{"product_id":9,"title":"1984","quantity":1,"unit_price_cents":4590}]}
+

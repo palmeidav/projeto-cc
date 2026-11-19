@@ -1,0 +1,30 @@
+### 2026-11-19 17:45:14 UTC (14:45:14 BRT)
+$ aws ecs describe-services --cluster cc-sp-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount,taskDefinition]' --output text
+chat-service	2	2	arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-chat:1
+catalog-orders-service	2	2	arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-catalog:1
+order-worker	1	1	arn:aws:ecs:sa-east-1:244736565328:task-definition/cc-sp-worker:1
+
+### 2026-11-19 17:45:15 UTC (14:45:15 BRT)
+$ for n in cc-sp-tg-chat cc-sp-tg-catalog; do echo $n; aws elbv2 describe-target-health --target-group-arn $(aws elbv2 describe-target-groups --names $n --query 'TargetGroups[0].TargetGroupArn' --output text) --query 'TargetHealthDescriptions[].[Target.Id,Target.Port,TargetHealth.State]' --output text; done
+cc-sp-tg-chat
+i-0c20d60fc5b006248	32769	healthy
+i-0dff1eeb8a600b7fa	32769	healthy
+cc-sp-tg-catalog
+i-0dff1eeb8a600b7fa	32768	healthy
+i-0c20d60fc5b006248	32768	healthy
+
+### 2026-11-19 17:45:21 UTC (14:45:21 BRT)
+$ aws ecs list-tasks --cluster cc-sp-cluster --query taskArns --output text | xargs aws ecs describe-tasks --cluster cc-sp-cluster --query 'tasks[].[group,availabilityZone,lastStatus,healthStatus]' --output text --tasks
+service:chat-service	sa-east-1b	RUNNING	HEALTHY
+service:catalog-orders-service	sa-east-1a	RUNNING	HEALTHY
+service:catalog-orders-service	sa-east-1b	RUNNING	HEALTHY
+service:order-worker	sa-east-1b	RUNNING	HEALTHY
+service:chat-service	sa-east-1a	RUNNING	HEALTHY
+
+### 2026-11-19 17:45:24 UTC (14:45:24 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com/health; curl -s -w ' HTTP %{http_code}
+' http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com/ready
+{"status":"ok"} HTTP 200
+{"status":"ready","llm_mode":"bedrock"} HTTP 200
+

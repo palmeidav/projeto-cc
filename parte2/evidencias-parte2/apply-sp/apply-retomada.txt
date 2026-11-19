@@ -1,0 +1,516 @@
+### inicio 2026-11-19 17:43:11 UTC
+Acquiring state lock. This may take a few moments...
+module.registry.terraform_data.image["chat-service"]: Destroying... [id=593fe978-b1b9-0b55-4d07-1479c500916e]
+module.registry.terraform_data.image["chat-service"]: Destruction complete after 0s
+module.registry.terraform_data.image["catalog-orders-service"]: Destroying... [id=ca5e7be7-3815-2d03-3bdc-02f2ff881e93]
+module.registry.terraform_data.image["catalog-orders-service"]: Destruction complete after 0s
+module.registry.terraform_data.image["chat-service"]: Creating...
+module.registry.terraform_data.image["catalog-orders-service"]: Creating...
+module.registry.terraform_data.image["chat-service"]: Provisioning with 'local-exec'...
+module.registry.terraform_data.image["chat-service"] (local-exec): Executing: ["/bin/bash" "-c" "set -euo pipefail\n# os 3 builds rodam em paralelo; o keychain do macOS falha se 2 logins gravam ao mesmo tempo -> tenta de novo\nfor i in 1 2 3 4 5; do\n  aws ecr get-login-password --region sa-east-1 \\\n    | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null && break\n  [ \"$i\" = 5 ] && exit 1\n  sleep $((RANDOM % 5 + 2))\ndone\ndocker build --platform linux/amd64 -t 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241 \"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/chat-service\"\ndocker push 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241\n"]
+module.registry.terraform_data.image["catalog-orders-service"]: Provisioning with 'local-exec'...
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): Executing: ["/bin/bash" "-c" "set -euo pipefail\n# os 3 builds rodam em paralelo; o keychain do macOS falha se 2 logins gravam ao mesmo tempo -> tenta de novo\nfor i in 1 2 3 4 5; do\n  aws ecr get-login-password --region sa-east-1 \\\n    | docker login --username AWS --password-stdin 244736565328.dkr.ecr.sa-east-1.amazonaws.com >/dev/null && break\n  [ \"$i\" = 5 ] && exit 1\n  sleep $((RANDOM % 5 + 2))\ndone\ndocker build --platform linux/amd64 -t 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6 \"/Users/pedrovidal/Desktop/projeto-cc/parte2/services/catalog-orders-service\"\ndocker push 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6\n"]
+module.security.aws_vpc_security_group_ingress_rule.ilb_from_app: Creating...
+module.security.aws_vpc_security_group_ingress_rule.ilb_from_app: Creation complete after 2s [id=sgr-043aacc99751514d1]
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): error saving credentials: error storing credentials - err: exit status 1, out: `The specified item already exists in the keychain. (-25299)`
+module.registry.terraform_data.image["chat-service"] (local-exec): #0 building with "desktop-linux" instance using docker driver
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #1 [internal] load build definition from Dockerfile
+module.registry.terraform_data.image["chat-service"] (local-exec): #1 transferring dockerfile: 438B done
+module.registry.terraform_data.image["chat-service"] (local-exec): #1 DONE 0.0s
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #2 [internal] load metadata for docker.io/library/python:3.12-slim
+module.registry.terraform_data.image["chat-service"] (local-exec): #2 DONE 2.6s
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #3 [internal] load .dockerignore
+module.registry.terraform_data.image["chat-service"] (local-exec): #3 transferring context: 64B done
+module.registry.terraform_data.image["chat-service"] (local-exec): #3 DONE 0.0s
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #4 [internal] load build context
+module.registry.terraform_data.image["chat-service"] (local-exec): #4 transferring context: 14.66kB done
+module.registry.terraform_data.image["chat-service"] (local-exec): #4 DONE 0.0s
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+module.registry.terraform_data.image["chat-service"] (local-exec): #5 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b done
+module.registry.terraform_data.image["chat-service"] (local-exec): #5 DONE 0.0s
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #6 [4/6] COPY requirements.txt .
+module.registry.terraform_data.image["chat-service"] (local-exec): #6 CACHED
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #7 [3/6] WORKDIR /app
+module.registry.terraform_data.image["chat-service"] (local-exec): #7 CACHED
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #8 [2/6] RUN apt-get update && apt-get install -y --no-install-recommends curl     && rm -rf /var/lib/apt/lists/* && useradd -m app
+module.registry.terraform_data.image["chat-service"] (local-exec): #8 CACHED
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #9 [5/6] RUN pip install --no-cache-dir -r requirements.txt
+module.registry.terraform_data.image["chat-service"] (local-exec): #9 CACHED
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #10 [6/6] COPY . .
+module.registry.terraform_data.image["chat-service"] (local-exec): #10 DONE 0.0s
+
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 exporting to image
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 exporting layers 0.0s done
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 exporting manifest sha256:9bee2065a76d8f6c04cba1e9c30c4b2c90c7dc8ec9b2203e1e125496956ca44d done
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 exporting config sha256:47421f2123a2a82071e8fdc6ec11a96c1cccb34fe31635e908792ff161eed7b6 done
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 exporting attestation manifest sha256:bc9e1e7cd42ac95e93a679a68c942c416e7982995b30e3df76d9b16bc0a8a129 done
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 exporting manifest list sha256:1ac72c941ff2329890e9bd310c4b274588841b763ea64db24df6aa8dbf63dbb1 done
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 naming to 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241 done
+module.registry.terraform_data.image["chat-service"] (local-exec): #11 DONE 0.1s
+module.registry.terraform_data.image["chat-service"] (local-exec): The push refers to repository [244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service]
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"]: Still creating... [00m10s elapsed]
+module.registry.terraform_data.image["catalog-orders-service"]: Still creating... [00m10s elapsed]
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 3e3854ad7c22: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 44136fa355b3: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 05e0eee5572e: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 68bced9e0afa: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): fb9dc0d631c1: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #0 building with "desktop-linux" instance using docker driver
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #1 [internal] load build definition from Dockerfile
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #1 transferring dockerfile: 440B done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #1 DONE 0.0s
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #2 [internal] load metadata for docker.io/library/python:3.12-slim
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 73aa62a18884: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #2 DONE 0.4s
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #3 [internal] load .dockerignore
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #3 transferring context: 64B done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #3 DONE 0.0s
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #4 [internal] load build context
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #4 transferring context: 13.34kB done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #4 DONE 0.0s
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #5 resolve docker.io/library/python:3.12-slim@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b 0.0s done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #5 DONE 0.0s
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #6 [4/6] COPY requirements.txt .
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #6 CACHED
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #7 [3/6] WORKDIR /app
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #7 CACHED
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #8 [2/6] RUN apt-get update && apt-get install -y --no-install-recommends curl     && rm -rf /var/lib/apt/lists/* && useradd -m app
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #8 CACHED
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #9 [5/6] RUN pip install --no-cache-dir -r requirements.txt
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #9 CACHED
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #10 [6/6] COPY . .
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #10 DONE 0.0s
+
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 exporting to image
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 exporting layers 0.0s done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 exporting manifest sha256:baf23997c6e99205f19a686038c76c456f5886fdc394a34e98be01853df5cb72 done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 exporting config sha256:71c645423822212903db99cfb5e3aa8fd15bf45d33754bb02a3f53d5ffa187e4 done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 exporting attestation manifest sha256:7bf54cd340219dcf8a62d669b757525f77c7ee7cd1d0a6b5e8089e38fef07314 done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 exporting manifest list sha256:8605af02b072a9d0907a588bdaa4e9e93bd7500e375c412b3b618869cd0d6d3c done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 naming to 244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6 done
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): #11 DONE 0.1s
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): The push refers to repository [244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service]
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 2dc99d2d0a39: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): e6120d96f208: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): a57e0544827f: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Waiting
+module.registry.terraform_data.image["chat-service"]: Still creating... [00m20s elapsed]
+module.registry.terraform_data.image["catalog-orders-service"]: Still creating... [00m20s elapsed]
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 37fb86c2a767: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 68bced9e0afa: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 05e0eee5572e: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): e6120d96f208: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 2dc99d2d0a39: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): fb9dc0d631c1: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 8e870e4232cc: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["chat-service"] (local-exec): 20db07b2a76d: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 3d69d6c76e6b: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Waiting
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 1951a9a01b3b: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44136fa355b3: Pushed
+module.registry.terraform_data.image["chat-service"] (local-exec): 21924a155241: digest: sha256:1ac72c941ff2329890e9bd310c4b274588841b763ea64db24df6aa8dbf63dbb1 size: 856
+module.registry.terraform_data.image["chat-service"]: Creation complete after 28s [id=f2a22d50-afc4-afe5-2b01-55dfea0a6df9]
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 37fb86c2a767: Pushed
+module.registry.terraform_data.image["catalog-orders-service"]: Still creating... [00m30s elapsed]
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 80743aa694b6: Pushed
+module.registry.terraform_data.image["catalog-orders-service"] (local-exec): 44ebafde54e6: digest: sha256:8605af02b072a9d0907a588bdaa4e9e93bd7500e375c412b3b618869cd0d6d3c size: 856
+module.registry.terraform_data.image["catalog-orders-service"]: Creation complete after 34s [id=245b362a-0c40-98cf-b80b-20caf6664fdf]
+module.catalog.aws_ecs_task_definition.this: Creating...
+module.worker.aws_ecs_task_definition.this: Creating...
+module.catalog.aws_ecs_task_definition.this: Creation complete after 3s [id=cc-sp-catalog]
+module.worker.aws_ecs_task_definition.this: Creation complete after 3s [id=cc-sp-worker]
+module.catalog.aws_ecs_service.this: Creating...
+module.worker.aws_ecs_service.this: Creating...
+module.worker.aws_ecs_service.this: Creation complete after 1s [id=arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/order-worker]
+module.worker.aws_appautoscaling_target.this[0]: Creating...
+module.catalog.aws_ecs_service.this: Creation complete after 1s [id=arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/catalog-orders-service]
+module.catalog.aws_appautoscaling_target.this[0]: Creating...
+module.catalog.aws_appautoscaling_target.this[0]: Creation complete after 3s [id=service/cc-sp-cluster/catalog-orders-service]
+module.catalog.aws_appautoscaling_policy.this[0]: Creating...
+module.worker.aws_appautoscaling_target.this[0]: Creation complete after 3s [id=service/cc-sp-cluster/order-worker]
+module.worker.aws_appautoscaling_policy.this[0]: Creating...
+module.catalog.aws_appautoscaling_policy.this[0]: Creation complete after 1s [id=catalog-cpu]
+module.chat.data.aws_region.current: Reading...
+module.chat.data.aws_region.current: Read complete after 0s [id=sa-east-1]
+module.chat.aws_cloudwatch_log_group.this: Creating...
+module.worker.aws_appautoscaling_policy.this[0]: Creation complete after 1s [id=worker-backlog]
+module.chat.aws_cloudwatch_log_group.this: Creation complete after 3s [id=/cc/sp/chat-service]
+module.observability.aws_cloudwatch_log_metric_filter.errors["catalog"]: Creating...
+module.observability.aws_cloudwatch_log_metric_filter.errors["chat"]: Creating...
+module.observability.aws_cloudwatch_log_metric_filter.errors["worker"]: Creating...
+module.chat.aws_ecs_task_definition.this: Creating...
+module.observability.aws_cloudwatch_log_metric_filter.errors["chat"]: Creation complete after 2s [id=errors]
+module.observability.aws_cloudwatch_log_metric_filter.errors["catalog"]: Creation complete after 2s [id=errors]
+module.observability.aws_cloudwatch_log_metric_filter.errors["worker"]: Creation complete after 2s [id=errors]
+module.chat.aws_ecs_task_definition.this: Creation complete after 2s [id=cc-sp-chat]
+module.chat.aws_ecs_service.this: Creating...
+module.chat.aws_ecs_service.this: Creation complete after 2s [id=arn:aws:ecs:sa-east-1:244736565328:service/cc-sp-cluster/chat-service]
+module.chat.aws_appautoscaling_target.this[0]: Creating...
+module.observability.aws_cloudwatch_dashboard.main: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["cluster-mem"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-catalog-orders-service"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["rds-cpu"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["latency-p95"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["5xx"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["app-errors"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["unhealthy"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["rds-connections"]: Creating...
+module.chat.aws_appautoscaling_target.this[0]: Creation complete after 2s [id=service/cc-sp-cluster/chat-service]
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-catalog-orders-service"]: Creation complete after 5s [id=cc-sp-tasks-catalog-orders-service]
+module.observability.aws_cloudwatch_metric_alarm.this["rds-connections"]: Creation complete after 5s [id=cc-sp-rds-connections]
+module.observability.aws_cloudwatch_metric_alarm.this["cluster-mem"]: Creation complete after 5s [id=cc-sp-cluster-mem]
+module.observability.aws_cloudwatch_metric_alarm.this["unhealthy"]: Creation complete after 5s [id=cc-sp-unhealthy]
+module.observability.aws_cloudwatch_metric_alarm.this["rds-cpu"]: Creation complete after 5s [id=cc-sp-rds-cpu]
+module.observability.aws_cloudwatch_metric_alarm.this["app-errors"]: Creation complete after 5s [id=cc-sp-app-errors]
+module.observability.aws_cloudwatch_metric_alarm.this["5xx"]: Creation complete after 5s [id=cc-sp-5xx]
+module.observability.aws_cloudwatch_metric_alarm.this["latency-p95"]: Creation complete after 5s [id=cc-sp-latency-p95]
+module.observability.aws_cloudwatch_dashboard.main: Creation complete after 5s [id=cc-sp]
+module.observability.aws_cloudwatch_metric_alarm.this["cluster-cpu"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["dlq-not-empty"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-chat-service"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["queue-age"]: Creating...
+module.chat.aws_appautoscaling_policy.this[0]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-order-worker"]: Creating...
+module.observability.aws_cloudwatch_metric_alarm.this["asg-capacity"]: Creating...
+module.chat.aws_appautoscaling_policy.this[0]: Creation complete after 2s [id=chat-req]
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-chat-service"]: Creation complete after 2s [id=cc-sp-tasks-chat-service]
+module.observability.aws_cloudwatch_metric_alarm.this["queue-age"]: Creation complete after 2s [id=cc-sp-queue-age]
+module.observability.aws_cloudwatch_metric_alarm.this["cluster-cpu"]: Creation complete after 2s [id=cc-sp-cluster-cpu]
+module.observability.aws_cloudwatch_metric_alarm.this["dlq-not-empty"]: Creation complete after 2s [id=cc-sp-dlq-not-empty]
+module.observability.aws_cloudwatch_metric_alarm.this["tasks-order-worker"]: Creation complete after 2s [id=cc-sp-tasks-order-worker]
+module.observability.aws_cloudwatch_metric_alarm.this["asg-capacity"]: Creation complete after 2s [id=cc-sp-asg-capacity]
+module.observability.aws_cloudwatch_dashboard.diag: Creating...
+module.observability.aws_cloudwatch_dashboard.diag: Creation complete after 2s [id=cc-sp-diagnostico]
+Releasing state lock. This may take a few moments...
+
+Apply complete! Resources: 35 added, 0 changed, 2 destroyed.
+
+Outputs:
+
+alarms = tolist([
+  "cc-sp-5xx",
+  "cc-sp-app-errors",
+  "cc-sp-asg-capacity",
+  "cc-sp-cluster-cpu",
+  "cc-sp-cluster-mem",
+  "cc-sp-dlq-not-empty",
+  "cc-sp-latency-p95",
+  "cc-sp-queue-age",
+  "cc-sp-rds-connections",
+  "cc-sp-rds-cpu",
+  "cc-sp-tasks-catalog-orders-service",
+  "cc-sp-tasks-chat-service",
+  "cc-sp-tasks-order-worker",
+  "cc-sp-unhealthy",
+])
+alb_url = "http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com"
+asg_name = "cc-sp-asg"
+azs = tolist([
+  "sa-east-1a",
+  "sa-east-1b",
+])
+cluster_name = "cc-sp-cluster"
+dashboards = [
+  "cc-sp",
+  "cc-sp-diagnostico",
+]
+db_address = "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+dlq_url = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq"
+ilb_dns = "internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com"
+images = {
+  "catalog-orders-service" = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6"
+  "chat-service" = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241"
+  "order-worker" = "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5"
+}
+queue_url = "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders"
+### rc=0 fim 2026-11-19 17:44:24 UTC

@@ -1,0 +1,101 @@
+{
+  "alarms": {
+    "sensitive": false,
+    "type": [
+      "list",
+      "string"
+    ],
+    "value": [
+      "cc-sp-5xx",
+      "cc-sp-app-errors",
+      "cc-sp-asg-capacity",
+      "cc-sp-cluster-cpu",
+      "cc-sp-cluster-mem",
+      "cc-sp-dlq-not-empty",
+      "cc-sp-latency-p95",
+      "cc-sp-queue-age",
+      "cc-sp-rds-connections",
+      "cc-sp-rds-cpu",
+      "cc-sp-tasks-catalog-orders-service",
+      "cc-sp-tasks-chat-service",
+      "cc-sp-tasks-order-worker",
+      "cc-sp-unhealthy"
+    ]
+  },
+  "alb_url": {
+    "sensitive": false,
+    "type": "string",
+    "value": "http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com"
+  },
+  "asg_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "cc-sp-asg"
+  },
+  "azs": {
+    "sensitive": false,
+    "type": [
+      "list",
+      "string"
+    ],
+    "value": [
+      "sa-east-1a",
+      "sa-east-1b"
+    ]
+  },
+  "cluster_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "cc-sp-cluster"
+  },
+  "dashboards": {
+    "sensitive": false,
+    "type": [
+      "tuple",
+      [
+        "string",
+        "string"
+      ]
+    ],
+    "value": [
+      "cc-sp",
+      "cc-sp-diagnostico"
+    ]
+  },
+  "db_address": {
+    "sensitive": false,
+    "type": "string",
+    "value": "cc-sp-db.cedkvbml9ulx.sa-east-1.rds.amazonaws.com"
+  },
+  "dlq_url": {
+    "sensitive": false,
+    "type": "string",
+    "value": "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders-dlq"
+  },
+  "ilb_dns": {
+    "sensitive": false,
+    "type": "string",
+    "value": "internal-cc-sp-ilb-1534948104.sa-east-1.elb.amazonaws.com"
+  },
+  "images": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "catalog-orders-service": "string",
+        "chat-service": "string",
+        "order-worker": "string"
+      }
+    ],
+    "value": {
+      "catalog-orders-service": "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/catalog-orders-service:44ebafde54e6",
+      "chat-service": "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/chat-service:21924a155241",
+      "order-worker": "244736565328.dkr.ecr.sa-east-1.amazonaws.com/cc-sp/order-worker:c609ce7f55a5"
+    }
+  },
+  "queue_url": {
+    "sensitive": false,
+    "type": "string",
+    "value": "https://sqs.sa-east-1.amazonaws.com/244736565328/cc-sp-orders"
+  }
+}

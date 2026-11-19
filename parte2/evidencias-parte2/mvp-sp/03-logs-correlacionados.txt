@@ -1,0 +1,9 @@
+### 2026-11-19 17:48:54 UTC (14:48:54 BRT)
+$ echo "Logs Insights nos 3 grupos /cc/sp/*: fields @timestamp, service, message, order_id | filter conversation_id = 'ba7cd84e6abb407c882c861080af9cc2' | sort @timestamp asc"; aws logs get-query-results --query-id c8522880-4694-4c38-b05a-2d064426a728 --output json | jq -r '.results[] | map({(.field):.value}) | add | [.["@timestamp"], .service, .message, (.order_id // "-")] | @tsv'
+Logs Insights nos 3 grupos /cc/sp/*: fields @timestamp, service, message, order_id | filter conversation_id = 'ba7cd84e6abb407c882c861080af9cc2' | sort @timestamp asc
+2026-11-19 17:45:36.471	chat-service	turno de conversa	-
+2026-11-19 17:45:38.411	chat-service	turno de conversa	-
+2026-11-19 17:45:40.403	catalog-orders	pedido criado	3a3193250429
+2026-11-19 17:45:40.677	order-worker	pedido confirmado	3a3193250429
+2026-11-19 17:45:41.837	chat-service	turno de conversa	-
+
