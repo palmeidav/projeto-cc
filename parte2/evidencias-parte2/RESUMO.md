@@ -26,7 +26,7 @@ Tudo foi criado pelo Terraform em `infra/`, sem reaproveitar nada de Ohio.
 - **Distribuição do chat e do catalog:** por AZ e por instância. As 2 tasks de cada um ficaram em AZs diferentes.
 
 ## Observações
-- **ASG subiu de 2 para 4 instâncias** às 17:45 e 17:46, pela escala gerenciada do capacity provider, com o alvo de 80%. As 5 tasks cabem em 2 instâncias, mas com elas cheias a ocupação passa de 80%, e a escala também contou as tasks extras do primeiro deploy. Espera-se que volte a 3 sozinha (uma instância de folga, igual a Ohio), em uns 15 min. Não foi feita nenhuma intervenção.
+- **ASG subiu de 2 para 4 instâncias** às 17:45 e 17:46, pela escala gerenciada do capacity provider, com o alvo de 80%. As 5 tasks cabem em 2 instâncias, mas com elas cheias a ocupação passa de 80%, e a escala também contou as tasks extras do primeiro deploy. Voltou a 3 sozinha (uma instância de folga, igual a Ohio), como mostra o print 13. Não foi feita nenhuma intervenção.
 - **Bedrock em SP usa o perfil `global.`:** a inferência pode ser processada fora do Brasil. Em sa-east-1 não há perfil só da região para o Haiku 4.5.
 
 ## Desvios
@@ -34,10 +34,20 @@ Tudo foi criado pelo Terraform em `infra/`, sem reaproveitar nada de Ohio.
    - *Login no ECR:* os 3 `docker login` em paralelo colidiram no Keychain do macOS (`item already exists`). Correção: até 5 tentativas com pausa aleatória.
    - *Regra de SG:* a descrição com `->` foi recusada pela AWS, que não aceita `>`. Correção: texto sem o símbolo.
    - As correções estão no commit `6b43600`. O 2º apply terminou sem erros e não houve destroy.
-2. **Prints do console:** a sessão não tem permissão de gravação de tela do macOS (`could not create image from rect`). Os prints em `prints/` são gráficos gerados pela API do CloudWatch (`get-metric-widget-image`). Os prints do console, como os dashboards `cc-sp` e `cc-sp-diagnostico`, ficam para captura manual.
+2. **Prints do console:** esta sessão não tem permissão de gravação de tela do macOS (`screencapture`: `could not create image from rect`). Os prints do console foram tirados sem capturar a tela: um Chrome headless com perfil temporário abre o console por login federado (API de federação do AWS Sign-In, com as credenciais SSO do perfil `insper`) e captura só a página pelo DevTools Protocol (`scripts/console-print/cdpshot.py`). O acesso temporário e as credenciais ficaram só em arquivos temporários (nunca exibidos) e foram apagados no fim, assim como os perfis do Chrome.
 
 ## Prints
 - `prints/01-alb-requisicoes.png`: requisições e latência p95 do ALB.
 - `prints/02-tasks-por-servico.png`: tasks em execução por serviço.
 - `prints/03-negocio-pedidos-llm.png`: OrdersCreated, OrdersConfirmed e LLMLatencyMs.
 - `prints/04-asg-instancias.png`: instâncias do ASG e CapacityProviderReservation.
+- `prints/05-console-dashboard-cc-sp.png`: dashboard `cc-sp` (10 widgets).
+- `prints/06-console-dashboard-diagnostico.png`: dashboard `cc-sp-diagnostico` (alarmes, erros, Bedrock, tasks, Logs Insights).
+- `prints/07-console-ecs-servicos.png`: cluster `cc-sp-cluster` com 3 serviços ativos e 5 tasks em execução.
+- `prints/08-console-alarmes.png`: alarmes em OK, inclusive os de target tracking criados pela AWS.
+- `prints/09-console-target-groups.png`: `cc-sp-tg-chat` (ALB público) e `cc-sp-tg-catalog` (ALB interno).
+- `prints/10-console-ecr.png`: 3 repositórios `cc-sp/*` em sa-east-1, imutáveis e criptografados.
+- `prints/11-console-s3-estado-remoto.png`: `terraform.tfstate` no bucket de estado remoto.
+- `prints/12-console-rds.png`: `cc-sp-db` com Postgres 18.3, Multi-AZ (1a/1b), gp3 e criptografia.
+- `prints/13-console-asg.png`: `cc-sp-asg` com limites 2–4, de volta a 3 instâncias saudáveis e protegidas contra scale-in.
+- `prints/14-console-vpc-mapa.png`: VPC `cc-sp-vpc` (10.20.0.0/16), mapa de recursos com 6 sub-redes, 4 tabelas de rotas, IGW, NAT e endpoint S3.
