@@ -14,3 +14,4 @@ parte1-build/env.sh
 *.tfstate.*
 *.tfplan
 tfplan*
+etapa13.md

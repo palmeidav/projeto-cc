@@ -10,7 +10,6 @@ SQS com DLQ, SNS e CloudWatch.
 |---|---|---|
 | **Parte 1: Ohio (us-east-2), manual** (console e CLI, sem IaC) | [`parte1-build/`](parte1-build/) | comandos, JSONs (task definitions, políticas IAM, autoscaling, launch template), dashboards e scripts usados para montar a infraestrutura |
 | | [`evidencias-etapa13/`](evidencias-etapa13/) | testes de escalabilidade e resiliência (carga, DLQ, idempotência, troca de task e de instância, failover do RDS, falha do LLM) com prints. **Resumo: [`evidencias-etapa13/RESUMO.md`](evidencias-etapa13/RESUMO.md)** |
-| | [`etapa13.md`](etapa13.md) | roteiro dos testes da Etapa 13 |
 | | `chat-service/`, `catalog-orders-service/`, `order-worker/` | código dos 3 serviços que rodou em Ohio (v2, com `conversation_id` nos logs) |
 | **Parte 2: São Paulo (sa-east-1), Terraform** | [`parte2/`](parte2/) | infraestrutura inteira como código: [`parte2/infra/`](parte2/infra/) (bootstrap do estado remoto, 11 módulos, `envs/sa-east-1`), [`parte2/services/`](parte2/services/) (código dos serviços) |
 | | [`parte2/evidencias-parte2/`](parte2/evidencias-parte2/) | plans, applies, jornada CONFIRMED, rolling deploy sem queda, prova de que nada depende de Ohio, CloudTrail e prints. **Resumo: [`parte2/evidencias-parte2/RESUMO.md`](parte2/evidencias-parte2/RESUMO.md)** |

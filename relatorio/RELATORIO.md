@@ -2,7 +2,7 @@
 **Projeto semestral de Computação em Nuvem: relatório técnico (rascunho)**
 Repositório: `github.com/palmeidav/projeto-cc` (privado) · Conta AWS 244736565328 · Novembro de 2026
 
-> RASCUNHO. O único item **[PENDENTE]** é o ciclo destroy → apply cronometrado (seção 7).
+
 
 ---
 
@@ -301,8 +301,16 @@ alvos/5xx, banco e auditoria) com consultas prontas e um registro pós-incidente
   - descrição de security group com `>`, que a API recusa: texto trocado.
 
   O segundo apply completou sem destroy.
-- **[PENDENTE] Ciclo destroy → apply cronometrado:** a criação já foi feita e medida (RDS Multi-AZ em 13m36s). O ciclo
-  completo vai provar a reprodutibilidade da destruição.
+- **Ciclo destroy → apply cronometrado: não executado, por decisão de custo e risco.** O ambiente de SP estava em uso
+  para as evidências e a apresentação, e recriá-lo custaria mais ~30 min de RDS Multi-AZ, NAT e instâncias, com risco
+  perto do prazo. A **criação** completa foi feita e medida (125 recursos; RDS Multi-AZ em 13m36s), e o código já prevê a
+  destruição limpa:
+  - `skip_final_snapshot` e `deletion_protection = false` no RDS;
+  - `force_delete` no ECR e no ASG;
+  - `force_destroy` no bucket da trilha;
+  - dependências explícitas: os serviços dependem da associação do capacity provider.
+
+  A destruição será feita com `terraform destroy` depois da avaliação.
 
 ---
 
