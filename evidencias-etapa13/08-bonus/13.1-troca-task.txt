@@ -1,0 +1,39 @@
+### 2026-11-18 20:08:35 UTC (17:08:35 BRT)
+$ tail -3 ../evidencias-etapa13/08-bonus/13.1-loop-health.tsv
+20:08:32.676	200
+20:08:33.767	200
+20:08:34.847	200
+
+### 2026-11-18 20:08:37 UTC (17:08:37 BRT)
+$ aws ecs describe-tasks --cluster cc-cluster --tasks arn:aws:ecs:us-east-2:244736565328:task/cc-cluster/7f4521ed257c4558b7aa32fee412252d --query 'tasks[0].[taskArn,lastStatus,containerInstanceArn]' --output text
+arn:aws:ecs:us-east-2:244736565328:task/cc-cluster/7f4521ed257c4558b7aa32fee412252d	RUNNING	arn:aws:ecs:us-east-2:244736565328:container-instance/cc-cluster/4df2797eaad1402f8667ba6a84ccbf56
+
+### 2026-11-18 20:08:38 UTC (17:08:38 BRT)
+$ aws ecs stop-task --cluster cc-cluster --task arn:aws:ecs:us-east-2:244736565328:task/cc-cluster/7f4521ed257c4558b7aa32fee412252d --reason 'teste 13.1 etapa13' --query 'task.[lastStatus,desiredStatus,stoppedReason]' --output text
+DEACTIVATING	STOPPED	teste 13.1 etapa13
+
+### 20:08:49 UTC: 2 alvos healthy novamente
+### 2026-11-18 20:08:49 UTC (17:08:49 BRT)
+$ aws ecs describe-services --cluster cc-cluster --services chat-service --query 'services[0].events[:6].[createdAt,message]' --output text | cut -c1-230
+2026-11-18T16:52:40.385000-03:00	(service chat-service) has reached a steady state.
+2026-11-18T16:52:40.384000-03:00	(service chat-service) (deployment ecs-svc/1492415318252600663) deployment completed.
+2026-11-18T16:51:57.745000-03:00	(service chat-service, taskSet ecs-svc/7859953998511562592) has begun draining connections on 1 tasks.
+2026-11-18T16:51:57.742000-03:00	(service chat-service) deregistered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-chat/5ceb4265402321bc)
+2026-11-18T16:51:47.647000-03:00	(service chat-service) has stopped 1 running tasks: (task 7c4a0ef01b644ee1ae1861c29c951c5c).
+2026-11-18T16:51:27.970000-03:00	(service chat-service, taskSet ecs-svc/7859953998511562592) has begun draining connections on 1 tasks.
+
+20:09:16 antiga=DEACTIVATING | tasks: 83fcfdd1 | tg: 32775:draining 32776:healthy 
+20:09:26 antiga=DEACTIVATING | tasks: 83fcfdd1 8d236c3f | tg: 32775:draining 32776:healthy 
+20:09:35 antiga=DEACTIVATING | tasks: 83fcfdd1 8d236c3f | tg: 32776:initial 32775:draining 32776:healthy 
+20:09:45 antiga=DEACTIVATING | tasks: 83fcfdd1 8d236c3f | tg: 32776:healthy 32775:draining 32776:healthy 
+20:09:54 antiga=DEACTIVATING | tasks: 83fcfdd1 8d236c3f | tg: 32776:healthy 32776:healthy 
+20:10:03 antiga=STOPPED | tasks: 83fcfdd1 8d236c3f | tg: 32776:healthy 32776:healthy 
+== resultado do loop /health (13.1)
+janela: 20:08:15.973 a 20:12:14.847 UTC
+requisicoes: 220
+por codigo:
+ 220 200
+nao-200:
+83fcfdd1c3ef4c43810ae38edce41303	RUNNING	HEALTHY	2026-11-18T16:51:21.072000-03:00
+8d236c3f547d470b8c164f8d9d11b218	RUNNING	HEALTHY	2026-11-18T17:09:44.002000-03:00
+STOPPED	2026-11-18T17:08:39.858000-03:00	2026-11-18T17:09:58.308000-03:00	teste 13.1 etapa13

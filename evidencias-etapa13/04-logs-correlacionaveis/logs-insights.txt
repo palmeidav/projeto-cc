@@ -1,0 +1,11 @@
+### 2026-11-18 18:23:31 UTC Logs Insights - grupos: /cc/chat-service /cc/catalog-orders-service /cc/order-worker
+fields @timestamp, service, message, conversation_id, order_id, @log
+| filter conversation_id = 'afda496c45d1449daad851cc1ee16f85' or correlation_id = 'afda496c45d1449daad851cc1ee16f85'
+| sort @timestamp asc
+2026-11-18 18:23:02.915	catalog-orders	request	-	-
+2026-11-18 18:23:03.810	chat-service	turno de conversa	afda496c45d1449daad851cc1ee16f85	-
+2026-11-18 18:23:05.410	catalog-orders	pedido criado	afda496c45d1449daad851cc1ee16f85	1874fb774fc0
+2026-11-18 18:23:05.410	catalog-orders	request	-	-
+2026-11-18 18:23:06.094	order-worker	pedido confirmado	afda496c45d1449daad851cc1ee16f85	1874fb774fc0
+2026-11-18 18:23:06.414	chat-service	turno de conversa	afda496c45d1449daad851cc1ee16f85	-
+2026-11-18 18:23:07.844	chat-service	turno de conversa	afda496c45d1449daad851cc1ee16f85	-

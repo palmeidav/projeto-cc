@@ -1,0 +1,13 @@
+### 2026-11-18 17:41:23 UTC (14:41:23 BRT)
+$ aws sqs list-queues --output text; aws sqs get-queue-attributes --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders --attribute-names VisibilityTimeout RedrivePolicy --output json; aws sns list-topics --output text
+QUEUEURLS	https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders
+QUEUEURLS	https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders-dlq
+{
+    "Attributes": {
+        "VisibilityTimeout": "60",
+        "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-2:244736565328:cc-orders-dlq\",\"maxReceiveCount\":3}"
+    }
+}
+TOPICS	arn:aws:sns:us-east-2:244736565328:cc-alarms
+TOPICS	arn:aws:sns:us-east-2:244736565328:cc-order-events
+

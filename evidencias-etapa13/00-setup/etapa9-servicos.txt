@@ -1,0 +1,18 @@
+### 2026-11-18 17:43:16 UTC (14:43:16 BRT)
+$ aws logs describe-log-groups --log-group-name-prefix /cc/ --query 'logGroups[].[logGroupName,retentionInDays]' --output text
+/cc/catalog-orders-service	7
+/cc/chat-service	7
+/cc/order-worker	7
+
+### 2026-11-18 17:56:14 UTC (14:56:14 BRT)
+$ aws ecs register-task-definition --cli-input-json file://td-chat.out.json --query 'taskDefinition.[family,revision,status]' --output text
+cc-chat	1	ACTIVE
+
+### 2026-11-18 17:56:15 UTC (14:56:15 BRT)
+$ aws ecs register-task-definition --cli-input-json file://td-catalog.out.json --query 'taskDefinition.[family,revision,status]' --output text
+cc-catalog	1	ACTIVE
+
+### 2026-11-18 17:56:16 UTC (14:56:16 BRT)
+$ aws ecs register-task-definition --cli-input-json file://td-worker.out.json --query 'taskDefinition.[family,revision,status]' --output text
+cc-worker	1	ACTIVE
+

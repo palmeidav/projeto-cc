@@ -1,0 +1,91 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "chat-service",
+      "image": "244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/chat-service:v2",
+      "cpu": 512,
+      "memory": 1024,
+      "memoryReservation": 512,
+      "portMappings": [
+        {
+          "containerPort": 8000,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [
+        {
+          "name": "AWS_REGION",
+          "value": "us-east-2"
+        },
+        {
+          "name": "DB_NAME",
+          "value": "shop"
+        },
+        {
+          "name": "BEDROCK_MODEL_ID",
+          "value": "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+        },
+        {
+          "name": "DB_HOST",
+          "value": "cc-db.c23mtpyyxfro.us-east-2.rds.amazonaws.com"
+        },
+        {
+          "name": "DB_USER",
+          "value": "cc_admin"
+        },
+        {
+          "name": "CATALOG_URL",
+          "value": "http://internal-cc-ilb-258031333.us-east-2.elb.amazonaws.com"
+        },
+        {
+          "name": "LLM_MODE",
+          "value": "mock"
+        }
+      ],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "secrets": [
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "${DB_SECRET_ARN}:password::"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/cc/chat-service",
+          "awslogs-region": "us-east-2",
+          "awslogs-stream-prefix": "chat"
+        }
+      },
+      "healthCheck": {
+        "command": [
+          "CMD-SHELL",
+          "curl -f http://localhost:8000/health || exit 1"
+        ],
+        "interval": 15,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 30
+      },
+      "systemControls": []
+    }
+  ],
+  "family": "cc-chat",
+  "taskRoleArn": "arn:aws:iam::244736565328:role/cc-chat-task-role",
+  "executionRoleArn": "arn:aws:iam::244736565328:role/cc-task-exec-role",
+  "networkMode": "bridge",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "tags": [
+    {
+      "key": "project",
+      "value": "cc"
+    }
+  ]
+}

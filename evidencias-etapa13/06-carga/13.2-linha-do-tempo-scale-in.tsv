@@ -1,0 +1,5 @@
+utc	brt	chat_desired	chat_running	chat_pending	tasks_provisioning	chat_healthy_targets	asg_desired	asg_inservice	container_instances	cp_reservation
+19:37:26	16:37:26	2	2	0	0	2	4	4	4	60.0
+19:37:55	16:37:55	2	2	0	0	2	4	4	4	60.0
+19:38:15	16:38:15	2	2	0	0	2	4	4	4	60.0
+19:49:15	16:49:15	2	2	0	0	2	3	3	3	80.0

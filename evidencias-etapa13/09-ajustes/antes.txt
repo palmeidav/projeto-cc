@@ -1,0 +1,3 @@
+[2,2,[{"type":"spread","field":"attribute:ecs.availability-zone"},{"type":"binpack","field":"MEMORY"}],[],"ENABLED"]
+{"TargetValue":50.0,"PredefinedMetricSpecification":{"PredefinedMetricType":"ALBRequestCountPerTarget","ResourceLabel":"app/cc-alb/4573f65f6bcbbd4f/targetgroup/cc-tg-chat/5ceb4265402321bc"},"ScaleOutCooldown":60,"ScaleInCooldown":120}
+["cc-rds-connections","AWS/RDS","DatabaseConnections","Maximum","GreaterThanThreshold",80.0,60,2,"notBreaching","arn:aws:sns:us-east-2:244736565328:cc-alarms",[{"Name":"DBInstanceIdentifier","Value":"cc-db"}]]

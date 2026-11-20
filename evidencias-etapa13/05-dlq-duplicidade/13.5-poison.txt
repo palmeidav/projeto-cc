@@ -1,0 +1,33 @@
+### 2026-11-18 18:34:28 UTC (15:34:28 BRT)
+$ aws sqs get-queue-attributes --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders-dlq --attribute-names ApproximateNumberOfMessages --output text; aws cloudwatch describe-alarms --alarm-names cc-dlq-not-empty --query 'MetricAlarms[0].[AlarmName,StateValue]' --output text
+ATTRIBUTES	0
+cc-dlq-not-empty	OK
+
+### 2026-11-18 18:34:29 UTC (15:34:29 BRT)
+$ aws sqs send-message --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders --message-body 'poison' --query MessageId --output text
+65d9198b-d4c9-49d8-8503-4d3c949b5df3
+
+{"ts": "2026-11-18T18:34:30Z", "level": "ERROR", "service": "order-worker", "message": "falha ao processar mensagem", "message_id": "65d9198b-d4c9-49d8-8503-4d3c949b5df3", "tentativa": "1", "erro": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"}
+{"ts": "2026-11-18T18:35:30Z", "level": "ERROR", "service": "order-worker", "message": "falha ao processar mensagem", "message_id": "65d9198b-d4c9-49d8-8503-4d3c949b5df3", "tentativa": "2", "erro": "JSONDecodeError('Expecting value: line 1 column 1 (char 0)')"}
+### 18:37:45 UTC DLQ=1 (+186s apos o waiter iniciar)
+### 18:41:53 UTC alarme cc-dlq-not-empty=ALARM (+434s)
+### 2026-11-18 18:42:01 UTC (15:42:01 BRT)
+$ aws sqs get-queue-attributes --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders-dlq --attribute-names ApproximateNumberOfMessages --output text
+ATTRIBUTES	1
+
+### 2026-11-18 18:42:02 UTC (15:42:02 BRT)
+$ aws cloudwatch describe-alarm-history --alarm-name cc-dlq-not-empty --history-item-type StateUpdate --max-records 3 --query 'AlarmHistoryItems[].[Timestamp,HistorySummary]' --output text
+2026-11-18T15:41:53.024000-03:00	Alarm updated from OK to ALARM
+2026-11-18T15:08:53.026000-03:00	Alarm updated from INSUFFICIENT_DATA to OK
+
+### 2026-11-18 18:42:03 UTC (15:42:03 BRT)
+$ aws cloudwatch describe-alarms --alarm-names cc-dlq-not-empty --query 'MetricAlarms[0].[StateValue,AlarmActions[0]]' --output text
+ALARM	arn:aws:sns:us-east-2:244736565328:cc-alarms
+
+### 2026-11-18 18:42:04 UTC (15:42:04 BRT)
+$ aws logs filter-log-events --log-group-name /cc/order-worker --start-time 1795026124000 --filter-pattern '"65d9198b-d4c9-49d8-8503-4d3c949b5df3"' --query 'events[].message' --output text | tr '	' '
+' | grep -v _aws | jq -r '[.ts,.tentativa,.erro]|@tsv'
+2026-11-18T18:34:30Z	1	JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+2026-11-18T18:35:30Z	2	JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+2026-11-18T18:36:30Z	3	JSONDecodeError('Expecting value: line 1 column 1 (char 0)')
+

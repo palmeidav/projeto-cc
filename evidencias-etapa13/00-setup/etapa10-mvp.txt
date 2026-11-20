@@ -1,0 +1,89 @@
+### 2026-11-18 17:57:27 UTC (14:57:27 BRT)
+$ for tg in arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-chat/5ceb4265402321bc arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71c69f2658fa8964; do aws elbv2 describe-target-health --target-group-arn $tg --query 'TargetHealthDescriptions[].[Target.Id,Target.Port,TargetHealth.State]' --output text; echo ---; done
+i-0d36bd4da26ebb4d1	32769	healthy
+i-0a918013974beb14b	32769	healthy
+---
+i-0d36bd4da26ebb4d1	32768	healthy
+i-0a918013974beb14b	32768	healthy
+---
+
+### 2026-11-18 17:57:29 UTC (14:57:29 BRT)
+$ curl -s -w '
+HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"}
+HTTP 200
+
+### 2026-11-18 17:57:29 UTC (14:57:29 BRT)
+$ curl -s -X POST http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/chat -H 'Content-Type: application/json' -d '{"message":"Quero ver os produtos disponíveis"}'
+{"conversation_id":"f21197e97e304500adf81c72217e71c1","reply":"Tive um problema técnico para responder agora. Por favor, tente novamente em instantes.","degraded":true}
+### 2026-11-18 18:08:42 UTC (15:08:42 BRT)
+$ curl -s -X POST http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/chat -H 'Content-Type: application/json' -d '{"message":"Quero ver os produtos disponíveis"}' | tee /tmp/c1.json | jq -r '.conversation_id, .degraded, .reply'
+5db4b5c5876942938c355f6bbb534e28
+false
+Ótimo! Aqui estão todos os produtos disponíveis na Livraria Nuvem:
+
+**📚 ROMANCES**
+1. **Dom Casmurro** - Machado de Assis | R$ 39,90 | 25 em estoque
+2. **Memórias Póstumas de Brás Cubas** - Machado de Assis | R$ 34,90 | 18 em estoque
+3. **Grande Sertão: Veredas** - João Guimarães Rosa | R$ 64,90 | 8 em estoque
+4. **Capitães da Areia** - Jorge Amado | R$ 42,90 | 20 em estoque
+5. **A Hora da Estrela** - Clarice Lispector | R$ 32,90 | 15 em estoque
+6. **Vidas Secas** - Graciliano Ramos | R$ 31,90 | 22 em estoque
+7. **O Cortiço** - Aluísio Azevedo | R$ 29,90 | 12 em estoque
+
+**🚀 FICÇÃO CIENTÍFICA**
+8. **1984** - George Orwell | R$ 45,90 | 30 em estoque
+9. **Fahrenheit 451** - Ray Bradbury | R$ 38,90 | ❌ Fora de estoque
+
+**👶 INFANTIL**
+10. **O Pequeno Príncipe** - Antoine de Saint-Exupéry | R$ 27,90 | 40 em estoque
+
+**📖 HISTÓRIA**
+11. **Sapiens** - Yuval Noah Harari | R$ 69,90 | 10 em estoque
+
+**💻 TECNOLOGIA**
+12. **Código Limpo** - Robert C. Martin | R$ 89,90 | 5 em estoque
+
+Gostaria de saber mais sobre algum livro ou deseja fazer uma compra? 😊
+
+### 2026-11-18 18:08:52 UTC (15:08:52 BRT)
+$ curl -s -X POST http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/chat -H 'Content-Type: application/json' -d '{"conversation_id":"5db4b5c5876942938c355f6bbb534e28","message":"Quero comprar 1 unidade de 1984. Meu nome é Pedro."}' | jq -r '.degraded, .reply'
+false
+Perfeito, Pedro! 📖
+
+Vou confirmar seu pedido:
+- **1 unidade de "1984"** (George Orwell) - R$ 45,90
+- **Nome do cliente:** Pedro
+
+Tudo certo? Posso registrar seu pedido agora?
+
+### 2026-11-18 18:08:54 UTC (15:08:54 BRT)
+$ curl -s -X POST http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/chat -H 'Content-Type: application/json' -d '{"conversation_id":"5db4b5c5876942938c355f6bbb534e28","message":"Sim, confirmo."}' | jq -r '.degraded, .reply'
+false
+🎉 **Pedido registrado com sucesso!**
+
+**Código do pedido:** 98a686dd2ed4
+
+**Resumo:**
+- Cliente: Pedro
+- Livro: 1984 (George Orwell)
+- Quantidade: 1
+- **Total: R$ 45,90**
+
+Seu pedido está pendente de confirmação. Obrigada pela compra! 😊
+
+### 2026-11-18 18:09:02 UTC (15:09:02 BRT)
+$ aws logs tail /cc/order-worker --since 10m --format short | grep -v '_aws' | grep -E 'confirmado|falha'
+2026-11-18T18:08:56 {"ts": "2026-11-18T18:08:56Z", "level": "INFO", "service": "order-worker", "message": "pedido confirmado", "message_id": "543fbdb3-307f-45e8-b1da-78d049c9f37f"}
+
+### 2026-11-18 18:09:03 UTC (15:09:03 BRT)
+$ aws ssm describe-instance-information --query 'InstanceInformationList[].[InstanceId,PingStatus]' --output text
+i-0d36bd4da26ebb4d1	Online
+i-0a918013974beb14b	Online
+i-0e0382c29c6741a01	Online
+
+### 2026-11-18 18:09:12 UTC (15:09:12 BRT)
+$ aws ssm get-command-invocation --command-id 1d3aab04-1282-4df7-b160-7c4de0e43ce6 --instance-id i-0d36bd4da26ebb4d1 --query '[Status,StandardOutputContent]' --output text
+Success	[{"order_id":"98a686dd2ed4","status":"CONFIRMED","customer_name":"Pedro","total_cents":4590,"total_brl":"45.90","created_at":"2026-11-18T18:08:55.265375+00:00","confirmed_at":"2026-11-18T18:08:56.277820+00:00","items":[{"product_id":9,"title":"1984","quantity":1,"unit_price_cents":4590}]}]
+

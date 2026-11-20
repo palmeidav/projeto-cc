@@ -1,0 +1,136 @@
+{
+  "widgets": [
+    {
+      "type": "alarm",
+      "x": 0,
+      "y": 0,
+      "width": 8,
+      "height": 4,
+      "properties": {
+        "title": "1) Alarmes",
+        "alarms": [
+          "arn:aws:cloudwatch:us-east-2:244736565328:alarm:cc-app-errors",
+          "arn:aws:cloudwatch:us-east-2:244736565328:alarm:cc-5xx",
+          "arn:aws:cloudwatch:us-east-2:244736565328:alarm:cc-unhealthy"
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 0,
+      "width": 8,
+      "height": 4,
+      "properties": {
+        "title": "2) Erros da aplicacao: AppErrors e ChatDegraded",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [
+            "CC",
+            "AppErrors"
+          ],
+          [
+            ".",
+            "ChatDegraded"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 0,
+      "width": 8,
+      "height": 4,
+      "properties": {
+        "title": "2) Bedrock: LLMLatencyMs (sem dados = nenhuma chamada OK)",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "SampleCount",
+        "period": 60,
+        "metrics": [
+          [
+            "CC",
+            "LLMLatencyMs"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 4,
+      "width": 12,
+      "height": 4,
+      "properties": {
+        "title": "2) Infra saudavel: ALB 5xx e alvos healthy",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "HTTPCode_Target_5XX_Count",
+            "LoadBalancer",
+            "app/cc-alb/4573f65f6bcbbd4f"
+          ],
+          [
+            "AWS/ApplicationELB",
+            "RequestCount",
+            "LoadBalancer",
+            "app/cc-alb/4573f65f6bcbbd4f"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 4,
+      "width": 12,
+      "height": 4,
+      "properties": {
+        "title": "2) Tasks em execucao",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Minimum",
+        "period": 60,
+        "metrics": [
+          [
+            "ECS/ContainerInsights",
+            "RunningTaskCount",
+            "ClusterName",
+            "cc-cluster",
+            "ServiceName",
+            "chat-service"
+          ],
+          [
+            "...",
+            "catalog-orders-service"
+          ],
+          [
+            "...",
+            "order-worker"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "log",
+      "x": 0,
+      "y": 8,
+      "width": 24,
+      "height": 6,
+      "properties": {
+        "title": "3) Logs Insights (3 grupos) conversation_id = a845bb74d89c4f18869b1c3cd5979668",
+        "region": "us-east-2",
+        "view": "table",
+        "query": "SOURCE '/cc/chat-service' | SOURCE '/cc/catalog-orders-service' | SOURCE '/cc/order-worker' | fields @timestamp, service, level, message, erro | filter conversation_id = 'a845bb74d89c4f18869b1c3cd5979668' | sort @timestamp asc"
+      }
+    }
+  ]
+}

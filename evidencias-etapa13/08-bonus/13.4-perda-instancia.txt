@@ -1,0 +1,122 @@
+### 2026-11-18 20:34:33 UTC (17:34:33 BRT)
+$ echo "pedidos ANTES: $(jq length ../evidencias-etapa13/08-bonus/pedidos-antes-13.4.json) -> $(jq -r '[.[]|.order_id+":"+.status]|join(" ")' ../evidencias-etapa13/08-bonus/pedidos-antes-13.4.json)"
+pedidos ANTES: 3 -> bb0bd8e05d42:CONFIRMED 1874fb774fc0:CONFIRMED 98a686dd2ed4:CONFIRMED
+
+### 2026-11-18 20:34:33 UTC (17:34:33 BRT)
+$ aws ecs list-tasks --cluster cc-cluster --container-instance $(aws ecs list-container-instances --cluster cc-cluster --filter "ec2InstanceId == i-0e11b4cf5d06f56d1" --query 'containerInstanceArns[0]' --output text) --query taskArns --output text | xargs aws ecs describe-tasks --cluster cc-cluster --query 'tasks[].[group,lastStatus]' --output text --tasks
+service:chat-service	RUNNING
+service:chat-service	RUNNING
+service:order-worker	RUNNING
+
+### 2026-11-18 20:34:37 UTC (17:34:37 BRT)
+$ aws ec2 terminate-instances --instance-ids i-0e11b4cf5d06f56d1 --query 'TerminatingInstances[0].[InstanceId,PreviousState.Name,CurrentState.Name]' --output text
+i-0e11b4cf5d06f56d1	running	shutting-down
+
+20:34:54 +5s svc(run/des/pend chat,cat,wrk)=0/2/2 2/2/0 0/1/0  tg_chat=[draining	healthy	draining] asg(des/inservice)=3/3 CIs=2
+20:35:04 +15s svc(run/des/pend chat,cat,wrk)=1/2/1 2/2/0 0/1/1  tg_chat=[draining	draining	healthy	healthy] asg(des/inservice)=3/3 CIs=2
+20:35:14 +25s svc(run/des/pend chat,cat,wrk)=2/2/0 2/2/0 1/1/0  tg_chat=[draining	draining	healthy	healthy] asg(des/inservice)=3/2 CIs=2
+20:35:23 +34s svc(run/des/pend chat,cat,wrk)=2/2/0 2/2/0 1/1/0  tg_chat=[healthy	healthy] asg(des/inservice)=3/3 CIs=2
+20:35:33 +44s svc(run/des/pend chat,cat,wrk)=2/2/0 2/2/0 1/1/0  tg_chat=[healthy	healthy] asg(des/inservice)=3/3 CIs=3
+### 20:35:33 UTC recuperado (+44s)
+== /health em volta da perda (20:34:20 a 20:36:00)
+20:34:20	200	0.517564
+20:34:22	200	0.513539
+20:34:23	200	0.512044
+20:34:24	200	0.519334
+20:34:25	200	0.511341
+20:34:26	200	0.515765
+20:34:27	200	0.510281
+20:34:28	200	0.517580
+20:34:29	200	0.513830
+20:34:30	200	0.515811
+20:34:31	200	0.520560
+20:34:32	200	0.534732
+20:34:33	200	0.514136
+20:34:34	200	0.515182
+20:34:35	200	0.521550
+20:34:36	200	0.514820
+20:34:37	200	0.514705
+20:34:38	502	0.514735
+20:34:39	502	0.562563
+20:34:41	502	0.513310
+20:34:42	502	0.514682
+20:34:43	502	0.570254
+20:34:44	502	0.514560
+20:34:45	502	0.515000
+20:34:46	000	3.005006
+20:34:49	000	3.000656
+20:34:53	000	3.006618
+20:34:56	200	0.515461
+20:34:58	200	0.515603
+20:34:59	200	0.512329
+20:35:00	200	0.519878
+20:35:01	200	0.540538
+20:35:02	200	0.513463
+20:35:03	200	0.513081
+20:35:04	200	0.512592
+20:35:05	200	0.510662
+20:35:06	200	0.519512
+20:35:07	200	0.519519
+20:35:08	200	0.614603
+20:35:09	200	0.519044
+20:35:10	200	0.510970
+20:35:11	200	0.514768
+20:35:12	200	0.513459
+20:35:13	200	0.511222
+20:35:14	200	0.513228
+20:35:16	200	0.514671
+20:35:17	200	0.513727
+20:35:18	200	0.512423
+20:35:19	200	0.513376
+20:35:20	200	0.512256
+20:35:21	200	0.516134
+20:35:22	200	0.512415
+20:35:23	200	0.521263
+20:35:24	200	0.557611
+20:35:25	200	0.511002
+20:35:26	200	0.514142
+20:35:27	200	0.510594
+20:35:28	200	0.536776
+20:35:29	200	0.512860
+20:35:30	200	0.611963
+20:35:31	200	0.512681
+20:35:32	200	0.520070
+20:35:34	200	0.524419
+20:35:35	200	0.512577
+20:35:36	200	0.514378
+20:35:37	200	0.520361
+20:35:38	200	0.523720
+20:35:39	200	0.535723
+20:35:40	200	0.517681
+20:35:41	200	0.515716
+20:35:42	200	0.520834
+20:35:43	200	0.526118
+20:35:44	200	0.514074
+20:35:45	200	0.515329
+20:35:46	200	0.557076
+20:35:47	200	0.518120
+20:35:48	200	0.513887
+20:35:49	200	0.524567
+20:35:50	200	0.512471
+20:35:52	200	0.512558
+20:35:53	200	0.515911
+20:35:54	200	0.515158
+20:35:55	200	0.515142
+20:35:56	200	0.512974
+### 2026-11-18 20:36:06 UTC (17:36:06 BRT)
+$ echo "pedidos DEPOIS: $(jq length ../evidencias-etapa13/08-bonus/pedidos-depois-13.4.json) -> $(jq -r '[.[]|.order_id+":"+.status]|join(" ")' ../evidencias-etapa13/08-bonus/pedidos-depois-13.4.json)"; diff <(jq -S . ../evidencias-etapa13/08-bonus/pedidos-antes-13.4.json) <(jq -S . ../evidencias-etapa13/08-bonus/pedidos-depois-13.4.json) && echo 'pedidos IDENTICOS antes/depois'
+pedidos DEPOIS: 3 -> bb0bd8e05d42:CONFIRMED 1874fb774fc0:CONFIRMED 98a686dd2ed4:CONFIRMED
+pedidos IDENTICOS antes/depois
+
+### 2026-11-18 20:36:06 UTC (17:36:06 BRT)
+$ aws autoscaling describe-scaling-activities --auto-scaling-group-name cc-asg --max-items 2 --query 'Activities[].[StartTime,EndTime,StatusCode,Description]' --output text; aws ec2 describe-instances --instance-ids i-0e11b4cf5d06f56d1 --query 'Reservations[0].Instances[0].[State.Name,StateTransitionReason]' --output text
+2026-11-18T20:35:11.929000+00:00	2026-11-18T20:35:16+00:00	Successful	Launching a new EC2 instance: i-0b0b2ab08fceab115
+2026-11-18T20:35:10.494000+00:00	2026-11-18T20:35:12+00:00	Successful	Terminating EC2 instance: i-0e11b4cf5d06f56d1
+None
+terminated	User initiated (2026-11-18 20:34:38 GMT)
+
+### 2026-11-18 20:36:08 UTC (17:36:08 BRT)
+$ aws ecs list-tasks --cluster cc-cluster --service-name chat-service --query taskArns --output text | xargs aws ecs describe-tasks --cluster cc-cluster --query 'tasks[].[availabilityZone,containerInstanceArn]' --output text --tasks | sed 's#arn.*container-instance/cc-cluster/##'
+us-east-2b	5a3f135f18ea4ac6b2ae49b3f806bd75
+us-east-2b	5a3f135f18ea4ac6b2ae49b3f806bd75
+

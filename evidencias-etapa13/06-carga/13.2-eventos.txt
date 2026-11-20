@@ -1,0 +1,3 @@
+4a instancia registrada no cluster: 18:59:44 UTC
+2026-11-18T18:59:11.394000+00:00	None	WaitingForInstanceWarmup	Launching a new EC2 instance: i-048df9755deb5c4cd
+None

@@ -1,0 +1,8 @@
+{"TargetValue":5,"CustomizedMetricSpecification":{"Metrics":[
+ {"Id":"m1","MetricStat":{"Metric":{"Namespace":"AWS/SQS","MetricName":"ApproximateNumberOfMessagesVisible",
+   "Dimensions":[{"Name":"QueueName","Value":"cc-orders"}]},"Stat":"Average"},"ReturnData":false},
+ {"Id":"m2","MetricStat":{"Metric":{"Namespace":"ECS/ContainerInsights","MetricName":"RunningTaskCount",
+   "Dimensions":[{"Name":"ClusterName","Value":"cc-cluster"},
+   {"Name":"ServiceName","Value":"order-worker"}]},"Stat":"Average"},"ReturnData":false},
+ {"Id":"e1","Expression":"m1/m2","Label":"backlog por task","ReturnData":true}]},
+ "ScaleOutCooldown":60,"ScaleInCooldown":180}

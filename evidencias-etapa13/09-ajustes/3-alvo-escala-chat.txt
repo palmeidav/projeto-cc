@@ -1,0 +1,19 @@
+### 2026-11-18 21:08:02 UTC (18:08:02 BRT)
+$ jq -c . tt-chat.json
+{"TargetValue":600,"PredefinedMetricSpecification":{"PredefinedMetricType":"ALBRequestCountPerTarget","ResourceLabel":"app/cc-alb/4573f65f6bcbbd4f/targetgroup/cc-tg-chat/5ceb4265402321bc"},"ScaleOutCooldown":60,"ScaleInCooldown":120}
+
+### 2026-11-18 21:08:02 UTC (18:08:02 BRT)
+$ aws application-autoscaling put-scaling-policy --policy-name chat-req --service-namespace ecs --resource-id service/cc-cluster/chat-service --scalable-dimension ecs:service:DesiredCount --policy-type TargetTrackingScaling --target-tracking-scaling-policy-configuration file://tt-chat.json --query 'Alarms[].AlarmName' --output text
+TargetTracking-service/cc-cluster/chat-service-AlarmHigh-3c9463f8-3d97-469b-bbe4-f23b6fd74974	TargetTracking-service/cc-cluster/chat-service-AlarmLow-050fa99e-2be4-45c3-a2e0-dae772350c58
+
+### 2026-11-18 21:08:03 UTC (18:08:03 BRT)
+$ aws application-autoscaling describe-scaling-policies --service-namespace ecs --resource-id service/cc-cluster/chat-service --query 'ScalingPolicies[0].[PolicyName,TargetTrackingScalingPolicyConfiguration.TargetValue,TargetTrackingScalingPolicyConfiguration.ScaleOutCooldown,TargetTrackingScalingPolicyConfiguration.ScaleInCooldown]' --output text; aws cloudwatch describe-alarms --alarm-name-prefix TargetTracking-service/cc-cluster/chat-service --query 'MetricAlarms[].[AlarmName,Threshold]' --output text
+chat-req	600.0	60	120
+TargetTracking-service/cc-cluster/chat-service-AlarmHigh-3c9463f8-3d97-469b-bbe4-f23b6fd74974	600.0
+TargetTracking-service/cc-cluster/chat-service-AlarmLow-050fa99e-2be4-45c3-a2e0-dae772350c58	540.0
+
+### 2026-11-18 21:08:05 UTC (18:08:05 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"} HTTP 200
+

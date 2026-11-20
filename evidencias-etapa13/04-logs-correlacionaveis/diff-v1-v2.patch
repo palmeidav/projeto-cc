@@ -1,0 +1,107 @@
+--- parte1-build/src-v1/chat-service/app.py	2026-11-18 15:17:07
++++ chat-service/app.py	2026-11-18 15:17:12
+@@ -131,7 +131,7 @@
+ # ------------------------------------------------------------------ ferramentas (chamam o catálogo)
+ def call_catalog(method, path, conv_id, **kw):
+     """Chamada ao catálogo com até 3 tentativas (seguro também para POST: há Idempotency-Key)."""
+-    headers = {"X-Correlation-ID": conv_id, **kw.pop("headers", {})}
++    headers = {"X-Correlation-ID": conv_id, "X-Conversation-Id": conv_id, **kw.pop("headers", {})}
+     last = None
+     for attempt in range(3):
+         try:
+@@ -301,6 +301,7 @@
+         return {"conversation_id": conv_id, "reply": reply, "degraded": True}
+     if degraded:
+         emf("ChatDegraded", 1)
++    log(logging.INFO, "turno de conversa", conversation_id=conv_id, degraded=degraded, orders=orders)
+     return {"conversation_id": conv_id, "reply": reply, "degraded": degraded}
+ 
+ 
+--- parte1-build/src-v1/catalog-orders-service/app.py	2026-11-18 15:17:07
++++ catalog-orders-service/app.py	2026-11-18 15:17:20
+@@ -244,13 +244,15 @@
+ 
+ 
+ @app.post("/orders")
+-def create_order(body: OrderIn, idempotency_key: Optional[str] = Header(default=None)):
++def create_order(body: OrderIn, idempotency_key: Optional[str] = Header(default=None),
++                 x_conversation_id: Optional[str] = Header(default=None)):
+     if not idempotency_key:
+         raise HTTPException(400, "header Idempotency-Key é obrigatório")
+ 
+     existing = replay(idempotency_key)
+     if existing:
+-        log(logging.INFO, "pedido repetido (idempotência)", order_id=existing["order_id"])
++        log(logging.INFO, "pedido repetido (idempotência)", order_id=existing["order_id"],
++            conversation_id=x_conversation_id)
+         return JSONResponse(status_code=200, content={**existing, "idempotent_replay": True})
+ 
+     wanted = defaultdict(int)
+@@ -278,7 +280,8 @@
+                 conn.execute("INSERT INTO order_items VALUES (%s, %s, %s, %s)",
+                              (order_id, pid, qty, found[pid]["price_cents"]))
+             conn.execute("INSERT INTO outbox (order_id, payload) VALUES (%s, %s::jsonb)",
+-                         (order_id, json.dumps({"order_id": order_id, "total_cents": total})))
++                         (order_id, json.dumps({"order_id": order_id, "total_cents": total,
++                                                "conversation_id": x_conversation_id})))
+             order = load_order(conn, order_id)
+     except psycopg.errors.UniqueViolation:  # duas requisições simultâneas com a mesma chave
+         existing = replay(idempotency_key)
+@@ -286,7 +289,8 @@
+             return JSONResponse(status_code=200, content={**existing, "idempotent_replay": True})
+         raise
+     emf("OrdersCreated", 1)
+-    log(logging.INFO, "pedido criado", order_id=order_id, total_cents=total)
++    log(logging.INFO, "pedido criado", order_id=order_id, total_cents=total,
++        conversation_id=x_conversation_id)
+     return JSONResponse(status_code=201, content=order)
+ 
+ 
+--- parte1-build/src-v1/order-worker/worker.py	2026-11-18 15:17:07
++++ order-worker/worker.py	2026-11-18 15:17:30
+@@ -48,8 +48,8 @@
+         f.write(str(time.time()))
+ 
+ 
+-def process(body: str) -> bool:
+-    """Confirma o pedido. Devolve False se já estava confirmado (duplicidade). Lança exceção se inválida."""
++def process(body: str):
++    """Confirma o pedido. Devolve (False, dados) se já estava confirmado (duplicidade). Lança exceção se inválida."""
+     data = json.loads(body)          # JSON inválido -> exceção -> tentativas -> DLQ
+     order_id = data["order_id"]      # campo ausente -> exceção -> DLQ
+     with pool.connection(timeout=10) as conn:
+@@ -57,14 +57,14 @@
+         if row is None:
+             raise LookupError(f"pedido {order_id} não existe")
+         if row["status"] == "CONFIRMED":
+-            return False
++            return False, data
+         if DELAY:
+             time.sleep(DELAY)
+         conn.execute("UPDATE orders SET status = 'CONFIRMED', confirmed_at = now() WHERE id = %s", (order_id,))
+         if sns:  # publicado antes do commit: se falhar, tudo é refeito (entrega pelo menos uma vez)
+             sns.publish(TopicArn=TOPIC_ARN, Subject="Pedido confirmado",
+                         Message=json.dumps({"event": "order_confirmed", "order_id": order_id}))
+-    return True
++    return True, data
+ 
+ 
+ def main():
+@@ -82,13 +82,14 @@
+         for m in resp.get("Messages", []):
+             attempts = m.get("Attributes", {}).get("ApproximateReceiveCount")
+             try:
+-                done = process(m["Body"])
++                done, data = process(m["Body"])
+                 sqs.delete_message(QueueUrl=QUEUE_URL, ReceiptHandle=m["ReceiptHandle"])
++                ids = {"order_id": data.get("order_id"), "conversation_id": data.get("conversation_id")}
+                 if done:
+                     emf("OrdersConfirmed", 1)
+-                    log(logging.INFO, "pedido confirmado", message_id=m["MessageId"])
++                    log(logging.INFO, "pedido confirmado", message_id=m["MessageId"], **ids)
+                 else:
+-                    log(logging.INFO, "mensagem duplicada ignorada", message_id=m["MessageId"])
++                    log(logging.INFO, "mensagem duplicada ignorada", message_id=m["MessageId"], **ids)
+             except Exception as e:
+                 # não apaga: volta à fila após o visibility timeout; na 3ª tentativa vai para a DLQ
+                 emf("OrderProcessingFailures", 1)

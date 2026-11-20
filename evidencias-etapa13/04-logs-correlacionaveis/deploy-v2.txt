@@ -1,0 +1,39 @@
+### 2026-11-18 18:20:13 UTC (15:20:13 BRT)
+$ aws ecs register-task-definition --cli-input-json file://cc-chat-v2.json --query 'taskDefinition.[family,revision,containerDefinitions[0].image]' --output text
+cc-chat	2	244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/chat-service:v2
+
+### 2026-11-18 18:20:15 UTC (15:20:15 BRT)
+$ aws ecs register-task-definition --cli-input-json file://cc-catalog-v2.json --query 'taskDefinition.[family,revision,containerDefinitions[0].image]' --output text
+cc-catalog	2	244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/catalog-orders-service:v2
+
+### 2026-11-18 18:20:16 UTC (15:20:16 BRT)
+$ aws ecs register-task-definition --cli-input-json file://cc-worker-v2.json --query 'taskDefinition.[family,revision,containerDefinitions[0].image]' --output text
+cc-worker	2	244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/order-worker:v2
+
+### 2026-11-18 18:20:25 UTC (15:20:25 BRT)
+$ aws ecs update-service --cluster cc-cluster --service catalog-orders-service --task-definition cc-catalog:2 --query 'service.[serviceName,taskDefinition]' --output text
+catalog-orders-service	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-catalog:2
+
+### 2026-11-18 18:20:26 UTC (15:20:26 BRT)
+$ aws ecs update-service --cluster cc-cluster --service chat-service --task-definition cc-chat:2 --query 'service.[serviceName,taskDefinition]' --output text
+chat-service	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:2
+
+### 2026-11-18 18:20:27 UTC (15:20:27 BRT)
+$ aws ecs update-service --cluster cc-cluster --service order-worker --task-definition cc-worker:2 --query 'service.[serviceName,taskDefinition]' --output text
+order-worker	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-worker:2
+
+exit=0 18:22:34 UTC
+chat-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:2	COMPLETED	1
+catalog-orders-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-catalog:2	COMPLETED	1
+order-worker	1	1	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-worker:2	IN_PROGRESS	1
+
+[exited with code 0]
+### 2026-11-18 18:22:40 UTC (15:22:40 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"} HTTP 200
+
+### 2026-11-18 18:22:41 UTC (15:22:41 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].[MinSize,DesiredCapacity,MaxSize,length(Instances)]' --output text
+2	3	4	3
+

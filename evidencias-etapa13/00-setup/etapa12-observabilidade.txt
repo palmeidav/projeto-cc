@@ -1,0 +1,31 @@
+filtro AppErrors em /cc/chat-service
+filtro AppErrors em /cc/catalog-orders-service
+filtro AppErrors em /cc/order-worker
+alarme cc-unhealthy
+alarme cc-5xx
+alarme cc-dlq-not-empty
+alarme cc-queue-age
+alarme cc-asg-capacity
+alarme cc-cluster-cpu
+alarme cc-cluster-mem
+alarme cc-rds-cpu
+alarme cc-tasks-chat-service
+alarme cc-tasks-catalog-orders-service
+alarme cc-tasks-order-worker
+alarme cc-app-errors
+alarme cc-latency-p95
+alarme cc-rds-connections
+cc-5xx	INSUFFICIENT_DATA
+cc-app-errors	INSUFFICIENT_DATA
+cc-asg-capacity	INSUFFICIENT_DATA
+cc-cluster-cpu	INSUFFICIENT_DATA
+cc-cluster-mem	INSUFFICIENT_DATA
+cc-dlq-not-empty	INSUFFICIENT_DATA
+cc-latency-p95	INSUFFICIENT_DATA
+cc-queue-age	OK
+cc-rds-connections	INSUFFICIENT_DATA
+cc-rds-cpu	INSUFFICIENT_DATA
+cc-tasks-catalog-orders-service	INSUFFICIENT_DATA
+cc-tasks-chat-service	INSUFFICIENT_DATA
+cc-tasks-order-worker	OK
+cc-unhealthy	INSUFFICIENT_DATA

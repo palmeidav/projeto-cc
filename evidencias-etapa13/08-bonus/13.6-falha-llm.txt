@@ -1,0 +1,36 @@
+### 2026-11-18 20:16:26 UTC (17:16:26 BRT)
+$ echo 'policy atual (backup em parte1-build/p-chat-backup.json):'; jq -c . p-chat-backup.json
+policy atual (backup em parte1-build/p-chat-backup.json):
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["bedrock:InvokeModel"],"Resource":"*"}]}
+
+### 2026-11-18 20:16:35 UTC (17:16:35 BRT)
+$ echo "pedidos ANTES da falha: $(jq length /tmp/orders-antes-136.json) -> $(jq -r '[.[].order_id]|join(",")' /tmp/orders-antes-136.json)"
+pedidos ANTES da falha: 3 -> bb0bd8e05d42,1874fb774fc0,98a686dd2ed4
+
+### 2026-11-18 20:16:35 UTC (17:16:35 BRT)
+$ aws iam put-role-policy --role-name cc-chat-task-role --policy-name inline --policy-document file://p-chat-deny.json && echo 'policy inline SOBRESCRITA com Deny bedrock:* (nada apagado)'
+policy inline SOBRESCRITA com Deny bedrock:* (nada apagado)
+
+### 20:17:06 UTC > Oi, quero comprar 2 unidades de 1984. Meu nome é Pedro.
+{"conversation_id":"a845bb74d89c4f18869b1c3cd5979668","degraded":true,"reply":"Tive um problema técnico para responder agora. Por favor, tente novamente em instantes."}
+### 20:17:07 UTC > Sim, confirmo o pedido.
+{"degraded":true,"reply":"Tive um problema técnico para responder agora. Por favor, tente novamente em instantes."}
+### 20:17:07 UTC > Confirmo! Pode registrar.
+{"degraded":true,"reply":"Tive um problema técnico para responder agora. Por favor, tente novamente em instantes."}
+### 20:17:08 UTC > Alô? Fecha o pedido por favor.
+{"degraded":true,"reply":"Tive um problema técnico para responder agora. Por favor, tente novamente em instantes."}
+### 20:17:09 UTC > Ainda está aí?
+{"degraded":true,"reply":"Tive um problema técnico para responder agora. Por favor, tente novamente em instantes."}
+### 2026-11-18 20:17:24 UTC (17:17:24 BRT)
+$ echo "pedidos DEPOIS da falha: $(jq length /tmp/orders-depois-136.json) -> $(jq -r '[.[].order_id]|join(",")' /tmp/orders-depois-136.json)"; echo "estoque de 1984 (id 9): $(jq -r '[.[].items[]|select(.product_id==9)]|length' /tmp/orders-depois-136.json) itens em pedidos (inalterado)"
+pedidos DEPOIS da falha: 3 -> bb0bd8e05d42,1874fb774fc0,98a686dd2ed4
+estoque de 1984 (id 9): 1 itens em pedidos (inalterado)
+
+### 2026-11-18 20:21:11 UTC (17:21:11 BRT)
+$ aws iam put-role-policy --role-name cc-chat-task-role --policy-name inline --policy-document file://p-chat-backup.json && echo 'policy RESTAURADA'; aws iam get-role-policy --role-name cc-chat-task-role --policy-name inline --query PolicyDocument --output json | jq -c .
+policy RESTAURADA
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["bedrock:InvokeModel"],"Resource":"*"}]}
+
+identica ao backup
+### 20:21:38 UTC > Voltou? Tem 1984 em estoque?
+{"degraded":false,"reply":"Ótimo! Temos sim! 📚\n\n**1984** de George Orwell está disponível:\n- **Preço:** R$ 45,90\n- **Estoque:** 29 unidades\n\nQuer levar um exemplar? Ou gostaria de procura"}

@@ -1,0 +1,12 @@
+### 2026-11-18 17:40:44 UTC (14:40:44 BRT)
+$ aws rds create-db-subnet-group --db-subnet-group-name cc-db-subnets --db-subnet-group-description cc --subnet-ids subnet-06990e60a1ef8df8f subnet-00fb0b14859c72709 --tags Key=project,Value=cc --query 'DBSubnetGroup.[DBSubnetGroupName,SubnetGroupStatus]' --output text
+cc-db-subnets	Complete
+
+### 2026-11-18 17:40:46 UTC (14:40:46 BRT)
+$ aws rds create-db-instance --db-instance-identifier cc-db --engine postgres --db-instance-class db.t4g.micro --allocated-storage 20 --master-username cc_admin --manage-master-user-password --db-name shop --db-subnet-group-name cc-db-subnets --vpc-security-group-ids sg-03a78e78a8bdf93fa --multi-az --no-publicly-accessible --backup-retention-period 1 --tags Key=project,Value=cc --query 'DBInstance.[DBInstanceIdentifier,DBInstanceStatus,Engine,EngineVersion,MultiAZ,DBInstanceClass]' --output text
+cc-db	creating	postgres	18.3	True	db.t4g.micro
+
+### 2026-11-18 17:56:13 UTC (14:56:13 BRT)
+$ aws rds describe-db-instances --db-instance-identifier cc-db --query 'DBInstances[0].[DBInstanceStatus,Endpoint.Address,MultiAZ,AvailabilityZone,SecondaryAvailabilityZone,PubliclyAccessible]' --output text
+available	cc-db.c23mtpyyxfro.us-east-2.rds.amazonaws.com	True	us-east-2b	us-east-2a	False
+

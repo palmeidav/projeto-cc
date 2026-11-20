@@ -1,0 +1,17 @@
+{
+  "widgets": [
+    {
+      "type": "log",
+      "x": 0,
+      "y": 0,
+      "width": 24,
+      "height": 9,
+      "properties": {
+        "title": "Logs Insights (3 log groups) - conversation_id = afda496c45d1449daad851cc1ee16f85",
+        "region": "us-east-2",
+        "view": "table",
+        "query": "SOURCE '/cc/chat-service' | SOURCE '/cc/catalog-orders-service' | SOURCE '/cc/order-worker' | fields @timestamp, service, message, conversation_id, order_id, @log | filter conversation_id = 'afda496c45d1449daad851cc1ee16f85' | sort @timestamp asc"
+      }
+    }
+  ]
+}

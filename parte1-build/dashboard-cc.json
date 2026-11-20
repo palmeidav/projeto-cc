@@ -1,0 +1,318 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "ALB: requisicoes e 5xx",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "RequestCount",
+            "LoadBalancer",
+            "app/cc-alb/4573f65f6bcbbd4f"
+          ],
+          [
+            ".",
+            "HTTPCode_Target_5XX_Count",
+            ".",
+            "."
+          ],
+          [
+            ".",
+            "HTTPCode_ELB_5XX_Count",
+            ".",
+            "."
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 0,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "ALB: latencia p95 (s)",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "p95",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/ApplicationELB",
+            "TargetResponseTime",
+            "LoadBalancer",
+            "app/cc-alb/4573f65f6bcbbd4f",
+            {
+              "stat": "p95"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 0,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Tasks em execucao por servico",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Average",
+        "period": 60,
+        "metrics": [
+          [
+            "ECS/ContainerInsights",
+            "RunningTaskCount",
+            "ClusterName",
+            "cc-cluster",
+            "ServiceName",
+            "chat-service"
+          ],
+          [
+            "...",
+            "catalog-orders-service"
+          ],
+          [
+            "...",
+            "order-worker"
+          ],
+          [
+            "ECS/ContainerInsights",
+            "PendingTaskCount",
+            "ClusterName",
+            "cc-cluster",
+            "ServiceName",
+            "chat-service"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 6,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Cluster: CPU/memoria reservada (%) e CapacityProviderReservation",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Average",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/ECS",
+            "CPUReservation",
+            "ClusterName",
+            "cc-cluster"
+          ],
+          [
+            ".",
+            "MemoryReservation",
+            ".",
+            "."
+          ],
+          [
+            "AWS/ECS/ManagedScaling",
+            "CapacityProviderReservation",
+            "ClusterName",
+            "cc-cluster",
+            "CapacityProviderName",
+            "cc-cp"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 6,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "ASG: instancias",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Maximum",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/AutoScaling",
+            "GroupInServiceInstances",
+            "AutoScalingGroupName",
+            "cc-asg"
+          ],
+          [
+            ".",
+            "GroupDesiredCapacity",
+            ".",
+            "."
+          ],
+          [
+            ".",
+            "GroupPendingInstances",
+            ".",
+            "."
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 6,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Fila e DLQ (mensagens visiveis)",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Maximum",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/SQS",
+            "ApproximateNumberOfMessagesVisible",
+            "QueueName",
+            "cc-orders"
+          ],
+          [
+            "...",
+            "cc-orders-dlq"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 12,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "RDS: CPU (%) e conexoes",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Average",
+        "period": 60,
+        "metrics": [
+          [
+            "AWS/RDS",
+            "CPUUtilization",
+            "DBInstanceIdentifier",
+            "cc-db"
+          ],
+          [
+            ".",
+            "DatabaseConnections",
+            ".",
+            ".",
+            {
+              "yAxis": "right"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 8,
+      "y": 12,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "AppErrors (CC)",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [
+            "CC",
+            "AppErrors"
+          ],
+          [
+            ".",
+            "ChatDegraded"
+          ],
+          [
+            ".",
+            "OrderProcessingFailures"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 16,
+      "y": 12,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "Negocio: OrdersCreated / OrdersConfirmed / OutboxPending",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Sum",
+        "period": 60,
+        "metrics": [
+          [
+            "CC",
+            "OrdersCreated"
+          ],
+          [
+            ".",
+            "OrdersConfirmed"
+          ],
+          [
+            ".",
+            "OutboxPending",
+            {
+              "stat": "Maximum"
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 18,
+      "width": 8,
+      "height": 6,
+      "properties": {
+        "title": "LLMLatencyMs (Bedrock)",
+        "region": "us-east-2",
+        "view": "timeSeries",
+        "stat": "Average",
+        "period": 60,
+        "metrics": [
+          [
+            "CC",
+            "LLMLatencyMs",
+            {
+              "stat": "Average"
+            }
+          ],
+          [
+            "...",
+            {
+              "stat": "p95"
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

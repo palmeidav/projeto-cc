@@ -1,0 +1,61 @@
+### 2026-11-18 17:42:07 UTC (14:42:07 BRT)
+$ aws ec2 run-instances --dry-run --image-id ami-0a8975a01978e5b97 --instance-type t3.medium --subnet-id subnet-06914cc6fa7f0274c 2>&1 | sed 's/Encoded authorization.*//' | head -3
+
+aws: [ERROR]: An error occurred (DryRunOperation) when calling the RunInstances operation: Request would have succeeded, but DryRun flag is set.
+
+### 2026-11-18 17:42:09 UTC (14:42:09 BRT)
+$ aws ec2 run-instances --dry-run --image-id ami-0a8975a01978e5b97 --instance-type m7i-flex.large --subnet-id subnet-06914cc6fa7f0274c 2>&1 | sed 's/Encoded authorization.*//' | head -3
+
+aws: [ERROR]: An error occurred (DryRunOperation) when calling the RunInstances operation: Request would have succeeded, but DryRun flag is set.
+
+### 2026-11-18 17:42:54 UTC (14:42:54 BRT)
+$ aws ecs list-container-instances --cluster cc-cluster --output text; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState,InstanceType,ProtectedFromScaleIn]' --output text
+i-0a918013974beb14b	us-east-2a	InService	t3.medium	True
+i-0d36bd4da26ebb4d1	us-east-2b	InService	t3.medium	True
+
+### 2026-11-18 17:43:02 UTC (14:43:02 BRT)
+$ aws ecs list-container-instances --cluster cc-cluster --query 'length(containerInstanceArns)'
+2
+
+### 2026-11-18 18:09:23 UTC (15:09:23 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].[MinSize,DesiredCapacity,MaxSize]' --output text; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState]' --output text
+2	3	4
+i-0a918013974beb14b	us-east-2a	InService
+i-0d36bd4da26ebb4d1	us-east-2b	InService
+i-0e0382c29c6741a01	us-east-2b	InService
+
+### 2026-11-18 18:09:25 UTC (15:09:25 BRT)
+$ aws autoscaling describe-scaling-activities --auto-scaling-group-name cc-asg --max-items 4 --query 'Activities[].[StartTime,StatusCode,Cause]' --output text | cut -c1-300
+2026-11-18T17:59:04.956000+00:00	Successful	At 2026-11-18T17:58:55Z a monitor alarm TargetTracking-cc-asg-AlarmHigh-1ed14404-63fc-425a-972e-ccc928ad4e1f in state ALARM triggered policy ECSManagedAutoScalingPolicy-c09c298b-c2de-4604-ab5c-7eaa2be37fb1 changing the desired capacity from 2 to 3.  At 202
+2026-11-18T17:42:33.024000+00:00	Successful	At 2026-11-18T17:42:28Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 2.  At 2026-11-18T17:42:31Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 t
+2026-11-18T17:42:32.925000+00:00	Successful	At 2026-11-18T17:42:28Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 2.  At 2026-11-18T17:42:31Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 t
+
+### 2026-11-18 18:09:26 UTC (15:09:26 BRT)
+$ aws ecs list-container-instances --cluster cc-cluster --query containerInstanceArns --output text | xargs aws ecs describe-container-instances --cluster cc-cluster --query 'containerInstances[].[ec2InstanceId,runningTasksCount,remainingResources[?name==`CPU`].integerValue|[0],remainingResources[?name==`MEMORY`].integerValue|[0]]' --output text --container-instances
+i-0d36bd4da26ebb4d1	2	1280	3071
+i-0e0382c29c6741a01	0	2048	3839
+i-0a918013974beb14b	3	1024	2815
+
+### 2026-11-18 18:09:27 UTC (15:09:27 BRT)
+$ aws cloudwatch get-metric-statistics --namespace AWS/ECS/ManagedScaling --metric-name CapacityProviderReservation --dimensions Name=ClusterName,Value=cc-cluster Name=CapacityProviderName,Value=cc-cp --start-time $(date -u -v-30M +%Y-%m-%dT%H:%M:%SZ) --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) --period 60 --statistics Maximum --query 'sort_by(Datapoints,&Timestamp)[].[Timestamp,Maximum]' --output text | tail -20
+2026-11-18T14:49:00-03:00	40.0
+2026-11-18T14:50:00-03:00	40.0
+2026-11-18T14:51:00-03:00	40.0
+2026-11-18T14:52:00-03:00	40.0
+2026-11-18T14:53:00-03:00	40.0
+2026-11-18T14:54:00-03:00	40.0
+2026-11-18T14:55:00-03:00	40.0
+2026-11-18T14:56:00-03:00	40.0
+2026-11-18T14:57:00-03:00	120.0
+2026-11-18T14:58:00-03:00	120.0
+2026-11-18T14:59:00-03:00	106.666
+2026-11-18T15:00:00-03:00	80.0
+2026-11-18T15:01:00-03:00	80.0
+2026-11-18T15:02:00-03:00	80.0
+2026-11-18T15:03:00-03:00	80.0
+2026-11-18T15:04:00-03:00	80.0
+2026-11-18T15:05:00-03:00	80.0
+2026-11-18T15:06:00-03:00	80.0
+2026-11-18T15:07:00-03:00	80.0
+2026-11-18T15:08:00-03:00	80.0
+

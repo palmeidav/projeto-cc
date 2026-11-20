@@ -1,0 +1,24 @@
+### 2026-11-18 17:40:59 UTC (14:40:59 BRT)
+$ aws ecr create-repository --repository-name cc/chat-service --image-scanning-configuration scanOnPush=true --tags Key=project,Value=cc --query 'repository.repositoryUri' --output text
+244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/chat-service
+
+### 2026-11-18 17:41:00 UTC (14:41:00 BRT)
+$ aws ecr create-repository --repository-name cc/catalog-orders-service --image-scanning-configuration scanOnPush=true --tags Key=project,Value=cc --query 'repository.repositoryUri' --output text
+244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/catalog-orders-service
+
+### 2026-11-18 17:41:01 UTC (14:41:01 BRT)
+$ aws ecr create-repository --repository-name cc/order-worker --image-scanning-configuration scanOnPush=true --tags Key=project,Value=cc --query 'repository.repositoryUri' --output text
+244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/order-worker
+
+### 2026-11-18 17:43:00 UTC (14:43:00 BRT)
+$ aws ecr list-images --repository-name cc/chat-service --query 'imageIds[].imageTag' --output text
+v1
+
+### 2026-11-18 17:43:01 UTC (14:43:01 BRT)
+$ aws ecr list-images --repository-name cc/catalog-orders-service --query 'imageIds[].imageTag' --output text
+v1
+
+### 2026-11-18 17:43:02 UTC (14:43:02 BRT)
+$ aws ecr list-images --repository-name cc/order-worker --query 'imageIds[].imageTag' --output text
+v1
+

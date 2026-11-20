@@ -1,0 +1,21 @@
+### 2026-11-18 17:37:24 UTC (14:37:24 BRT)
+$ bash ./teste_local.sh
+== saúde
+{"status":"ready","llm_mode":"mock"}
+{"status":"ready"}
+== catálogo (busca por autor)
+[{"product_id":1,"title":"Dom Casmurro","author":"Machado de Assis","category":"Romance","price_cents":3990,"price_brl":"39.90","stock":25},{"product_id":2,"title":"Memórias Póstumas de Brás Cubas","author":"Machado de Assis","category":"Romance","price_cents":3490,"price_brl":"34.90","stock":18}]
+== conversa com o vendedor
+{"conversation_id":"demo1","reply":"[modo demonstração] Encontrei: 1984, A Hora da Estrela, Capitães da Areia.","degraded":false}
+== pedido pela conversa (modo mock: 'pedido: Nome; id x qtd')
+{"conversation_id":"demo1","reply":"[modo demonstração] Pedido registrado! Código: 989ca359ed1a.","degraded":false}
+== pedidos (o worker muda PENDING para CONFIRMED)
+[{"order_id":"989ca359ed1a","status":"CONFIRMED","customer_name":"Maria","total_cents":12570,"total_brl":"125.70","created_at":"2026-11-18T17:37:24.413134+00:00","confirmed_at":"2026-11-18T17:37:24.808463+00:00","items":[{"product_id":1,"title":"Dom Casmurro","quantity":2,"unit_price_cents":3990},{"product_id":9,"title":"1984","quantity":1,"unit_price_cents":4590}]}]
+== idempotência: mesma chave duas vezes gera 1 pedido
+HTTP 201
+HTTP 200
+
+### 2026-11-18 17:37:27 UTC (14:37:27 BRT)
+$ docker compose logs worker 2>&1 | grep -E 'pedido confirmado|falha' | tail -3
+worker-1  | {"ts": "2026-11-18T17:37:24Z", "level": "INFO", "service": "order-worker", "message": "pedido confirmado", "message_id": "afdd4985-d3ef-4f7c-bdf9-2016ec60e337"}
+

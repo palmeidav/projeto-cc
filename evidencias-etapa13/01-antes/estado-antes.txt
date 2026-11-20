@@ -1,0 +1,49 @@
+### 2026-11-18 18:12:18 UTC (15:12:18 BRT)
+$ aws ecs describe-services --cluster cc-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount,taskDefinition]' --output text
+chat-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:1
+catalog-orders-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-catalog:1
+order-worker	1	1	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-worker:1
+
+### 2026-11-18 18:12:19 UTC (15:12:19 BRT)
+$ for tg in arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-chat/5ceb4265402321bc arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71c69f2658fa8964; do echo ${tg##*:targetgroup/}; aws elbv2 describe-target-health --target-group-arn $tg --query 'TargetHealthDescriptions[].[Target.Id,Target.Port,TargetHealth.State]' --output text; done
+cc-tg-chat/5ceb4265402321bc
+i-0d36bd4da26ebb4d1	32769	healthy
+i-0a918013974beb14b	32769	healthy
+cc-tg-catalog/71c69f2658fa8964
+i-0d36bd4da26ebb4d1	32768	healthy
+i-0a918013974beb14b	32768	healthy
+
+### 2026-11-18 18:12:21 UTC (15:12:21 BRT)
+$ aws ec2 describe-launch-templates --launch-template-names cc-lt --query 'LaunchTemplates[].[LaunchTemplateName,LatestVersionNumber]' --output text; aws ec2 describe-launch-template-versions --launch-template-name cc-lt --versions '$Latest' --query 'LaunchTemplateVersions[0].LaunchTemplateData.[InstanceType,ImageId,MetadataOptions.HttpTokens]' --output text
+cc-lt	1
+t3.medium	ami-0a8975a01978e5b97	required
+
+### 2026-11-18 18:12:22 UTC (15:12:22 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].[MinSize,DesiredCapacity,MaxSize]' --output text; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState,ProtectedFromScaleIn]' --output text
+2	3	4
+i-0a918013974beb14b	us-east-2a	InService	True
+i-0d36bd4da26ebb4d1	us-east-2b	InService	True
+i-0e0382c29c6741a01	us-east-2b	InService	True
+
+### 2026-11-18 18:12:24 UTC (15:12:24 BRT)
+$ aws ecs describe-capacity-providers --capacity-providers cc-cp --query 'capacityProviders[0].[name,status,autoScalingGroupProvider.managedScaling.targetCapacity,autoScalingGroupProvider.managedTerminationProtection,autoScalingGroupProvider.managedDraining]' --output text
+cc-cp	ACTIVE	80	ENABLED	ENABLED
+
+### 2026-11-18 18:12:25 UTC (15:12:25 BRT)
+$ aws ecs list-container-instances --cluster cc-cluster --query containerInstanceArns --output text | xargs aws ecs describe-container-instances --cluster cc-cluster --query 'containerInstances[].[ec2InstanceId,runningTasksCount]' --output text --container-instances
+i-0d36bd4da26ebb4d1	2
+i-0e0382c29c6741a01	0
+i-0a918013974beb14b	3
+
+### 2026-11-18 18:12:26 UTC (15:12:26 BRT)
+$ aws elbv2 describe-load-balancers --names cc-alb cc-ilb --query 'LoadBalancers[].[LoadBalancerName,Scheme,DNSName]' --output text; aws sqs get-queue-url --queue-name cc-orders --output text; aws sqs get-queue-url --queue-name cc-orders-dlq --output text
+cc-alb	internet-facing	cc-alb-2058559449.us-east-2.elb.amazonaws.com
+cc-ilb	internal	internal-cc-ilb-258031333.us-east-2.elb.amazonaws.com
+https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders
+https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders-dlq
+
+### 2026-11-18 18:12:29 UTC (15:12:29 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"} HTTP 200
+

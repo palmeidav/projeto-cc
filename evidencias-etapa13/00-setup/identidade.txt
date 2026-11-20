@@ -1,0 +1,5 @@
+### 2026-11-18 02:58:41 UTC (23:58:41 BRT)
+$ aws --version; aws sts get-caller-identity --query '[Account,Arn]' --output text
+aws-cli/2.41.0 Python/3.14.8 Darwin/25.6.0 exe/arm64
+244736565328	arn:aws:sts::244736565328:assumed-role/AWSReservedSSO_AdministratorAccess_867e8b018abb6b83/pedrohav
+

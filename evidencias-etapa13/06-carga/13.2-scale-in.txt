@@ -1,0 +1,76 @@
+### 2026-11-18 19:36:09 UTC (16:36:09 BRT)
+$ aws ecs describe-services --cluster cc-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,desiredCount,runningCount]' --output text; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].[MinSize,DesiredCapacity,MaxSize,length(Instances)]' --output text
+chat-service	3	3
+catalog-orders-service	2	2
+order-worker	1	1
+2	4	4	4
+
+### 2026-11-18 19:36:14 UTC (16:36:14 BRT)
+$ for s in chat-service catalog-orders-service; do aws application-autoscaling describe-scaling-activities --service-namespace ecs --resource-id service/cc-cluster/$s --max-items 8 --query 'ScalingActivities[].[StartTime,Description]' --output text | sed "s/^/$s  /"; done
+chat-service  2026-11-18T16:33:39.629000-03:00	Setting desired count to 3.
+chat-service  2026-11-18T16:30:39.615000-03:00	Setting desired count to 4.
+chat-service  2026-11-18T16:27:39.630000-03:00	Setting desired count to 5.
+chat-service  2026-11-18T15:55:58.392000-03:00	Setting desired count to 6.
+catalog-orders-service  2026-11-18T16:32:52.482000-03:00	Setting desired count to 2.
+catalog-orders-service  2026-11-18T16:29:52.474000-03:00	Setting desired count to 3.
+catalog-orders-service  2026-11-18T16:26:52.483000-03:00	Setting desired count to 4.
+catalog-orders-service  2026-11-18T16:22:52.483000-03:00	Setting desired count to 5.
+catalog-orders-service  2026-11-18T15:56:06.653000-03:00	Setting desired count to 6.
+
+### 2026-11-18 19:36:15 UTC (16:36:15 BRT)
+$ aws autoscaling describe-scaling-activities --auto-scaling-group-name cc-asg --max-items 5 --query 'Activities[].[StartTime,EndTime,StatusCode,Description]' --output text
+2026-11-18T18:59:11.394000+00:00	2026-11-18T19:04:16+00:00	Successful	Launching a new EC2 instance: i-048df9755deb5c4cd
+2026-11-18T17:59:04.956000+00:00	2026-11-18T18:04:09+00:00	Successful	Launching a new EC2 instance: i-0e0382c29c6741a01
+2026-11-18T17:42:33.024000+00:00	2026-11-18T17:42:37+00:00	Successful	Launching a new EC2 instance: i-0d36bd4da26ebb4d1
+2026-11-18T17:42:32.925000+00:00	2026-11-18T17:42:37+00:00	Successful	Launching a new EC2 instance: i-0a918013974beb14b
+
+### 2026-11-18 19:36:16 UTC (16:36:16 BRT)
+$ aws cloudwatch get-metric-statistics --namespace AWS/ECS/ManagedScaling --metric-name CapacityProviderReservation --dimensions Name=ClusterName,Value=cc-cluster Name=CapacityProviderName,Value=cc-cp --start-time 2026-11-18T19:10:00Z --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) --period 120 --statistics Maximum --query 'sort_by(Datapoints,&Timestamp)[].[Timestamp,Maximum]' --output text
+2026-11-18T16:10:00-03:00	80.0
+2026-11-18T16:12:00-03:00	100.0
+2026-11-18T16:14:00-03:00	100.0
+2026-11-18T16:16:00-03:00	80.0
+2026-11-18T16:18:00-03:00	80.0
+2026-11-18T16:20:00-03:00	80.0
+2026-11-18T16:22:00-03:00	80.0
+2026-11-18T16:24:00-03:00	80.0
+2026-11-18T16:26:00-03:00	80.0
+2026-11-18T16:28:00-03:00	80.0
+2026-11-18T16:30:00-03:00	80.0
+2026-11-18T16:32:00-03:00	60.0
+2026-11-18T16:34:00-03:00	60.0
+
+### 2026-11-18 19:49:25 UTC (16:49:25 BRT)
+$ aws autoscaling describe-scaling-activities --auto-scaling-group-name cc-asg --max-items 2 --query 'Activities[].[StartTime,EndTime,StatusCode,Description,Cause]' --output text | cut -c1-400
+2026-11-18T19:47:22.040000+00:00	2026-11-18T19:48:05+00:00	Successful	Terminating EC2 instance: i-0e0382c29c6741a01	At 2026-11-18T19:47:21Z an instance was taken out of service in response to a difference between desired and actual capacity, shrinking the capacity from 4 to 3.  At 2026-11-18T19:47:22Z instance i-0e0382c29c6741a01 was selected for termination.
+2026-11-18T19:46:40.572000+00:00	2026-11-18T19:46:40+00:00	Cancelled	Could not scale to desired capacity because all remaining instances are protected from scale-in.	At 2026-11-18T19:46:29Z a monitor alarm TargetTracking-cc-asg-AlarmLow-70b66825-0ccc-4bba-90b8-d90f6f7409f1 in state ALARM triggered policy ECSManagedAutoScalingPolicy-c09c298b-c2de-4604-ab5c-7eaa2be37fb1 changing the desired capacity
+None
+
+### 2026-11-18 19:49:27 UTC (16:49:27 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState]' --output text; aws ecs list-container-instances --cluster cc-cluster --query containerInstanceArns --output text | xargs aws ecs describe-container-instances --cluster cc-cluster --query 'containerInstances[].[ec2InstanceId,status,runningTasksCount]' --output text --container-instances
+i-048df9755deb5c4cd	us-east-2a	InService
+i-0a918013974beb14b	us-east-2a	InService
+i-0d36bd4da26ebb4d1	us-east-2b	InService
+i-0d36bd4da26ebb4d1	ACTIVE	3
+i-048df9755deb5c4cd	ACTIVE	0
+i-0a918013974beb14b	ACTIVE	2
+
+2026-11-18T16:13:38.929000-03:00	(service catalog-orders-service) has reached a steady state.
+2026-11-18T16:13:28.481000-03:00	(service catalog-orders-service) deregistered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71c69f2658fa8964)
+2026-11-18T16:13:28.423000-03:00	(service catalog-orders-service, taskSet ecs-svc/3594747365551344202) has begun draining connections on 1 tasks.
+2026-11-18T16:13:28.418000-03:00	(service catalog-orders-service) deregistered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71c69f2658fa8964)
+2026-11-18T16:13:18.916000-03:00	(service catalog-orders-service) has stopped 1 running tasks: (task c4b711943c5143cd86498e143d2b5601).
+2026-11-18T16:13:18.887000-03:00	(service catalog-orders-service) (task c4b711943c5143cd86498e143d2b5601) (instance i-048df9755deb5c4cd) (port 32768) is unhealthy in (target-group arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71
+2026-11-18T16:13:18.860000-03:00	(service catalog-orders-service) stopped AZ Rebalancing.
+2026-11-18T16:12:11-03:00	(service catalog-orders-service) registered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71c69f2658fa8964)
+2026-11-18T16:11:55.567000-03:00	(service catalog-orders-service, taskSet ecs-svc/3594747365551344202) has started 1 tasks: (task c4b711943c5143cd86498e143d2b5601).
+2026-11-18T16:11:51.859000-03:00	(service catalog-orders-service) has started 1 tasks in us-east-2a to AZ Rebalance: (task c4b711943c5143cd86498e143d2b5601).
+2026-11-18T16:11:51.618000-03:00	(service catalog-orders-service) is not AZ balanced with 2 tasks in us-east-2a, 4 tasks in us-east-2b. AZ Rebalancing in progress.
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+{"ts": "2026-11-18T19:12:04Z", "level": "WARNING", "service": "catalog-orders", "message": "error connecting in 'pool-1': connection failed: connection to server at \"10.0.22.127\", port 5432 failed: FATAL:  remaining connection slots are reserved for roles with privileges of the \"rds_reserved\" ro
+{"ts": "2026-11-18T19:12:04Z", "level": "WARNING", "service": "catalog-orders", "message": "error connecting in 'pool-1': connection failed: connection to server at \"10.0.22.127\", port 5432 failed: FATAL:  remaining connection slots are reserved for roles with privileges of the \"rds_reserved\" ro
+{"ts": "2026-11-18T19:12:05Z", "level": "WARNING", "service": "catalog-orders", "message": "error connecting in 'pool-1': connection failed: connection to server at \"10.0.22.127\", port 5432 failed: FATAL:  remaining connection slots are reserved for roles with privileges of the \"rds_reserved\" ro
+{"ts": "2026-11-18T19:12:05Z", "level": "WARNING", "service": "catalog-orders", "message": "error connecting in 'pool-1': connection failed: connection to server at \"10.0.22.127\", port 5432 failed: FATAL:  remaining connection slots are reserved for roles with privileges of the \"rds_reserved\" ro
+{"ts": "2026-11-18T19:12:07Z", "level": "WARNING", "service": "catalog-orders", "message": "error connecting in 'pool-1': connection failed: connection to server at \"10.0.22.127\", port 5432 failed: FATAL:  remaining connection slots are reserved for roles with privileges of the \"rds_reserved\" ro
+{"ts": "2026-11-18T19:12:07Z", "level": "WARNING", "service": "catalog-orders", "message": "error connecting in 'pool-1': connection failed: connection to server at \"10.0.22.127\", port 5432 failed: FATAL:  remaining connection slots are reserved for roles with privileges of the \"rds_reserved\" ro

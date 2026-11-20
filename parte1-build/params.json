@@ -1,0 +1,5 @@
+{
+  "commands": [
+    "curl -s -w ' HTTP %{http_code}' -X POST http://internal-cc-ilb-258031333.us-east-2.elb.amazonaws.com/orders -H 'Content-Type: application/json' -H 'Idempotency-Key: etapa13-dup-20261118183448' -H 'X-Conversation-Id: teste-idempotencia' -d '{\"customer_name\":\"Teste Idempotencia\",\"items\":[{\"product_id\":6,\"quantity\":1}]}'"
+  ]
+}

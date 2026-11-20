@@ -1,0 +1,25 @@
+### 2026-11-18 21:08:25 UTC (18:08:25 BRT)
+$ echo ANTES; aws ecs list-tasks --cluster cc-cluster --service-name chat-service --query taskArns --output text | xargs aws ecs describe-tasks --cluster cc-cluster --query 'tasks[].[availabilityZone,containerInstanceArn]' --output text --tasks | sed 's#arn.*container-instance/cc-cluster/##'
+ANTES
+us-east-2b	5a3f135f18ea4ac6b2ae49b3f806bd75
+us-east-2a	1adddfec41434b2b8a69842cbf9222e6
+
+### 2026-11-18 21:08:27 UTC (18:08:27 BRT)
+$ aws ecs update-service --cluster cc-cluster --service chat-service --placement-strategy type=spread,field=attribute:ecs.availability-zone type=spread,field=instanceId --force-new-deployment --query 'service.[placementStrategy,availabilityZoneRebalancing]' --output json | jq -c .
+[[{"type":"spread","field":"attribute:ecs.availability-zone"},{"type":"spread","field":"instanceId"}],"ENABLED"]
+
+### estavel 21:10:39 UTC
+### 2026-11-18 21:10:39 UTC (18:10:39 BRT)
+$ echo DEPOIS; aws ecs list-tasks --cluster cc-cluster --service-name chat-service --query taskArns --output text | xargs aws ecs describe-tasks --cluster cc-cluster --query 'tasks[].[availabilityZone,containerInstanceArn,lastStatus,healthStatus]' --output text --tasks | sed 's#arn.*container-instance/cc-cluster/##'
+DEPOIS
+us-east-2a	1adddfec41434b2b8a69842cbf9222e6	RUNNING	HEALTHY
+us-east-2b	a310033f39804abab0feb3044d254191	RUNNING	HEALTHY
+
+### 2026-11-18 21:10:41 UTC (18:10:41 BRT)
+$ aws ecs describe-services --cluster cc-cluster --services chat-service --query 'services[0].[runningCount,desiredCount,taskDefinition,deployments[0].rolloutState]' --output text; curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:2	COMPLETED
+{"status":"ok"} HTTP 200
+
+== /health durante o redeploy do chat: 21:08:19 a 21:10:50 UTC
+  97 200

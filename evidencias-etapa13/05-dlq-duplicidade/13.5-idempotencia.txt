@@ -1,0 +1,24 @@
+### 2026-11-18 18:34:55 UTC (15:34:55 BRT)
+$ echo 'envio 1 (Idempotency-Key: etapa13-dup-20261118183448)'; aws ssm get-command-invocation --command-id 2cb452f6-f89c-480d-a441-4d5c35b51175 --instance-id i-0d36bd4da26ebb4d1 --query '[Status,StandardOutputContent]' --output text
+envio 1 (Idempotency-Key: etapa13-dup-20261118183448)
+Success	{"order_id":"bb0bd8e05d42","status":"PENDING","customer_name":"Teste Idempotencia","total_cents":3190,"total_brl":"31.90","created_at":"2026-11-18T18:34:50.616454+00:00","confirmed_at":null,"items":[{"product_id":6,"title":"Vidas Secas","quantity":1,"unit_price_cents":3190}]} HTTP 201
+
+### 2026-11-18 18:35:02 UTC (15:35:02 BRT)
+$ echo 'envio 2 (Idempotency-Key: etapa13-dup-20261118183448)'; aws ssm get-command-invocation --command-id e6170525-b25b-4307-9110-e3e2c7b4bfa7 --instance-id i-0d36bd4da26ebb4d1 --query '[Status,StandardOutputContent]' --output text
+envio 2 (Idempotency-Key: etapa13-dup-20261118183448)
+Success	{"order_id":"bb0bd8e05d42","status":"CONFIRMED","customer_name":"Teste Idempotencia","total_cents":3190,"total_brl":"31.90","created_at":"2026-11-18T18:34:50.616454+00:00","confirmed_at":"2026-11-18T18:34:51.056871+00:00","items":[{"product_id":6,"title":"Vidas Secas","quantity":1,"unit_price_cents":3190}],"idempotent_replay":true} HTTP 200
+
+### 2026-11-18 18:35:18 UTC (15:35:18 BRT)
+$ echo 'GET /orders?limit=100 via SSM -> pedidos de Teste Idempotencia:'; jq -r '[.[] | select(.customer_name=="Teste Idempotencia")] | length as $n | "quantidade=\($n)", (.[] | [.order_id,.status,.created_at] | @tsv)' /tmp/orders.json; echo "total de pedidos no banco: $(jq length /tmp/orders.json)"
+GET /orders?limit=100 via SSM -> pedidos de Teste Idempotencia:
+quantidade=1
+bb0bd8e05d42	CONFIRMED	2026-11-18T18:34:50.616454+00:00
+total de pedidos no banco: 3
+
+### 2026-11-18 18:35:18 UTC (15:35:18 BRT)
+$ aws logs filter-log-events --log-group-name /cc/catalog-orders-service --start-time 1795026318000 --filter-pattern '"bb0bd8e05d42"' --query 'events[].message' --output text | tr '	' '
+' | grep -v _aws
+{"ts": "2026-11-18T18:34:50Z", "level": "INFO", "service": "catalog-orders", "message": "pedido criado", "order_id": "bb0bd8e05d42", "total_cents": 3190, "conversation_id": "teste-idempotencia"}
+{"ts": "2026-11-18T18:34:51Z", "level": "INFO", "service": "catalog-orders", "message": "mensagem enviada ao SQS", "order_id": "bb0bd8e05d42"}
+{"ts": "2026-11-18T18:34:57Z", "level": "INFO", "service": "catalog-orders", "message": "pedido repetido (idempotência)", "order_id": "bb0bd8e05d42", "conversation_id": "teste-idempotencia"}
+

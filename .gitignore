@@ -1,0 +1,16 @@
+# Sistema
+.DS_Store
+**/.DS_Store
+__pycache__/
+*.pyc
+.env
+# Fora do repositorio por decisao: material do curso, imagem pessoal e IDs da infraestrutura da Parte 1
+*.pdf
+WhatsApp*
+parte1-build/env.sh
+# Terraform (tambem coberto por parte2/.gitignore)
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan*

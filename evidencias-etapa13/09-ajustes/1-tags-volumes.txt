@@ -1,0 +1,15 @@
+### 2026-11-18 21:07:36 UTC (18:07:36 BRT)
+$ aws ec2 create-tags --resources vol-0bcb9d7511c8ad7df vol-0641a8b8732e0370f vol-016f1ef5b178577ac --tags Key=project,Value=cc && echo tagueados
+tagueados
+
+### 2026-11-18 21:07:38 UTC (18:07:38 BRT)
+$ aws ec2 describe-volumes --volume-ids vol-0bcb9d7511c8ad7df vol-0641a8b8732e0370f vol-016f1ef5b178577ac --query 'Volumes[].[VolumeId,Attachments[0].InstanceId,Tags[?Key==`project`]|[0].Value]' --output text
+vol-0bcb9d7511c8ad7df	i-0b0b2ab08fceab115	cc
+vol-0641a8b8732e0370f	i-036f87b829bab4c7e	cc
+vol-016f1ef5b178577ac	i-0e0fb3d33369f89f1	cc
+
+### 2026-11-18 21:07:39 UTC (18:07:39 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"} HTTP 200
+

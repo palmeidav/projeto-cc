@@ -1,0 +1,10 @@
+{
+ "ImageId": "ami-0a8975a01978e5b97",
+ "InstanceType": "t3.medium",
+ "IamInstanceProfile": {"Name": "cc-ecs-instance-profile"},
+ "SecurityGroupIds": ["sg-0834593b15acf537c"],
+ "UserData": "IyEvYmluL2Jhc2gKZWNobyAiRUNTX0NMVVNURVI9Y2MtY2x1c3RlciIgPj4gL2V0Yy9lY3MvZWNzLmNvbmZpZwo=",
+ "MetadataOptions": {"HttpTokens": "required", "HttpPutResponseHopLimit": 1},
+ "TagSpecifications": [{"ResourceType": "instance",
+   "Tags": [{"Key": "Name", "Value": "cc-ecs"}, {"Key": "project", "Value": "cc"}]}]
+}

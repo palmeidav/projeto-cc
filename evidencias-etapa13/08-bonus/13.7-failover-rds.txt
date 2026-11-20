@@ -1,0 +1,56 @@
+### 2026-11-18 20:36:44 UTC (17:36:44 BRT)
+$ aws rds describe-db-instances --db-instance-identifier cc-db --query 'DBInstances[0].[DBInstanceStatus,AvailabilityZone,SecondaryAvailabilityZone,MultiAZ]' --output text
+available	us-east-2b	us-east-2a	True
+
+### 2026-11-18 20:36:45 UTC (17:36:45 BRT)
+$ tail -2 ../evidencias-etapa13/08-bonus/13.7-loop-ready.tsv
+20:36:43	200	0.546833
+20:36:44	200	0.525444
+
+### 2026-11-18 20:36:45 UTC (17:36:45 BRT)
+$ echo "pedidos ANTES: $(jq -r '[.[]|.order_id+":"+.status]|join(" ")' ../evidencias-etapa13/08-bonus/pedidos-antes-13.7.json)"
+pedidos ANTES: bb0bd8e05d42:CONFIRMED 1874fb774fc0:CONFIRMED 98a686dd2ed4:CONFIRMED
+
+### 2026-11-18 20:36:45 UTC (17:36:45 BRT)
+$ aws rds reboot-db-instance --db-instance-identifier cc-db --force-failover --query 'DBInstance.[DBInstanceStatus,AvailabilityZone]' --output text
+rebooting	us-east-2b
+
+20:36:54 rds=[rebooting us-east-2b us-east-2a] /ready=200
+20:37:00 rds=[rebooting us-east-2b us-east-2a] /ready=000
+20:37:12 rds=[rebooting us-east-2b us-east-2a] /ready=200
+20:37:56 rds=[available us-east-2b us-east-2a] /ready=200
+2026-11-18T20:36:55.679000+00:00	Multi-AZ instance failover started. 
+2026-11-18T20:37:13.124000+00:00	DB instance restarted
+2026-11-18T20:37:44.400000+00:00	Multi-AZ instance failover completed
+2026-11-18T20:37:44.400000+00:00	The user requested a failover of the DB instance.
+### 2026-11-18 20:46:27 UTC (17:46:27 BRT)
+$ date -u +%H:%M:%S; aws rds describe-db-instances --db-instance-identifier cc-db --query 'DBInstances[0].[DBInstanceStatus,AvailabilityZone,SecondaryAvailabilityZone]' --output text
+20:46:27
+available	us-east-2a	us-east-2b
+
+== /ready (consulta o banco) 20:36:40-20:39:00
+   2 000
+ 120 200
+nao-200:
+20:36:55 000 5.005394 20:37:00 000 5.006093
+== /health (nao consulta o banco) mesma janela
+ 133 200
+### 2026-11-18 20:46:42 UTC (17:46:42 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health; curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/ready
+{"status":"ok"} HTTP 200
+{"status":"ready","llm_mode":"bedrock"} HTTP 200
+
+### 20:46:45 UTC conversa nova apos failover
+{"conversation_id":"096b1f25fca24cdd89c85f3d9c043de1","degraded":false,"reply":"Ótimo! Temos 2 clássicos de Machado de Assis disponíveis:\n\n1. **Dom Casmurro** - R$ 39,90\n   - 24 unidades em estoque\n\n2. **Memórias Póstumas de Brás Cubas** - R$ 34,90\n   - 18 unidades em estoque\n\nAm"}
+### 2026-11-18 20:46:54 UTC (17:46:54 BRT)
+$ echo "pedidos DEPOIS: $(jq -r '[.[]|.order_id+":"+.status]|join(" ")' ../evidencias-etapa13/08-bonus/pedidos-depois-13.7.json)"; diff <(jq -S . ../evidencias-etapa13/08-bonus/pedidos-antes-13.7.json) <(jq -S . ../evidencias-etapa13/08-bonus/pedidos-depois-13.7.json) && echo 'pedidos IDENTICOS antes/depois do failover'
+pedidos DEPOIS: bb0bd8e05d42:CONFIRMED 1874fb774fc0:CONFIRMED 98a686dd2ed4:CONFIRMED
+pedidos IDENTICOS antes/depois do failover
+
+### 2026-11-18 20:46:54 UTC (17:46:54 BRT)
+$ aws logs filter-log-events --log-group-name /cc/catalog-orders-service --start-time $(( ($(date +%s) - 900) * 1000 )) --filter-pattern '{ $.level = "ERROR" || $.level = "WARNING" }' --query 'length(events)' --output text | sed 's/^/catalog: linhas ERROR|WARNING nos ultimos 15 min = /'
+catalog: linhas ERROR|WARNING nos ultimos 15 min = 2
+catalog: linhas ERROR|WARNING nos ultimos 15 min = 0
+

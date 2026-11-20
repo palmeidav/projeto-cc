@@ -1,0 +1,42 @@
+### 2026-11-18 19:54:29 UTC (16:54:29 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].[MinSize,DesiredCapacity,MaxSize]' --output text; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState]' --output text
+2	3	4
+i-048df9755deb5c4cd	us-east-2a	InService
+i-0a918013974beb14b	us-east-2a	InService
+i-0d36bd4da26ebb4d1	us-east-2b	InService
+
+### 2026-11-18 19:54:31 UTC (16:54:31 BRT)
+$ aws ecs list-container-instances --cluster cc-cluster --query containerInstanceArns --output text | xargs aws ecs describe-container-instances --cluster cc-cluster --query 'containerInstances[].[ec2InstanceId,runningTasksCount]' --output text --container-instances
+i-0d36bd4da26ebb4d1	3
+i-048df9755deb5c4cd	0
+i-0a918013974beb14b	2
+
+### 2026-11-18 19:54:33 UTC (16:54:33 BRT)
+$ aws ecs describe-services --cluster cc-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount,taskDefinition]' --output text
+chat-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:2
+catalog-orders-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-catalog:2
+order-worker	1	1	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-worker:2
+
+### 2026-11-18 19:54:35 UTC (16:54:35 BRT)
+$ aws ecs describe-task-definition --task-definition cc-chat:2 --query 'taskDefinition.containerDefinitions[0].[image,environment[?name==`LLM_MODE`]|[0].value]' --output text
+244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/chat-service:v2	None
+
+### 2026-11-18 19:54:36 UTC (16:54:36 BRT)
+$ for tg in arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-chat/5ceb4265402321bc arn:aws:elasticloadbalancing:us-east-2:244736565328:targetgroup/cc-tg-catalog/71c69f2658fa8964; do aws elbv2 describe-target-health --target-group-arn $tg --query 'TargetHealthDescriptions[].[Target.Id,TargetHealth.State]' --output text; echo ---; done
+i-0d36bd4da26ebb4d1	healthy
+i-0a918013974beb14b	healthy
+---
+i-0d36bd4da26ebb4d1	healthy
+i-0a918013974beb14b	healthy
+---
+
+### 2026-11-18 19:54:38 UTC (16:54:38 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"} HTTP 200
+
+### 2026-11-18 19:54:38 UTC (16:54:38 BRT)
+$ aws sqs get-queue-attributes --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders-dlq --attribute-names ApproximateNumberOfMessages --output text; aws cloudwatch describe-alarms --state-value ALARM --query 'MetricAlarms[].AlarmName' --output text
+ATTRIBUTES	1
+TargetTracking-service/cc-cluster/catalog-orders-service-AlarmLow-ed53bc15-3b6f-4c57-a1fa-576e6605778f	TargetTracking-service/cc-cluster/chat-service-AlarmLow-ae66a25b-78ad-4bbf-ad3d-cd5875a55f93	TargetTracking-service/cc-cluster/order-worker-AlarmLow-5d1e24f8-36a7-4e53-9987-e2cb9cc172fb	cc-dlq-not-empty
+

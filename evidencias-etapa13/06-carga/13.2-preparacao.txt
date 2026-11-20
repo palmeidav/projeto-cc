@@ -1,0 +1,17 @@
+>         },
+>         {
+>           "name": "LLM_MODE",
+>           "value": "mock"
+### 2026-11-18 18:48:08 UTC (15:48:08 BRT)
+$ aws ecs register-task-definition --cli-input-json file://cc-chat-v2-mock.json --query 'taskDefinition.[family,revision]' --output text
+cc-chat	3
+
+### 2026-11-18 18:48:09 UTC (15:48:09 BRT)
+$ aws ecs update-service --cluster cc-cluster --service chat-service --task-definition cc-chat:3 --query 'service.taskDefinition' --output text
+arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:3
+
+estavel 18:50:01 UTC
+### 2026-11-18 18:50:01 UTC (15:50:01 BRT)
+$ curl -s -X POST http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/chat -H 'Content-Type: application/json' -d '{"message":"oi"}' | jq -c '{degraded,reply}'
+{"degraded":false,"reply":"[modo demonstração] Encontrei: 1984, A Hora da Estrela, Capitães da Areia."}
+

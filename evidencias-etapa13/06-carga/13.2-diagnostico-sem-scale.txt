@@ -1,0 +1,42 @@
+### 2026-11-18 18:56:06 UTC (15:56:06 BRT)
+$ aws application-autoscaling describe-scaling-activities --service-namespace ecs --resource-id service/cc-cluster/chat-service --max-items 5 --query 'ScalingActivities[].[StartTime,StatusCode,Description,Cause]' --output text
+2026-11-18T15:55:58.392000-03:00	InProgress	Setting desired count to 6.	monitor alarm TargetTracking-service/cc-cluster/chat-service-AlarmHigh-b966609f-7d76-4035-ba8f-0bfb92f62fb9 in state ALARM triggered policy chat-req
+
+### 2026-11-18 18:56:07 UTC (15:56:07 BRT)
+$ aws application-autoscaling describe-scaling-policies --service-namespace ecs --resource-id service/cc-cluster/chat-service --query 'ScalingPolicies[0].[PolicyName,TargetTrackingScalingPolicyConfiguration.PredefinedMetricSpecification.ResourceLabel,Alarms[].AlarmName]' --output json
+[
+    "chat-req",
+    "app/cc-alb/4573f65f6bcbbd4f/targetgroup/cc-tg-chat/5ceb4265402321bc",
+    [
+        "TargetTracking-service/cc-cluster/chat-service-AlarmHigh-b966609f-7d76-4035-ba8f-0bfb92f62fb9",
+        "TargetTracking-service/cc-cluster/chat-service-AlarmLow-ae66a25b-78ad-4bbf-ad3d-cd5875a55f93"
+    ]
+]
+
+### 2026-11-18 18:56:08 UTC (15:56:08 BRT)
+$ aws cloudwatch describe-alarms --alarm-name-prefix TargetTracking-service/cc-cluster/chat-service --query 'MetricAlarms[].[AlarmName,StateValue,MetricName,Dimensions[0].Value,Threshold,StateReason]' --output text | cut -c1-400
+TargetTracking-service/cc-cluster/chat-service-AlarmHigh-b966609f-7d76-4035-ba8f-0bfb92f62fb9	ALARM	RequestCountPerTarget	app/cc-alb/4573f65f6bcbbd4f	50.0	Threshold Crossed: 3 datapoints [7619.0 (18/11/26 18:52:00), 8092.5 (18/11/26 18:51:00), 1464.5 (18/11/26 18:50:00)] were greater than the threshold (50.0).
+TargetTracking-service/cc-cluster/chat-service-AlarmLow-ae66a25b-78ad-4bbf-ad3d-cd5875a55f93	OK	RequestCountPerTarget	app/cc-alb/4573f65f6bcbbd4f	45.0	Threshold Crossed: 1 datapoint [1464.5 (18/11/26 18:50:00)] was not less than the threshold (45.0).
+
+### 2026-11-18 18:56:09 UTC (15:56:09 BRT)
+$ aws application-autoscaling describe-scalable-targets --service-namespace ecs --resource-ids service/cc-cluster/chat-service --query 'ScalableTargets[0].[MinCapacity,MaxCapacity,SuspendedState]' --output json
+[
+    2,
+    6,
+    {
+        "DynamicScalingInSuspended": false,
+        "DynamicScalingOutSuspended": false,
+        "ScheduledScalingSuspended": false
+    }
+]
+
+### 2026-11-18 18:56:09 UTC (15:56:09 BRT)
+$ aws cloudwatch get-metric-statistics --namespace AWS/ApplicationELB --metric-name RequestCountPerTarget --dimensions Name=TargetGroup,Value=targetgroup/cc-tg-chat/5ceb4265402321bc Name=LoadBalancer,Value=app/cc-alb/4573f65f6bcbbd4f --start-time 2026-11-18T18:48:00Z --end-time 2026-11-18T18:58:00Z --period 60 --statistics Sum --query 'sort_by(Datapoints,&Timestamp)[].[Timestamp,Sum]' --output text
+2026-11-18T15:48:00-03:00	0.25
+2026-11-18T15:49:00-03:00	0.0
+2026-11-18T15:50:00-03:00	1464.5
+2026-11-18T15:51:00-03:00	8092.5
+2026-11-18T15:52:00-03:00	7619.0
+2026-11-18T15:53:00-03:00	7026.5
+2026-11-18T15:54:00-03:00	6206.0
+

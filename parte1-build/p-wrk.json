@@ -1,0 +1,4 @@
+{"Version":"2012-10-17","Statement":[
+{"Effect":"Allow","Resource":"arn:aws:sqs:us-east-2:244736565328:cc-orders","Action":["sqs:ReceiveMessage","sqs:DeleteMessage",
+ "sqs:GetQueueAttributes","sqs:ChangeMessageVisibility"]},
+{"Effect":"Allow","Action":"sns:Publish","Resource":"arn:aws:sns:us-east-2:244736565328:cc-order-events"}]}

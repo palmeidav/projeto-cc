@@ -1,0 +1,50 @@
+### inicio 2026-11-18 18:50:49 UTC (15:50:49 BRT)
+$ hey -z 5m -c 80 -m POST -H 'Content-Type: application/json' -d '{"message":"oi"}' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/chat
+
+Summary:
+  Total:	300.2366 secs
+  Slowest:	3.8332 secs
+  Fastest:	0.1602 secs
+  Average:	0.3410 secs
+  Requests/sec:	234.5283
+  
+  Total data:	11195789 bytes
+  Size/request:	158 bytes
+
+Response time histogram:
+  0.160 [1]	|
+  0.528 [65619]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.895 [2417]	|■
+  1.262 [1355]	|■
+  1.629 [626]	|
+  1.997 [178]	|
+  2.364 [106]	|
+  2.731 [12]	|
+  3.099 [47]	|
+  3.466 [32]	|
+  3.833 [21]	|
+
+
+Latency distribution:
+  10% in 0.2213 secs
+  25% in 0.2505 secs
+  50% in 0.2889 secs
+  75% in 0.3398 secs
+  90% in 0.4208 secs
+  95% in 0.6723 secs
+  99% in 1.4317 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0002 secs, 0.1602 secs, 3.8332 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0215 secs
+  req write:	0.0000 secs, 0.0000 secs, 0.0029 secs
+  resp wait:	0.3361 secs, 0.1602 secs, 3.8175 secs
+  resp read:	0.0047 secs, 0.0000 secs, 0.4950 secs
+
+Status code distribution:
+  [200]	70413 responses
+  [502]	1 responses
+
+
+
+### fim 2026-11-18 18:55:49 UTC (15:55:49 BRT)

@@ -1,0 +1,58 @@
+### 2026-11-18 19:54:56 UTC (16:54:56 BRT)
+$ aws resourcegroupstaggingapi get-resources --tag-filters Key=project,Values=cc --query 'ResourceTagMappingList[].ResourceARN' --output text | tr '	' '
+' | sed -E 's#arn:aws:([a-z0-9-]+):[^:]*:[0-9]*:([a-z-]+)?.*#\1 \2#' | sort | uniq -c
+   3 application-autoscaling scalable-target
+  14 cloudwatch alarm
+   1 ec2 elastic-ip
+   4 ec2 instance
+   1 ec2 internet-gateway
+   1 ec2 launch-template
+   1 ec2 natgateway
+   3 ec2 route-table
+   4 ec2 security-group
+   6 ec2 subnet
+   1 ec2 vpc
+   1 ec2 vpc-endpoint
+   3 ecr repository
+   1 ecs capacity-provider
+   1 ecs cluster
+   3 ecs service
+  16 ecs task
+   7 ecs task-definition
+   2 elasticloadbalancing listener
+   2 elasticloadbalancing loadbalancer
+   2 elasticloadbalancing targetgroup
+   3 logs log-group
+   1 rds db
+   1 rds subgrp
+   1 secretsmanager secret
+   1 sns cc-alarms
+   1 sns cc-order-events
+   1 sqs cc-orders
+   1 sqs cc-orders-dlq
+
+### 2026-11-18 19:54:57 UTC (16:54:57 BRT)
+$ echo 'Recursos SEM tag project=cc:'; aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].InstanceId' --output text | tr '	' ',') --query 'Volumes[?!(Tags[?Key==`project`])].[VolumeId,Size]' --output text | sed 's/^/  volume EBS: /'
+aws ec2 describe-network-interfaces --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e --query 'length(NetworkInterfaces[?!(TagSet[?Key==`project`])])' --output text | sed 's/^/  ENIs sem tag (criadas pela AWS para ALB, NAT, RDS, EC2): /'
+aws ec2 describe-route-tables --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e --query 'RouteTables[?!(Tags[?Key==`project`])].RouteTableId' --output text | sed 's/^/  route table main da VPC: /'
+aws ec2 describe-security-groups --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e --query 'SecurityGroups[?!(Tags[?Key==`project`])].[GroupId,GroupName]' --output text | sed 's/^/  SG: /'
+aws ec2 describe-network-acls --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e --query 'NetworkAcls[?!(Tags[?Key==`project`])].NetworkAclId' --output text | sed 's/^/  NACL default: /'
+Recursos SEM tag project=cc:
+  volume EBS: vol-03540921f9f6a2d88	30
+  volume EBS: vol-01f883bf43765eb94	30
+  volume EBS: vol-06d221959e551a852	30
+  ENIs sem tag (criadas pela AWS para ALB, NAT, RDS, EC2): 10
+  route table main da VPC: rtb-032924814e55835aa
+  SG: sg-0c455646c0f10f291	default
+  NACL default: acl-0cd22a7a35273fa65
+
+### 2026-11-18 19:59:58 UTC (16:59:58 BRT)
+$ aws ec2 create-tags --resources vol-03540921f9f6a2d88 vol-01f883bf43765eb94 vol-06d221959e551a852 --tags Key=project,Value=cc && echo tagueados
+tagueados
+
+### 2026-11-18 19:59:59 UTC (16:59:59 BRT)
+$ aws ec2 describe-volumes --volume-ids vol-03540921f9f6a2d88 vol-01f883bf43765eb94 vol-06d221959e551a852 --query 'Volumes[].[VolumeId,Size,Attachments[0].InstanceId,Tags[?Key==`project`]|[0].Value]' --output text
+vol-03540921f9f6a2d88	30	i-048df9755deb5c4cd	cc
+vol-01f883bf43765eb94	30	i-0a918013974beb14b	cc
+vol-06d221959e551a852	30	i-0d36bd4da26ebb4d1	cc
+

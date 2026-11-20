@@ -1,0 +1,1 @@
+export ALB_DNS=cc-alb-2058559449.us-east-2.elb.amazonaws.com ILB_DNS=internal-cc-ilb-258031333.us-east-2.elb.amazonaws.com

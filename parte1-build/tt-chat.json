@@ -1,0 +1,9 @@
+{
+  "TargetValue": 600,
+  "PredefinedMetricSpecification": {
+    "PredefinedMetricType": "ALBRequestCountPerTarget",
+    "ResourceLabel": "app/cc-alb/4573f65f6bcbbd4f/targetgroup/cc-tg-chat/5ceb4265402321bc"
+  },
+  "ScaleOutCooldown": 60,
+  "ScaleInCooldown": 120
+}

@@ -1,0 +1,29 @@
+### 18:23:03 UTC > Oi! Vocês têm livros do Machado de Assis?
+afda496c45d1449daad851cc1ee16f85
+false
+Ótimo! Temos dois clássicos de Machado de Assis disponíveis:
+
+1. **Dom Casmurro** - R$ 39,90 (25 unidades em estoque)
+2. **Memórias Póstumas de Brás Cubas** - R$ 34,90 (18 unidades em estoque)
+
+Gostaria de conhecer mais sobre algum deles ou deseja fazer uma compra? 😊
+### 18:23:06 UTC > Quero comprar 1 unidade de Dom Casmurro. Meu nome é Pedro.
+false
+Excelente! Seu pedido foi registrado com sucesso! ✅
+
+**Código do pedido:** 1874fb774fc0
+- **Total:** R$ 39,90
+- **Status:** Pendente
+
+Você receberá em breve mais informações sobre a entrega. Obrigada pela compra, Pedro! 📚
+### 18:23:07 UTC > Sim, confirmo.
+false
+Perfeito! Seu pedido já foi confirmado e registrado no sistema! 🎉
+
+**Resumo final:**
+- **Código do pedido:** 1874fb774fc0
+- **Cliente:** Pedro
+- **Livro:** Dom Casmurro (1 unidade)
+- **Total:** R$ 39,90
+
+Você receberá em breve os detalhes da entrega. Obrigada pela compra e aproveite a leitura! 📖✨

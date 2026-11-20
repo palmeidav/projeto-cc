@@ -1,0 +1,72 @@
+# Ambiente local: PostgreSQL + fila SQS simulada (ElasticMQ) + os 3 serviços.
+#   docker compose up --build              -> usa o vendedor "mock" (sem IA, sem custo)
+#   LLM_MODE=bedrock BEDROCK_MODEL_ID=<id> docker compose up --build   -> usa o Bedrock real
+name: projeto-cc
+
+x-db: &db
+  DB_HOST: db
+  DB_NAME: shop
+  DB_USER: cc_admin
+  DB_PASSWORD: cc_local_pw
+  DB_SSLMODE: disable
+
+x-sqs-local: &sqs_local
+  AWS_REGION: us-east-2
+  AWS_ACCESS_KEY_ID: local
+  AWS_SECRET_ACCESS_KEY: local
+  AWS_ENDPOINT_URL_SQS: http://sqs:9324
+  QUEUE_URL: http://sqs:9324/000000000000/cc-orders
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: shop
+      POSTGRES_USER: cc_admin
+      POSTGRES_PASSWORD: cc_local_pw
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cc_admin -d shop"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  sqs:
+    image: softwaremill/elasticmq-native
+    volumes:
+      - ./elasticmq.conf:/opt/elasticmq.conf
+    ports: ["9324:9324", "9325:9325"]   # 9325 = painel web das filas
+
+  catalog:
+    build: ./catalog-orders-service
+    environment:
+      <<: [*db, *sqs_local]
+    ports: ["8001:8001"]
+    depends_on:
+      db: {condition: service_healthy}
+      sqs: {condition: service_started}
+
+  worker:
+    build: ./order-worker
+    environment:
+      <<: [*db, *sqs_local]
+      PROCESS_DELAY_SECONDS: "0"
+    depends_on:
+      db: {condition: service_healthy}
+      sqs: {condition: service_started}
+      catalog: {condition: service_started}   # o catálogo cria as tabelas
+
+  chat:
+    build: ./chat-service
+    environment:
+      <<: *db
+      AWS_REGION: us-east-2
+      CATALOG_URL: http://catalog:8001
+      LLM_MODE: ${LLM_MODE:-mock}
+      BEDROCK_MODEL_ID: ${BEDROCK_MODEL_ID:-}
+    volumes:
+      - ${HOME}/.aws:/home/app/.aws:ro    # credenciais para o Bedrock real
+    ports: ["8000:8000"]
+    depends_on:
+      db: {condition: service_healthy}
+      catalog: {condition: service_started}

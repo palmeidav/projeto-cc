@@ -1,0 +1,26 @@
+### 2026-11-18 20:18:59 UTC (17:18:59 BRT)
+$ echo '1) ALARME'; aws cloudwatch describe-alarm-history --alarm-name cc-app-errors --history-item-type StateUpdate --max-records 1 --query 'AlarmHistoryItems[].[Timestamp,HistorySummary]' --output text; aws cloudwatch describe-alarms --alarm-names cc-app-errors --query 'MetricAlarms[0].StateReason' --output text
+1) ALARME
+2026-11-18T17:18:57.061000-03:00	Alarm updated from OK to ALARM
+Threshold Crossed: 1 datapoint [5.0 (18/11/26 20:17:00)] was greater than the threshold (3.0).
+
+### 2026-11-18 20:19:01 UTC (17:19:01 BRT)
+$ echo '2) METRICAS (ultimos 15 min, soma por minuto)'; for m in AppErrors ChatDegraded LLMLatencyMs OrdersCreated; do echo "  CC/$m: $(aws cloudwatch get-metric-statistics --namespace CC --metric-name $m --start-time $(date -u -v-15M +%Y-%m-%dT%H:%M:%SZ) --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) --period 60 --statistics Sum SampleCount --query 'sort_by(Datapoints,&Timestamp)[].[Timestamp,Sum]' --output text | awk '{printf "%s=%s ", substr($1,12,5), $2}')"; done
+echo "  ALB 5xx (target): $(aws cloudwatch get-metric-statistics --namespace AWS/ApplicationELB --metric-name HTTPCode_Target_5XX_Count --dimensions Name=LoadBalancer,Value=app/cc-alb/4573f65f6bcbbd4f --start-time $(date -u -v-15M +%Y-%m-%dT%H:%M:%SZ) --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) --period 300 --statistics Sum --query 'sum(Datapoints[].Sum)' --output text)"
+echo "  tasks: $(aws ecs describe-services --cluster cc-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount]' --output text | tr '
+	' '; ')"
+2) METRICAS (ultimos 15 min, soma por minuto)
+  CC/AppErrors: 17:17=5.0 
+  CC/ChatDegraded: 17:17=5.0 
+  CC/LLMLatencyMs: 
+  CC/OrdersCreated: 
+  ALB 5xx (target): 0
+  tasks: chat-service 2 2;catalog-orders-service 2 2;order-worker 1 1;
+
+3) LOGS INSIGHTS (3 grupos) conversation_id=a845bb74d89c4f18869b1c3cd5979668
+fields @timestamp, service, level, message, erro, @log | filter conversation_id = 'a845bb74d89c4f18869b1c3cd5979668' | sort @timestamp asc
+20:17:06.931	chat-service	ERROR	falha no turno de conversa	AccessDeniedException('An error occurred (AccessDeniedException) when calling the Converse operation: User: arn:aws:sts::244736565328:assumed-role/cc-chat-task-role/83fcfdd1c3ef4c43810ae38ed
+20:17:07.565	chat-service	ERROR	falha no turno de conversa	AccessDeniedException('An error occurred (AccessDeniedException) when calling the Converse operation: User: arn:aws:sts::244736565328:assumed-role/cc-chat-task-role/83fcfdd1c3ef4c43810ae38ed
+20:17:08.185	chat-service	ERROR	falha no turno de conversa	AccessDeniedException('An error occurred (AccessDeniedException) when calling the Converse operation: User: arn:aws:sts::244736565328:assumed-role/cc-chat-task-role/83fcfdd1c3ef4c43810ae38ed
+20:17:08.814	chat-service	ERROR	falha no turno de conversa	AccessDeniedException('An error occurred (AccessDeniedException) when calling the Converse operation: User: arn:aws:sts::244736565328:assumed-role/cc-chat-task-role/8d236c3f547d470b8c164f8d9
+20:17:09.414	chat-service	ERROR	falha no turno de conversa	AccessDeniedException('An error occurred (AccessDeniedException) when calling the Converse operation: User: arn:aws:sts::244736565328:assumed-role/cc-chat-task-role/83fcfdd1c3ef4c43810ae38ed

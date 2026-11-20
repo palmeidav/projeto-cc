@@ -1,0 +1,22 @@
+{
+ "family": "cc-worker", "networkMode": "bridge", "requiresCompatibilities": ["EC2"],
+ "executionRoleArn": "arn:aws:iam::244736565328:role/cc-task-exec-role",
+ "taskRoleArn": "arn:aws:iam::244736565328:role/cc-worker-task-role",
+ "containerDefinitions": [{
+  "name": "order-worker", "image": "244736565328.dkr.ecr.us-east-2.amazonaws.com/cc/order-worker:v1", "essential": true,
+  "cpu": 256, "memoryReservation": 256, "memory": 512,
+  "environment": [
+   {"name": "AWS_REGION", "value": "us-east-2"},
+   {"name": "DB_HOST", "value": "cc-db.c23mtpyyxfro.us-east-2.rds.amazonaws.com"},
+   {"name": "DB_NAME", "value": "shop"},
+   {"name": "DB_USER", "value": "cc_admin"},
+   {"name": "QUEUE_URL", "value": "https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders"},
+   {"name": "TOPIC_ARN", "value": "arn:aws:sns:us-east-2:244736565328:cc-order-events"}],
+  "secrets": [{"name": "DB_PASSWORD", "valueFrom": "${DB_SECRET_ARN}:password::"}],
+  "healthCheck": {"command": ["CMD-SHELL", "test $(( $(date +%s) - $(stat -c %Y /tmp/heartbeat) )) -lt 90"],
+   "interval": 15, "timeout": 5, "retries": 3},
+  "logConfiguration": {"logDriver": "awslogs", "options": {"awslogs-group": "/cc/order-worker",
+   "awslogs-region": "us-east-2", "awslogs-stream-prefix": "worker"}}
+ }],
+ "tags": [{"key": "project", "value": "cc"}]
+}

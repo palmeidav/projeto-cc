@@ -1,0 +1,5 @@
+### 2026-11-18 17:41:58 UTC (14:41:58 BRT)
+$ aws iam list-roles --query "Roles[?starts_with(RoleName,'cc-')].RoleName" --output text; aws iam get-instance-profile --instance-profile-name cc-ecs-instance-profile --query 'InstanceProfile.Roles[].RoleName' --output text
+cc-catalog-task-role	cc-chat-task-role	cc-ecs-instance-role	cc-task-exec-role	cc-worker-task-role
+cc-ecs-instance-role
+

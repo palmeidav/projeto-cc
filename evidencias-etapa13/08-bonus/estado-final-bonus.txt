@@ -1,0 +1,29 @@
+### 2026-11-18 20:48:35 UTC (17:48:35 BRT)
+$ aws sqs get-queue-attributes --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders-dlq --attribute-names ApproximateNumberOfMessages ApproximateNumberOfMessagesNotVisible --output text; aws cloudwatch describe-alarms --alarm-names cc-dlq-not-empty cc-app-errors cc-rds-cpu --query 'MetricAlarms[].[AlarmName,StateValue]' --output text
+ATTRIBUTES	1	0
+cc-app-errors	OK
+cc-dlq-not-empty	ALARM
+cc-rds-cpu	OK
+
+### 2026-11-18 20:48:37 UTC (17:48:37 BRT)
+$ aws iam get-role-policy --role-name cc-chat-task-role --policy-name inline --query PolicyDocument --output json | jq -c .
+{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["bedrock:InvokeModel"],"Resource":"*"}]}
+
+### 2026-11-18 20:48:38 UTC (17:48:38 BRT)
+$ aws ecs describe-services --cluster cc-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount,taskDefinition]' --output text; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone]' --output text; aws rds describe-db-instances --db-instance-identifier cc-db --query 'DBInstances[0].[DBInstanceStatus,AvailabilityZone,SecondaryAvailabilityZone]' --output text; curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+chat-service	4	4	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-chat:2
+catalog-orders-service	2	2	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-catalog:2
+order-worker	1	1	arn:aws:ecs:us-east-2:244736565328:task-definition/cc-worker:2
+i-036f87b829bab4c7e	us-east-2b
+i-0b0b2ab08fceab115	us-east-2a
+i-0e0fb3d33369f89f1	us-east-2b
+available	us-east-2a	us-east-2b
+{"status":"ok"} HTTP 200
+
+### 2026-11-18 20:48:43 UTC (17:48:43 BRT)
+$ aws ec2 describe-volumes --filters Name=attachment.instance-id,Values=$(aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].InstanceId' --output text | tr '	' ',') --query 'Volumes[].[VolumeId,Tags[?Key==`project`]|[0].Value]' --output text
+vol-0bcb9d7511c8ad7df	None
+vol-0641a8b8732e0370f	None
+vol-016f1ef5b178577ac	None
+

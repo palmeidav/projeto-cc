@@ -1,0 +1,12 @@
+### 2026-11-18 18:07:15 UTC (15:07:15 BRT)
+$ aws application-autoscaling describe-scalable-targets --service-namespace ecs --query 'ScalableTargets[].[ResourceId,MinCapacity,MaxCapacity]' --output text; aws application-autoscaling describe-scaling-policies --service-namespace ecs --query 'ScalingPolicies[].[PolicyName,ResourceId]' --output text
+
+### 2026-11-18 18:07:34 UTC (15:07:34 BRT)
+$ aws application-autoscaling describe-scalable-targets --service-namespace ecs --query 'ScalableTargets[].[ResourceId,MinCapacity,MaxCapacity]' --output text; aws application-autoscaling describe-scaling-policies --service-namespace ecs --query 'ScalingPolicies[].[PolicyName,ResourceId,TargetTrackingScalingPolicyConfiguration.TargetValue]' --output text
+service/cc-cluster/chat-service	2	6
+service/cc-cluster/order-worker	1	5
+service/cc-cluster/catalog-orders-service	2	6
+worker-backlog	service/cc-cluster/order-worker	5.0
+chat-req	service/cc-cluster/chat-service	50.0
+catalog-cpu	service/cc-cluster/catalog-orders-service	60.0
+

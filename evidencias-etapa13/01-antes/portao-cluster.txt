@@ -1,0 +1,21 @@
+### 2026-11-18 02:58:42 UTC (23:58:42 BRT)
+$ aws ecs describe-clusters --clusters cc-cluster --query 'clusters[].[clusterName,status,registeredContainerInstancesCount,runningTasksCount,activeServicesCount,capacityProviders]' --output json; aws ecs describe-clusters --clusters cc-cluster --query 'failures' --output json
+[]
+[
+    {
+        "arn": "arn:aws:ecs:us-east-2:244736565328:cluster/cc-cluster",
+        "reason": "MISSING"
+    }
+]
+
+### 2026-11-18 02:58:49 UTC (23:58:49 BRT)
+$ aws resourcegroupstaggingapi get-resources --tag-filters Key=project,Values=cc --output table
+--------------
+|GetResources|
++------------+
+
+### 2026-11-18 02:58:50 UTC (23:58:50 BRT)
+$ aws ecs list-clusters --output text; aws resourcegroupstaggingapi get-resources --tag-filters Key=project,Values=cc --region sa-east-1 --query 'length(ResourceTagMappingList)'; aws resourcegroupstaggingapi get-resources --tag-filters Key=project,Values=cc --region us-east-1 --query 'length(ResourceTagMappingList)'
+0
+0
+

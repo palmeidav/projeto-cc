@@ -1,0 +1,77 @@
+### 2026-11-18 20:24:54 UTC (17:24:54 BRT)
+$ echo ANTES; aws ecs list-container-instances --cluster cc-cluster --query containerInstanceArns --output text | xargs aws ecs describe-container-instances --cluster cc-cluster --query 'containerInstances[].[containerInstanceArn,ec2InstanceId,status,runningTasksCount]' --output text --container-instances | sed 's#arn.*container-instance/cc-cluster/##'
+ANTES
+4df2797eaad1402f8667ba6a84ccbf56	i-0d36bd4da26ebb4d1	ACTIVE	3
+a9132c221dec42f1baf1c350e2954ac7	i-048df9755deb5c4cd	ACTIVE	0
+e9931cb322ea41cd8e6b9c358729c442	i-0a918013974beb14b	ACTIVE	2
+
+### 2026-11-18 20:25:05 UTC (17:25:05 BRT)
+$ echo "pedidos ANTES: $(jq length ../evidencias-etapa13/08-bonus/pedidos-antes-13.3.json) -> $(jq -r '[.[]|.order_id+":"+.status]|join(" ")' ../evidencias-etapa13/08-bonus/pedidos-antes-13.3.json)"
+pedidos ANTES: 3 -> bb0bd8e05d42:CONFIRMED 1874fb774fc0:CONFIRMED 98a686dd2ed4:CONFIRMED
+
+### 2026-11-18 20:25:17 UTC (17:25:17 BRT)
+$ aws ecs update-container-instances-state --cluster cc-cluster --container-instances arn:aws:ecs:us-east-2:244736565328:container-instance/cc-cluster/4df2797eaad1402f8667ba6a84ccbf56 --status DRAINING --query 'containerInstances[0].[ec2InstanceId,status,runningTasksCount]' --output text
+i-0d36bd4da26ebb4d1	DRAINING	3
+
+20:25:22 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 2|i-0d36bd4da26ebb4d1 DRAINING 3| svc(run/des chat,cat,wrk)=2/2 2/2 1/1 
+20:25:48 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 3|i-0d36bd4da26ebb4d1 DRAINING 3| svc(run/des chat,cat,wrk)=2/2 2/2 2/1 
+20:25:56 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 3|i-0d36bd4da26ebb4d1 DRAINING 3| svc(run/des chat,cat,wrk)=2/2 3/2 2/1 
+20:26:05 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 4|i-0d36bd4da26ebb4d1 DRAINING 3| svc(run/des chat,cat,wrk)=2/2 3/2 2/1 
+20:26:14 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 5|i-0d36bd4da26ebb4d1 DRAINING 3| svc(run/des chat,cat,wrk)=3/2 3/2 2/1 
+20:26:22 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 5|i-0d36bd4da26ebb4d1 DRAINING 2| svc(run/des chat,cat,wrk)=2/2 2/2 2/1 
+20:26:31 i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 5|i-0d36bd4da26ebb4d1 DRAINING 0| svc(run/des chat,cat,wrk)=2/2 2/2 1/1 
+### 20:26:31 UTC drenagem concluida
+### 2026-11-18 20:26:46 UTC (17:26:46 BRT)
+$ aws autoscaling start-instance-refresh --auto-scaling-group-name cc-asg --preferences '{"MinHealthyPercentage":50,"InstanceWarmup":120,"ScaleInProtectedInstances":"Refresh"}' --output text
+79eb328e-a99e-47dd-9548-ca1bdce7b10d
+
+20:26:53 refresh=[Pending None None] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b InService|i-0d36bd4da26ebb4d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b ACTIVE 5|i-0d36bd4da26ebb4d1 DRAINING 0|] svc=2/2 2/2 1/1 
+20:27:09 refresh=[InProgress 17 3] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 0|i-0a918013974beb14b DRAINING 5|i-0d36bd4da26ebb4d1 DRAINING 0|] svc=2/2 2/2 2/1 
+20:27:25 refresh=[InProgress 17 3] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 1|i-0a918013974beb14b DRAINING 5|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=2/2 2/2 2/1 
+20:27:41 refresh=[InProgress 17 3] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 2|i-0a918013974beb14b DRAINING 5|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=2/2 3/2 2/1 
+20:27:57 refresh=[InProgress 17 3] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 5|i-0a918013974beb14b DRAINING 4|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=4/2 4/2 1/1 
+20:28:13 refresh=[InProgress 17 3] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 5|i-0a918013974beb14b DRAINING 1|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=3/2 2/2 1/1 
+20:28:29 refresh=[InProgress 17 3] asg=[i-048df9755deb5c4cd InService|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd ACTIVE 5|i-0a918013974beb14b DRAINING 0|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=2/2 2/2 1/1 
+20:29:18 refresh=[InProgress 33 3] asg=[i-048df9755deb5c4cd Terminating:Wait|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 5|i-0a918013974beb14b DRAINING 0|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=2/2 2/2 1/1 
+20:29:34 refresh=[InProgress 50 3] asg=[i-048df9755deb5c4cd Terminating:Wait|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 5|i-0a918013974beb14b DRAINING 0|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e11b4cf5d06f56d1 ACTIVE 0|] svc=2/2 2/2 1/1 
+20:29:50 refresh=[InProgress 50 3] asg=[i-048df9755deb5c4cd Terminating:Wait|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 5|i-0a918013974beb14b DRAINING 0|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 0|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=4/2 2/2 2/1 
+20:30:06 refresh=[InProgress 50 3] asg=[i-048df9755deb5c4cd Terminating:Wait|i-0a918013974beb14b Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 3|i-0a918013974beb14b DRAINING 0|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 0|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 2/1 
+20:30:22 refresh=[InProgress 50 3] asg=[i-048df9755deb5c4cd Terminating:Wait|i-0a918013974beb14b Terminating:Proceed|i-0d36bd4da26ebb4d1 InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 2|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 4/2 1/1 
+20:30:38 refresh=[InProgress 50 2] asg=[i-048df9755deb5c4cd Terminating:Wait|i-0d36bd4da26ebb4d1 InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 0|i-0d36bd4da26ebb4d1 DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:31:42 refresh=[InProgress 83 2] asg=[i-036f87b829bab4c7e InService|i-048df9755deb5c4cd Terminating:Wait|i-0d36bd4da26ebb4d1 Terminating:Proceed|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-048df9755deb5c4cd DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:31:58 refresh=[InProgress 83 2] asg=[i-036f87b829bab4c7e InService|i-048df9755deb5c4cd Terminating:Wait|i-0d36bd4da26ebb4d1 Terminating:Proceed|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-036f87b829bab4c7e ACTIVE 0|i-048df9755deb5c4cd DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:32:14 refresh=[InProgress 83 2] asg=[i-036f87b829bab4c7e InService|i-048df9755deb5c4cd Terminating:Wait|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-036f87b829bab4c7e ACTIVE 0|i-048df9755deb5c4cd DRAINING 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:32:30 refresh=[InProgress 83 1] asg=[i-036f87b829bab4c7e InService|i-048df9755deb5c4cd Terminating:Proceed|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-036f87b829bab4c7e ACTIVE 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:33:02 refresh=[InProgress 83 1] asg=[i-036f87b829bab4c7e InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-036f87b829bab4c7e ACTIVE 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:33:18 refresh=[InProgress 83 0] asg=[i-036f87b829bab4c7e InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-036f87b829bab4c7e ACTIVE 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+20:33:50 refresh=[Successful 100 0] asg=[i-036f87b829bab4c7e InService|i-0e0fb3d33369f89f1 InService|i-0e11b4cf5d06f56d1 InService|] ecs=[i-036f87b829bab4c7e ACTIVE 0|i-0e0fb3d33369f89f1 ACTIVE 2|i-0e11b4cf5d06f56d1 ACTIVE 3|] svc=2/2 2/2 1/1 
+### 20:33:50 UTC refresh terminou: Successful 100 0
+### 2026-11-18 20:34:07 UTC (17:34:07 BRT)
+$ echo DEPOIS; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-asg --query 'AutoScalingGroups[0].Instances[].[InstanceId,AvailabilityZone,LifecycleState,LaunchTemplate.Version]' --output text; aws ecs list-container-instances --cluster cc-cluster --query containerInstanceArns --output text | xargs aws ecs describe-container-instances --cluster cc-cluster --query 'containerInstances[].[ec2InstanceId,status,runningTasksCount]' --output text --container-instances
+DEPOIS
+i-036f87b829bab4c7e	us-east-2b	InService	1
+i-0e0fb3d33369f89f1	us-east-2b	InService	1
+i-0e11b4cf5d06f56d1	us-east-2a	InService	1
+i-0e0fb3d33369f89f1	ACTIVE	2
+i-036f87b829bab4c7e	ACTIVE	0
+i-0e11b4cf5d06f56d1	ACTIVE	3
+
+### 2026-11-18 20:34:10 UTC (17:34:10 BRT)
+$ aws autoscaling describe-scaling-activities --auto-scaling-group-name cc-asg --max-items 8 --query 'Activities[].[StartTime,EndTime,StatusCode,Description]' --output text | sort
+2026-11-18T19:46:40.572000+00:00	2026-11-18T19:46:40+00:00	Cancelled	Could not scale to desired capacity because all remaining instances are protected from scale-in.
+2026-11-18T19:47:22.040000+00:00	2026-11-18T19:48:05+00:00	Successful	Terminating EC2 instance: i-0e0382c29c6741a01
+2026-11-18T20:26:52.575000+00:00	2026-11-18T20:30:28+00:00	Successful	Terminating EC2 instance: i-0a918013974beb14b
+2026-11-18T20:26:54.012000+00:00	2026-11-18T20:28:58+00:00	Successful	Launching a new EC2 instance: i-0e11b4cf5d06f56d1
+2026-11-18T20:29:08.089000+00:00	2026-11-18T20:32:55+00:00	Successful	Terminating EC2 instance: i-048df9755deb5c4cd
+2026-11-18T20:29:09.561000+00:00	2026-11-18T20:31:14+00:00	Successful	Launching a new EC2 instance: i-0e0fb3d33369f89f1
+2026-11-18T20:31:23.657000+00:00	2026-11-18T20:32:07+00:00	Successful	Terminating EC2 instance: i-0d36bd4da26ebb4d1
+2026-11-18T20:31:25.096000+00:00	2026-11-18T20:33:29+00:00	Successful	Launching a new EC2 instance: i-036f87b829bab4c7e
+None
+
+== /health durante 13.3 (20:25:00 a 20:34:00)
+ 510 200
+nao-200:
+mais lentas:
+20:33:35	200	0.697346
+20:32:10	200	0.692790
+20:28:05	200	0.690255

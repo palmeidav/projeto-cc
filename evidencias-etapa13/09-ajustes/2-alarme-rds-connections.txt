@@ -1,0 +1,13 @@
+### 2026-11-18 21:07:48 UTC (18:07:48 BRT)
+$ aws cloudwatch put-metric-alarm --alarm-name cc-rds-connections --namespace AWS/RDS --metric-name DatabaseConnections --dimensions Name=DBInstanceIdentifier,Value=cc-db --statistic Maximum --comparison-operator GreaterThanThreshold --threshold 60 --period 60 --evaluation-periods 2 --treat-missing-data notBreaching --alarm-actions arn:aws:sns:us-east-2:244736565328:cc-alarms && echo atualizado
+atualizado
+
+### 2026-11-18 21:07:49 UTC (18:07:49 BRT)
+$ aws cloudwatch describe-alarms --alarm-names cc-rds-connections --query 'MetricAlarms[0].[AlarmName,Statistic,ComparisonOperator,Threshold,Period,EvaluationPeriods,StateValue]' --output text
+cc-rds-connections	Maximum	GreaterThanThreshold	60.0	60	2	OK
+
+### 2026-11-18 21:07:50 UTC (18:07:50 BRT)
+$ curl -s -w ' HTTP %{http_code}
+' http://cc-alb-2058559449.us-east-2.elb.amazonaws.com/health
+{"status":"ok"} HTTP 200
+

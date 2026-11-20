@@ -1,0 +1,18 @@
+### 2026-11-18 18:35:30 UTC (15:35:30 BRT)
+$ jq -r '.[] | select(.order_id=="bb0bd8e05d42") | "ANTES: \(.order_id) \(.status) confirmed_at=\(.confirmed_at)"' /tmp/orders.json
+ANTES: bb0bd8e05d42 CONFIRMED confirmed_at=2026-11-18T18:34:51.056871+00:00
+
+### 2026-11-18 18:35:30 UTC (15:35:30 BRT)
+$ aws sqs send-message --queue-url https://sqs.us-east-2.amazonaws.com/244736565328/cc-orders --message-body '{"order_id": "bb0bd8e05d42", "total_cents": 3190, "conversation_id": "teste-idempotencia"}' --query MessageId --output text
+c6658036-b5bf-4dc4-b602-c7ae72fdeb35
+
+### 2026-11-18 18:35:46 UTC (15:35:46 BRT)
+$ aws logs filter-log-events --log-group-name /cc/order-worker --start-time 1795026046000 --filter-pattern '"bb0bd8e05d42"' --query 'events[].message' --output text | tr '	' '
+' | grep -v _aws
+{"ts": "2026-11-18T18:34:51Z", "level": "INFO", "service": "order-worker", "message": "pedido confirmado", "message_id": "b182c83f-e1cb-4154-9d75-d10598802fd2", "order_id": "bb0bd8e05d42", "conversation_id": "teste-idempotencia"}
+{"ts": "2026-11-18T18:35:31Z", "level": "INFO", "service": "order-worker", "message": "mensagem duplicada ignorada", "message_id": "c6658036-b5bf-4dc4-b602-c7ae72fdeb35", "order_id": "bb0bd8e05d42", "conversation_id": "teste-idempotencia"}
+
+### 2026-11-18 18:35:54 UTC (15:35:54 BRT)
+$ aws ssm get-command-invocation --command-id af05b0fc-2e43-407a-9573-914d24023fa1 --instance-id i-0d36bd4da26ebb4d1 --query StandardOutputContent --output text | jq -r '"DEPOIS: \(.order_id) \(.status) confirmed_at=\(.confirmed_at)"'
+DEPOIS: bb0bd8e05d42 CONFIRMED confirmed_at=2026-11-18T18:34:51.056871+00:00
+

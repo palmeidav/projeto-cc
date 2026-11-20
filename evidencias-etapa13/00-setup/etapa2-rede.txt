@@ -1,0 +1,24 @@
+export AWS_REGION=us-east-2 AWS_DEFAULT_REGION=us-east-2 ACCOUNT_ID=244736565328 REG=244736565328.dkr.ecr.us-east-2.amazonaws.com
+export VPC_ID=vpc-0eca349b2c5a4762e PUB_A=subnet-0344329b1b0f46aeb PUB_B=subnet-0fb31c4a73d9b53fc APP_A=subnet-06914cc6fa7f0274c APP_B=subnet-02f4f8198c59a304d DATA_A=subnet-06990e60a1ef8df8f DATA_B=subnet-00fb0b14859c72709
+export IGW=igw-080b0a20d424c8c6e RT_PUB=rtb-0a1452aa6b427047c EIP=eipalloc-0a638c1eef7d914b3 NAT=nat-0c4f9653775e1e458
+export RT_PRIV=rtb-08769df36fcf92047 RT_DATA=rtb-030830780fad10035 VPCE_S3=vpce-097393ab7755529cc
+### 2026-11-18 17:40:29 UTC (14:40:29 BRT)
+$ aws ec2 describe-subnets --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e --query 'Subnets[].[Tags[?Key==`Name`]|[0].Value,CidrBlock,AvailabilityZone]' --output text | sort
+cc-app-a	10.0.11.0/24	us-east-2a
+cc-app-b	10.0.12.0/24	us-east-2b
+cc-data-a	10.0.21.0/24	us-east-2a
+cc-data-b	10.0.22.0/24	us-east-2b
+cc-pub-a	10.0.1.0/24	us-east-2a
+cc-pub-b	10.0.2.0/24	us-east-2b
+
+### 2026-11-18 17:40:30 UTC (14:40:30 BRT)
+$ aws ec2 describe-security-groups --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e Name=group-name,Values=cc-* --query 'SecurityGroups[].[GroupName,IpPermissions[].[FromPort,ToPort,IpRanges[0].CidrIp,UserIdGroupPairs[0].GroupId]]' --output json | jq -c '.[]'
+(eval):1: no matches found: Name=group-name,Values=cc-*
+
+### 2026-11-18 17:40:34 UTC (14:40:34 BRT)
+$ aws ec2 describe-security-groups --filters Name=vpc-id,Values=vpc-0eca349b2c5a4762e 'Name=group-name,Values=cc-*' --query 'SecurityGroups[].[GroupName,IpPermissions[].[FromPort,ToPort,IpRanges[0].CidrIp,UserIdGroupPairs[0].GroupId]]' --output json | jq -c '.[]'
+["cc-db",[[5432,5432,null,"sg-0834593b15acf537c"]]]
+["cc-ilb",[[80,80,null,"sg-0834593b15acf537c"]]]
+["cc-alb",[[80,80,"0.0.0.0/0",null]]]
+["cc-app",[[32768,65535,null,"sg-0d845e0eb12003722"]]]
+
