@@ -1,0 +1,49 @@
+### inicio 2026-11-20 23:32:03 UTC
+$ hey -z 10m -c 100 http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com/health
+
+Summary:
+  Total:	600.3630 secs
+  Slowest:	2.2169 secs
+  Fastest:	0.3531 secs
+  Average:	0.3645 secs
+  Requests/sec:	274.2524
+  
+  Total data:	2469765 bytes
+  Size/request:	15 bytes
+
+Response time histogram:
+  0.353 [1]	|
+  0.539 [164176]	|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+  0.726 [141]	|
+  0.912 [100]	|
+  1.099 [12]	|
+  1.285 [13]	|
+  1.471 [51]	|
+  1.658 [108]	|
+  1.844 [22]	|
+  2.030 [6]	|
+  2.217 [21]	|
+
+
+Latency distribution:
+  10% in 0.3570 secs
+  25% in 0.3583 secs
+  50% in 0.3599 secs
+  75% in 0.3619 secs
+  90% in 0.3664 secs
+  95% in 0.3769 secs
+  99% in 0.4282 secs
+
+Details (average, fastest, slowest):
+  DNS+dialup:	0.0002 secs, 0.3531 secs, 2.2169 secs
+  DNS-lookup:	0.0000 secs, 0.0000 secs, 0.0051 secs
+  req write:	0.0000 secs, 0.0000 secs, 0.0055 secs
+  resp wait:	0.3630 secs, 0.3528 secs, 2.2168 secs
+  resp read:	0.0012 secs, 0.0000 secs, 1.6989 secs
+
+Status code distribution:
+  [200]	164651 responses
+
+
+
+### fim 2026-11-20 23:42:04 UTC

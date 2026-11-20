@@ -1,9 +1,3 @@
-Etapa 13 do projeto CC
-Projeto Livraria Nuvem - nível B (+bônus A)
-
-Versão final do etapa13.md, revisada contra o roteiro, o guia, o enunciado e a demonstração. Como usar: 1) salva o texto abaixo como etapa13.md na pasta projeto-cc, junto com o conteúdo do zip e os 4 PDFs; 2) opcional: renomeia pra CLAUDE.md, que o Claude Code carrega automático em toda sessão dessa pasta (troca o conteúdo quando for pro Terraform); 3) abre a pasta no Claude Code e manda só: Leia o etapa13.md e os PDFs desta pasta e siga o etapa13.md passo a passo.
-
-Salva como etapa13.md
 # Etapa 13 do projeto CC - Livraria Nuvem (nível B + bônus A)
 
 ## Contexto

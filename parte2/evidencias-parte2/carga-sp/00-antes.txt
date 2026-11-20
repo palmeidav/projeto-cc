@@ -1,0 +1,21 @@
+### 2026-11-20 23:31:47 UTC (20:31:47 BRT)
+$ aws ecs describe-services --cluster cc-sp-cluster --services chat-service catalog-orders-service order-worker --query 'services[].[serviceName,runningCount,desiredCount]' --output text
+chat-service	2	2
+catalog-orders-service	2	2
+order-worker	1	1
+
+### 2026-11-20 23:31:49 UTC (20:31:49 BRT)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names cc-sp-asg --query 'AutoScalingGroups[0].[MinSize,DesiredCapacity,MaxSize,length(Instances)]' --output text
+2	4	4	4
+
+### 2026-11-20 23:31:50 UTC (20:31:50 BRT)
+$ aws application-autoscaling describe-scaling-policies --service-namespace ecs --query 'ScalingPolicies[].[PolicyName,TargetTrackingScalingPolicyConfiguration.TargetValue]' --output text
+catalog-cpu	60.0
+worker-backlog	5.0
+chat-req	600.0
+
+### 2026-11-20 23:31:52 UTC (20:31:52 BRT)
+$ curl -s -o /dev/null -w 'health HTTP %{http_code} em %{time_total}s
+' http://cc-sp-alb-679579452.sa-east-1.elb.amazonaws.com/health
+health HTTP 200 em 1.090419s
+

@@ -78,3 +78,12 @@ O script `scripts/prova-sem-ohio.sh` gerou `portabilidade/prova-sem-ohio.txt`:
 - **Depois do deploy:** 4/4 alvos healthy, tasks em sa-east-1a e 1b, `/health` 200 e `/ready` 200 com Bedrock (`correcao-regiao/01-saude-pos-deploy.txt`).
 - **Jornada:** pedido `d482661154b1` criado às 20:05:35.688 e **CONFIRMED às 20:05:35.911 (223 ms)**, com `degraded=false` nos 3 turnos e `conversation_id` correlacionado nos 3 serviços (`correcao-regiao/02-jornada.txt`, `03-logs-correlacionados.txt`).
 - **Persistência:** o pedido anterior `3a3193250429` continua CONFIRMED, e o estoque de "1984" passou de 30 para 29 por causa dele e se manteve depois da troca de todas as tasks.
+
+## Carga curta em SP (20/11, 23:32–23:42 UTC)
+- **Teste:** `hey -z 10m -c 100` no `/health` do ALB (`carga-sp/hey-10min.txt`). Vazão de **274,3 req/s**, 164.651/164.651
+  respostas 200, p95 de 377 ms.
+- **Linha do tempo** (`carga-sp/linha-do-tempo.tsv`): chat **2 → 6** às 23:38:16, ~6 min após o início; **6/6 healthy no
+  ALB às 23:38:39 (23 s)**; `CapacityProviderReservation` de 80 para 100.
+- **ASG já no máximo (4/4) antes da carga:** com o `spread` por instância, as 5 tasks ocupam 3 máquinas, e o alvo de 80%
+  dá ⌈3 ÷ 0,8⌉ = 4. Por isso não houve scale-out de EC2 em SP; as tasks novas couberam na instância de folga
+  (`carga-sp/00-antes.txt`). O scale-out de EC2 está demonstrado em Ohio (3 → 4 → 3).
