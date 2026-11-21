@@ -13,7 +13,7 @@ SQS com DLQ, SNS e CloudWatch.
 | | `chat-service/`, `catalog-orders-service/`, `order-worker/` | código dos 3 serviços que rodou em Ohio (v2, com `conversation_id` nos logs) |
 | **Parte 2: São Paulo (sa-east-1), Terraform** | [`parte2/`](parte2/) | infraestrutura inteira como código: [`parte2/infra/`](parte2/infra/) (bootstrap do estado remoto, 11 módulos, `envs/sa-east-1`), [`parte2/services/`](parte2/services/) (código dos serviços) |
 | | [`parte2/evidencias-parte2/`](parte2/evidencias-parte2/) | plans, applies, jornada CONFIRMED, rolling deploy sem queda, prova de que nada depende de Ohio, CloudTrail e prints. **Resumo: [`parte2/evidencias-parte2/RESUMO.md`](parte2/evidencias-parte2/RESUMO.md)** |
-| **Relatório técnico** | **[PDF](relatorio/Relatorio-Livraria-Nuvem.pdf)** · [`RELATORIO.md`](relatorio/RELATORIO.md) | decisões, resultados e análise por dimensão da rubrica; anexos com a lista de recursos criados ([Ohio](relatorio/recursos-ohio.md), [SP](relatorio/recursos-sp.md)) |
+| **Relatório técnico** | **[PDF](relatorio/Relatorio-Livraria-Nuvem.pdf)** | decisões, resultados e análise por dimensão da rubrica; anexos com a lista de recursos criados ([Ohio](relatorio/recursos-ohio.md), [SP](relatorio/recursos-sp.md)) |
 | **Diagramas da arquitetura** | [Ohio](parte2/docs/diagrama-arquitetura-ohio.png) · [São Paulo](parte2/docs/diagrama-arquitetura.png) | caminho de um pedido numerado de 1 a 8 (fonte: `parte2/docs/diagrama_arquitetura.py`, `bash parte2/docs/gerar-diagrama.sh [sp\|ohio]`) |
 | **Operação** | [`parte2/docs/runbook-incidentes.md`](parte2/docs/runbook-incidentes.md) | runbook de resposta a incidentes |
 
