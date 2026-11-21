@@ -7,7 +7,7 @@ Nomes e numeros conferidos contra infra/ e contra a conta (2026-11-19):
   chat 2-6 tasks (:8000) | catalog 2-6 (:8001) | worker 1-5 | RDS PostgreSQL 18.3 db.t4g.micro Multi-AZ 1a/1b
   SQS cc-sp-orders (visibilidade 60 s, maxReceiveCount 3) -> cc-sp-orders-dlq | SNS cc-sp-order-events
 
-Rodar (sem instalar nada no Mac): bash docs/gerar-diagrama.sh
+Rodar (sem instalar nada no Mac): bash docs/gerar-diagrama.sh [sp|ohio]
 As setas vermelhas numeradas 1..8 seguem o caminho de um pedido; as cinzas tracejadas sao fluxos auxiliares.
 Ajustes comuns: textos nos rotulos abaixo; tamanho das fontes em FS_*; espacamento em graph_attr.
 """
@@ -20,6 +20,31 @@ from diagrams.aws.ml import Bedrock
 from diagrams.aws.network import ElbApplicationLoadBalancer, InternetGateway, NATGateway
 from diagrams.aws.security import IAM, SecretsManager
 from diagrams.onprem.client import Users
+
+
+import os
+
+# Escolha da região: REGIAO=sp (padrão, Parte 2, Terraform) ou REGIAO=ohio (Parte 1, manual)
+REGIAO = os.getenv("REGIAO", "sp")
+CFG = {
+    "sp": dict(
+        titulo="Livraria Nuvem: comércio conversacional na AWS · sa-east-1 (Terraform)",
+        arquivo="docs/diagrama-arquitetura", nuvem="AWS · South America (São Paulo)",
+        vpc="VPC cc-sp-vpc · 10.20.0.0/16 · 2 AZs (sa-east-1a, sa-east-1b)", pre="10.20",
+        rds="RDS PostgreSQL 18.3\nMulti-AZ\nprimário 1a · standby 1b", fila="SQS\ncc-sp-orders",
+        bedrock="Bedrock\nClaude Haiku 4.5", quarto=("trail", "CloudTrail\nmultirregião"),
+        iam="IAM · 5 papéis\nmenor privilégio",
+    ),
+    "ohio": dict(
+        titulo="Livraria Nuvem: comércio conversacional na AWS · us-east-2 (Ohio, montagem manual)",
+        arquivo="docs/diagrama-arquitetura-ohio", nuvem="AWS · US East (Ohio)",
+        vpc="VPC cc-vpc · 10.0.0.0/16 · 2 AZs (us-east-2a, us-east-2b)", pre="10.0",
+        rds="RDS PostgreSQL 18.3\nMulti-AZ\nprimário 2a · standby 2b", fila="SQS\ncc-orders",
+        bedrock="Bedrock\nClaude Haiku 4.5", quarto=("sns", "SNS cc-alarms\nalarmes por e-mail"),
+        iam="IAM · 5 papéis\ninstância, execução, 3 apps",
+    ),
+}[REGIAO]
+P = CFG["pre"]
 
 FONT = "DejaVu Sans"
 FS_TITLE, FS_CLUSTER, FS_NODE, FS_STEP, FS_AUX = "40", "24", "22", "30", "19"
@@ -64,21 +89,21 @@ def caixa(cor, **extra):
 
 
 with Diagram(
-    "Livraria Nuvem: comércio conversacional na AWS · sa-east-1 (Terraform)",
-    filename="docs/diagrama-arquitetura", outformat="png", show=False, direction="LR",
+    CFG["titulo"],
+    filename=CFG["arquivo"], outformat="png", show=False, direction="LR",
     graph_attr=graph_attr, node_attr=node_attr, edge_attr=edge_attr,
 ):
     cliente = alto(Users, "Cliente")
 
-    with Cluster("AWS · South America (São Paulo)", graph_attr=caixa("#FAFAFA")):
+    with Cluster(CFG["nuvem"], graph_attr=caixa("#FAFAFA")):
         igw = alto(InternetGateway, "Internet\nGateway")
 
-        with Cluster("VPC cc-sp-vpc · 10.20.0.0/16 · 2 AZs (sa-east-1a, sa-east-1b)", graph_attr=caixa("#EEF4FB")):
-            with Cluster("Públicas\n10.20.1.0/24\n10.20.2.0/24", graph_attr=caixa("#DFF0DF")):
+        with Cluster(CFG["vpc"], graph_attr=caixa("#EEF4FB")):
+            with Cluster(f"Públicas\n{P}.1.0/24\n{P}.2.0/24", graph_attr=caixa("#DFF0DF")):
                 alb = alto(ElbApplicationLoadBalancer, "ALB público\nHTTP 80")
                 nat = alto(NATGateway, "NAT\nGateway")
 
-            with Cluster("Aplicação (privadas) · 10.20.11.0/24 · 10.20.12.0/24\n"
+            with Cluster(f"Aplicação (privadas) · {P}.11.0/24 · {P}.12.0/24\n"
                          "ECS sobre EC2 · ASG t3.medium mín 2 / máx 4 + Capacity Provider (alvo 80%)",
                          graph_attr=caixa("#E6ECF7", labelloc="b")):
                 chat = alto(ElasticContainerServiceService, "chat-service\n:8000 · 2–6 tasks")
@@ -87,21 +112,22 @@ with Diagram(
                 worker = alto(ElasticContainerServiceService, "order-worker\n1–5 tasks")
                 asg = alto(EC2AutoScaling, "ASG +\nCapacity\nProvider")
 
-            with Cluster("Dados (sem internet)\n10.20.21.0/24 · 10.20.22.0/24", graph_attr=caixa("#FBEEDF")):
-                rds = RDSPostgresqlInstance("RDS PostgreSQL 18.3\nMulti-AZ\nprimário 1a · standby 1b", height="3.9")
+            with Cluster(f"Dados (sem internet)\n{P}.21.0/24 · {P}.22.0/24", graph_attr=caixa("#FBEEDF")):
+                rds = RDSPostgresqlInstance(CFG["rds"], height="3.9")
 
         with Cluster("Serviços regionais", graph_attr=caixa("#FFFFFF")):
             ecr = alto(ECR, "ECR\n3 repositórios")
             bedrock = alto(Bedrock, "Bedrock\nClaude Haiku 4.5")
-            sqs = alto(SimpleQueueServiceSqs, "SQS\ncc-sp-orders")
+            sqs = alto(SimpleQueueServiceSqs, CFG["fila"])
             dlq = alto(SimpleQueueServiceSqs, "DLQ\n(3 falhas)")
             sns = alto(SimpleNotificationServiceSns, "SNS\nevento")
 
         with Cluster("Segurança e operação", graph_attr=caixa("#F1ECF8", rank="same")):
             secrets = alto(SecretsManager, "Secrets Manager\nsenha do RDS")
-            iam = alto(IAM, "IAM · 5 papéis\nmenor privilégio")
+            iam = alto(IAM, CFG["iam"])
             cw = alto(Cloudwatch, "CloudWatch\nlogs · 14 alarmes")
-            trail = alto(Cloudtrail, "CloudTrail\nmultirregião")
+            trail = (alto(Cloudtrail, CFG["quarto"][1]) if CFG["quarto"][0] == "trail"
+                     else alto(SimpleNotificationServiceSns, CFG["quarto"][1]))
 
     # ---- caminho de um pedido (1..8) ----
     cliente >> passo(1) >> igw >> segue() >> alb
