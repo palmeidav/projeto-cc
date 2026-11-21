@@ -15,3 +15,4 @@ parte1-build/env.sh
 *.tfplan
 tfplan*
 etapa13.md
+relatorio/*.docx
