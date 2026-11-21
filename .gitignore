@@ -17,3 +17,8 @@ tfplan*
 etapa13.md
 relatorio/*.docx
 relatorio/RELATORIO.md
+*.zip
+__MACOSX/
+relatorio/word/
+parte2/scripts/console-print/
+parte1-build/src-v1/
