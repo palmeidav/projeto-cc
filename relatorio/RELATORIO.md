@@ -33,7 +33,9 @@ fila SQS.
 
 ## 2. Aplicação e decomposição em serviços
 
-![Arquitetura](../parte2/docs/diagrama-arquitetura.png)
+![Arquitetura em Ohio (Parte 1, montagem manual): caminho de um pedido numerado de 1 a 8](../parte2/docs/diagrama-arquitetura-ohio.png)
+
+![Arquitetura em São Paulo (Parte 2, Terraform): mesma topologia, recriada só com código](../parte2/docs/diagrama-arquitetura.png)
 
 | Serviço | Responsabilidade | Perfil de carga | Escala por |
 |---|---|---|---|
@@ -93,6 +95,12 @@ gravado, e a confirmação é idempotente. Juntos, garantem **entrega pelo menos
   o Bedrock, mas o restante segue funcionando. Em produção, basta `single_nat_gateway = false` (1 NAT por AZ), uma
   variável do Terraform.
 
+![SP: mapa de recursos da VPC cc-sp-vpc (10.20.0.0/16), com 6 sub-redes em 2 AZs, tabelas de rotas, IGW, NAT e endpoint S3](../parte2/evidencias-parte2/prints/14-console-vpc-mapa.png)
+
+![SP: RDS cc-sp-db, PostgreSQL 18.3, Multi-AZ (primário em sa-east-1a, standby em sa-east-1b), armazenamento criptografado](../parte2/evidencias-parte2/prints/12-console-rds.png)
+
+![Ohio, teste 13.7: failover forçado do RDS Multi-AZ; o primário passou de us-east-2b para us-east-2a](../evidencias-etapa13/prints/08-bonus/13.7-console-rds-eventos-failover.png)
+
 ---
 
 ## 4. ECS sobre EC2 e gerenciamento de capacidade
@@ -143,6 +151,10 @@ gravado, e a confirmação é idempotente. Juntos, garantem **entrega pelo menos
   - **Drenagem e substituição:** o *instance refresh* trocou as 3 instâncias em ~7 min, com 510/510 respostas 200 (13.3).
   - **Remoção segura:** o ASG recusou o scale-in enquanto as instâncias estavam protegidas e só terminou a que o ECS
     esvaziou (achado 5).
+
+![Ohio, testes 13.3 e 13.4: atividades do ASG na troca das instâncias (instance refresh) e na substituição da instância terminada](../evidencias-etapa13/prints/08-bonus/13.3-13.4-console-asg-atividades.png)
+
+![SP: ASG cc-sp-asg com limites de 2 a 4, instâncias saudáveis e protegidas contra scale-in pelo Capacity Provider](../parte2/evidencias-parte2/prints/13-console-asg.png)
 
 ---
 
@@ -195,6 +207,8 @@ gravado, e a confirmação é idempotente. Juntos, garantem **entrega pelo menos
 - **Instâncias:** o `CapacityProviderReservation` foi de 80 para **100** (as 4 instâncias ocupadas), mas o ASG **já estava
   no máximo (4)** por causa do espalhamento por instância (seção 4). Não houve scale-out de EC2, e as tasks novas couberam
   na instância de folga. O scale-out de instâncias está demonstrado em Ohio (3 → 4 → 3).
+- **Scale-in:** o chat começou a reduzir ~18 min depois do fim da carga (6 → 5 às 23:59:49 e 5 → 4 às 00:02:38), um
+  passo a cada ~3 min por causa do cooldown, igual a Ohio.
 
 **Mensageria e falhas parciais:**
 - **Retentativa e DLQ:** a mensagem inválida ("poison") falhou 3 vezes (visibilidade de 60 s) e foi para a DLQ. O alarme
@@ -205,6 +219,16 @@ gravado, e a confirmação é idempotente. Juntos, garantem **entrega pelo menos
   inalterado.
 - **Dependência indisponível:** sem permissão no Bedrock, o chat respondeu de forma amigável (`degraded=true`), sem
   criar pedido, e voltou na mesma conversa assim que a permissão foi restaurada (13.6).
+
+![Ohio, teste 13.2: tasks do chat e do catalog subindo de 2 para 6 durante a carga e voltando a 2 depois](../evidencias-etapa13/prints/06-carga/03-tasks-pico-e-volta.png)
+
+![Ohio, teste 13.2: instâncias do ASG indo de 3 para 4 e voltando a 3, pelo Capacity Provider](../evidencias-etapa13/prints/06-carga/04-asg-pico-e-volta.png)
+
+![Ohio, teste 13.2: latência do ALB (p50, p95 e p99) durante as duas cargas](../evidencias-etapa13/prints/06-carga/07-alb-latencia.png)
+
+![Ohio, teste 13.2: gargalo no RDS db.t4g.micro, com CPU de 80–85% e até 70 conexões na segunda carga](../evidencias-etapa13/prints/06-carga/08-rds-gargalo.png)
+
+![Ohio, teste 13.5: mensagem inválida (poison) na DLQ após 3 tentativas e alarme cc-dlq-not-empty em ALARM](../evidencias-etapa13/prints/05-dlq-duplicidade/03-console-alarme-dlq.png)
 
 ---
 
@@ -263,6 +287,12 @@ degradado, sem latência do LLM, com o ALB e as tasks saudáveis. O Logs Insight
 **Resposta a incidentes:** o `parte2/docs/runbook-incidentes.md` tem severidades, 6 playbooks (Bedrock, DLQ, fila,
 alvos/5xx, banco e auditoria) com consultas prontas e um registro pós-incidente.
 
+![Ohio: Logs Insights nos 3 log groups filtrando um conversation_id; a jornada aparece de ponta a ponta (chat, pedido criado, pedido confirmado)](../evidencias-etapa13/prints/04-logs-insights-conversation-id.png)
+
+![Ohio, teste 13.8: dashboard de diagnóstico usado para achar a causa raiz da falha do LLM em ~2 min](../evidencias-etapa13/prints/08-bonus/13.8-01-dashboard-diagnostico.png)
+
+![SP: dashboard cc-sp com métricas técnicas e de negócio](../parte2/evidencias-parte2/prints/05-console-dashboard-cc-sp.png)
+
 ---
 
 ## 7. Terraform e portabilidade regional
@@ -311,6 +341,10 @@ alvos/5xx, banco e auditoria) com consultas prontas e um registro pós-incidente
   - dependências explícitas: os serviços dependem da associação do capacity provider.
 
   A destruição será feita com `terraform destroy` depois da avaliação.
+
+![SP: estado remoto do Terraform (terraform.tfstate) no bucket S3 versionado e criptografado](../parte2/evidencias-parte2/prints/11-console-s3-estado-remoto.png)
+
+![SP: cluster cc-sp-cluster criado pelo Terraform, com 3 serviços ativos e 5 tasks em execução](../parte2/evidencias-parte2/prints/07-console-ecs-servicos.png)
 
 ---
 
@@ -362,3 +396,46 @@ Principais componentes em cada região:
 ## Anexo B: onde estão as evidências
 - Ohio: `evidencias-etapa13/RESUMO.md` (testes 13.1–13.8, prints em `evidencias-etapa13/prints/`)
 - SP: `parte2/evidencias-parte2/RESUMO.md` (plans, applies, jornadas, deploy, portabilidade, auditoria, prints)
+
+---
+
+## Referências
+
+### Material da disciplina
+1. INSPER. *Projeto Semestral: Plataforma de Comércio Conversacional na AWS*. Especificação do projeto e rubrica de avaliação. Computação em Nuvem, 2026.
+2. INSPER. *Roteiro da Parte 1: construção manual na AWS (Ohio, us-east-2)*. Computação em Nuvem, 2026.
+3. INSPER. *Guia do projeto: Parte 1* e *Demonstração do nível B (MVP)*. Computação em Nuvem, 2026.
+
+### Documentação oficial
+4. AMAZON WEB SERVICES. *Amazon ECS Developer Guide: Amazon EC2 Auto Scaling group capacity providers*. Disponível em: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/asg-capacity-providers.html
+5. AMAZON WEB SERVICES. *Amazon ECS Developer Guide: task placement strategies*. Disponível em: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-strategies.html
+6. AMAZON WEB SERVICES. *Application Auto Scaling User Guide: target tracking scaling policies*. Disponível em: https://docs.aws.amazon.com/autoscaling/application/userguide/application-auto-scaling-target-tracking.html
+7. AMAZON WEB SERVICES. *Elastic Load Balancing: Application Load Balancers*. Disponível em: https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html
+8. AMAZON WEB SERVICES. *Amazon RDS User Guide: Multi-AZ DB instance deployments*. Disponível em: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.MultiAZ.html
+9. AMAZON WEB SERVICES. *Amazon RDS User Guide: password management with Amazon RDS and AWS Secrets Manager*. Disponível em: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-secrets-manager.html
+10. AMAZON WEB SERVICES. *Amazon SQS Developer Guide: dead-letter queues*. Disponível em: https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html
+11. AMAZON WEB SERVICES. *Amazon CloudWatch: Embedded Metric Format*. Disponível em: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format.html
+12. AMAZON WEB SERVICES. *Amazon Bedrock User Guide: Converse API* e *cross-Region inference*. Disponível em: https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html e https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html
+13. AMAZON WEB SERVICES. *AWS CloudTrail User Guide*. Disponível em: https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html
+14. AMAZON WEB SERVICES. *AWS Well-Architected Framework*. Disponível em: https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html
+15. HASHICORP. *Terraform: backend S3* e *AWS Provider*. Disponível em: https://developer.hashicorp.com/terraform/language/backend/s3 e https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+
+### Padrões e boas práticas
+16. RICHARDSON, C. *Pattern: Transactional outbox*. microservices.io. Disponível em: https://microservices.io/patterns/data/transactional-outbox.html
+17. IETF. *The Idempotency-Key HTTP Header Field* (Internet-Draft, HTTPAPI Working Group). Disponível em: https://datatracker.ietf.org/doc/draft-ietf-httpapi-idempotency-key-header/
+18. CENTER FOR INTERNET SECURITY. *CIS Amazon Web Services Foundations Benchmark*. Disponível em: https://www.cisecurity.org/benchmark/amazon_web_services
+
+### Ferramentas
+19. FastAPI (https://fastapi.tiangolo.com), psycopg 3 (https://www.psycopg.org) e boto3 (https://boto3.amazonaws.com/v1/documentation/api/latest/index.html): código dos serviços.
+20. hey: gerador de carga HTTP. Disponível em: https://github.com/rakyll/hey
+21. Diagrams: diagramas como código com ícones oficiais da AWS. Disponível em: https://diagrams.mingrammer.com
+
+### Uso de inteligência artificial
+- **Como componente do produto:** o vendedor da Livraria Nuvem é o modelo **Claude Haiku 4.5 (Anthropic)**, acessado pelo **Amazon Bedrock** com a Converse API e uso de ferramentas (tool use). A IA consulta o catálogo e registra pedidos por funções reais da aplicação.
+- **Como apoio ao desenvolvimento:** o grupo usou o **Claude Code (Anthropic)**, um assistente de programação com IA, para:
+  - montar e conferir a infraestrutura pela AWS CLI;
+  - executar os testes da Etapa 13 e coletar as evidências;
+  - escrever os módulos Terraform e os scripts de apoio;
+  - gerar os diagramas;
+  - redigir o rascunho deste relatório.
+- **Validação humana:** todas as ações na conta AWS foram autorizadas pelo grupo, e os números citados vêm dos logs, métricas e arquivos de evidência guardados no repositório (`evidencias-etapa13/` e `parte2/evidencias-parte2/`). As decisões de arquitetura, a revisão do conteúdo e a apresentação são de responsabilidade do grupo.
